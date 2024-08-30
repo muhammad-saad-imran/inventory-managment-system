@@ -1,3 +1,4 @@
+import { signout } from "@/utils/actions/auth.actions";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function DashboardPage() {
@@ -6,5 +7,12 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
   console.log({ user });
-  return <p>Dashboard</p>;
+  return (
+    <form>
+      Dashboard
+      <button className="border" formAction={signout}>
+        signout
+      </button>
+    </form>
+  );
 }
