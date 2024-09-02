@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} w-screen h-screen bg-[#F5F5F5]`}>
         <StoreProvider>
-          <Suspense>{children}</Suspense>
+            <Suspense>{children}</Suspense>
         </StoreProvider>
       </body>
     </html>

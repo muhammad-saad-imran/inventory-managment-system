@@ -21,11 +21,4 @@ export const SecondaryButton = styled(Button)`
   background-color: black;
   color: white;
   border-color: black;
-
-  ${(props) =>
-    !props.disabled &&
-    `&:hover {
-    background-color: white;
-    color: black;
-  }`}
 `;

@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { useFormik } from "formik";
 import { login } from "@/utils/actions/auth.actions";
 import { loginSchema } from "@/utils/validations/auth.validation";
@@ -9,6 +11,7 @@ import { Button } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
 export default function LoginPage() {
+  const loadingRef = useRef<LoadingBarRef>(null);
   const {
     values,
     errors,
@@ -22,14 +25,17 @@ export default function LoginPage() {
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting, setFieldError }) => {
       /* On sucess login will redirect to dashboard */
+      loadingRef.current?.continuousStart();
       const { error } = await login(values);
       setFieldError("password", error);
       setSubmitting(false);
+      loadingRef.current?.complete();
     },
   });
 
   return (
     <FlexContainer>
+      <LoadingBar ref={loadingRef} />
       <div className="flex p-5 bg-white rounded-lg shadow-lg">
         <Image
           className="pr-8"

@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <div className="flex w-full h-full">
       <Sidebar />
-      {children}
+      <div className="w-full h-full p-3">{children}</div>
     </div>
   );
 }

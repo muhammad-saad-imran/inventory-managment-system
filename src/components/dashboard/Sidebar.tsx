@@ -1,14 +1,14 @@
 import React from "react";
+import Link from "next/link";
 import { signout } from "@/utils/actions/auth.actions";
 import { Button } from "@/elements/buttons";
 import { FlexContainer } from "@/elements/containers";
-import Link from "next/link";
 
 const Sidebar = () => {
   return (
-    <form className="w-1/5 max-w-96 ">
+    <form className="w-96 max-w-96 ">
       <FlexContainer
-        className="gap-4 p-4 bg-white shadow-md"
+        className="gap-4 p-4 bg-white shadow-md shrink-0 grow-0"
         $flexDirection="column"
         $justifyContent="start"
       >
