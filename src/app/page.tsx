@@ -21,6 +21,7 @@ export default function LoginPage() {
     initialValues: { email: "", password: "" },
     validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting, setFieldError }) => {
+      /* On sucess login will redirect to dashboard */
       const { error } = await login(values);
       setFieldError("password", error);
       setSubmitting(false);
