@@ -18,7 +18,7 @@ export async function login(data: SignInWithPasswordCredentials) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirect("/dashboard/products");
 }
 
 export async function signout() {

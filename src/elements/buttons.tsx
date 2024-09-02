@@ -3,7 +3,6 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  width: fit-content;
   padding: 3px 10px;
   border: 1px solid black;
   border-radius: 5px;
@@ -15,9 +14,18 @@ export const Button = styled.button`
     background-color: black;
     color: white;
   }`}
+`;
 
-  :disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
+// Secondary Button style
+export const SecondaryButton = styled(Button)`
+  background-color: black;
+  color: white;
+  border-color: black;
+
+  ${(props) =>
+    !props.disabled &&
+    `&:hover {
+    background-color: white;
+    color: black;
+  }`}
 `;

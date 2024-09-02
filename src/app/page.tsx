@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useFormik } from "formik";
 import { login } from "@/utils/actions/auth.actions";
-import { loginSchema } from "@/validations/auth.validation";
-import { FlexContainer } from "@/elements/containers/FlexContainer";
-import { Button } from "@/elements/button/Button";
+import { loginSchema } from "@/utils/validations/auth.validation";
+import { FlexContainer } from "@/elements/containers";
+import { Button } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
 export default function LoginPage() {
