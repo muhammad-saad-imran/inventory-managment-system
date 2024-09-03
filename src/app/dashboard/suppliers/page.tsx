@@ -34,7 +34,7 @@ const SupplierPage = () => {
 
   useEffect(() => {
     getSuppliers();
-  }, []);
+  }, [getSuppliers]);
 
   return (
     <div>

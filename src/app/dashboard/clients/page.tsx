@@ -31,7 +31,7 @@ const ClientsPage = () => {
 
   useEffect(() => {
     getClients();
-  }, []);
+  }, [getClients]);
 
   return (
     <div>

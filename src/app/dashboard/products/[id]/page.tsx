@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FormikValues } from "formik";
 import { get, isEqual } from "lodash";
@@ -40,7 +40,7 @@ const ProductInfoPage = () => {
     alert(error);
   };
 
-  const getProduct = async () => {
+  const getProduct = useCallback(async () => {
     const supabase = createSupabaseClient();
     const { data } = await supabase
       .from("products")
@@ -51,11 +51,11 @@ const ProductInfoPage = () => {
 
     setInitialValues(product);
     setInitialSelectValue({ value: suppliers?.id, label: suppliers?.name });
-  };
+  }, [id]);
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [getProduct]);
 
   const { suppliers, ...product } = initialValues;
   const disableUpdate = isEqual(product, values) || isSubmitting;
