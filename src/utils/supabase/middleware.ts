@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { CookieMethodsServer } from "@supabase/ssr";
-import { createClient } from "@/utils/supabase/server";
+import { createSupabaseClient } from "@/utils/supabase/server";
 
 export async function validateSession(request: NextRequest) {
   const baseUrl = new URL(request.url).origin;
@@ -26,7 +26,7 @@ export async function validateSession(request: NextRequest) {
     },
   };
 
-  const supabase = createClient({ cookies });
+  const supabase = createSupabaseClient({ cookies });
 
   // updates the auth token
   const {

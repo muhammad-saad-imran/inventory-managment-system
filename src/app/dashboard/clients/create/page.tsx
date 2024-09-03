@@ -3,7 +3,7 @@
 import React from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { Client } from "@/utils/supabase/types";
-import { postClient } from "@/utils/actions/client.actions";
+import { createClient } from "@/utils/actions/client.actions";
 import { clientSchema } from "@/utils/validations/client.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
@@ -19,7 +19,7 @@ const CreateClientPage = () => {
     initialValues,
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
-      const { error } = await postClient(values as Client);
+      const { error } = await createClient(values as Client);
       alert(error);
       setSubmitting(false);
     },

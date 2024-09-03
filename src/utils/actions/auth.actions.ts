@@ -3,12 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { SignInWithPasswordCredentials } from "@supabase/supabase-js";
-import { createClient } from "@/utils/supabase/server";
+import { createSupabaseClient } from "@/utils/supabase/server";
 
 const INVALID_CREDENTIALS = "Invalid login credentials";
 
 export async function login(data: SignInWithPasswordCredentials) {
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error?.message === INVALID_CREDENTIALS) {
@@ -22,7 +22,7 @@ export async function login(data: SignInWithPasswordCredentials) {
 }
 
 export async function signout() {
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
   const { error } = await supabase.auth.signOut();
 
   if (error) {

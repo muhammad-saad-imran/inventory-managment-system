@@ -4,8 +4,8 @@ import React from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { createSupplier } from "@/utils/actions/supplier.actions";
 import { Supplier } from "@/utils/supabase/types";
-import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import { SecondaryButton } from "@/elements/buttons";
+import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import InputField from "@/components/common/InputField";
 
 const initialValues = {

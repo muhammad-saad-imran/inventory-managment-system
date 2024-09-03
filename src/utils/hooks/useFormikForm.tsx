@@ -1,7 +1,4 @@
-import React from "react";
 import { FormikConfig, FormikValues, useFormik } from "formik";
-
-type Props = {};
 
 const useFormikForm = (formikConfig: FormikConfig<FormikValues>) => {
   const formik = useFormik(formikConfig);
@@ -16,6 +13,7 @@ const useFormikForm = (formikConfig: FormikConfig<FormikValues>) => {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
   });
+
   return { ...formik, getFieldAttrs };
 };
 

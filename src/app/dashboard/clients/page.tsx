@@ -1,20 +1,23 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { formatDate } from "@/utils/datetime";
-import { createClient } from "@/utils/supabase/client";
+import { createSupabaseClient } from "@/utils/supabase/client";
 import SearchBar from "@/components/dashboard/SearchBar";
 
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
 
+  const router = useRouter();
+
   const filterProducts = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const getClients = useCallback(async () => {
-    const supabase = createClient();
+    const supabase = createSupabaseClient();
     const { data, error } = await supabase.from("clients").select();
 
     if (error) {
@@ -47,6 +50,7 @@ const ClientsPage = () => {
             <tr
               key={item.id}
               className="text-center hover:bg-black/[0.05] cursor-pointer"
+              onClick={() => router.push(`/dashboard/clients/${item.id}`)}
             >
               <td className="py-5">{item.name}</td>
               <td className="py-5">{item.email}</td>
