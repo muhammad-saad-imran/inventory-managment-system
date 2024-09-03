@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDate, formatPrice } from "@/utils/datetime";
+import { Product } from "@/utils/supabase/types";
 import products from "@/config/products.json";
 import SearchBar from "@/components/dashboard/SearchBar";
 
@@ -22,8 +23,11 @@ const InvoicePage = () => {
           <th className="py-5">Price</th>
           <th className="py-5">Created At</th>
         </tr>
-        {filterProducts.map((item) => (
-          <tr className="text-center hover:bg-black/[0.05] cursor-pointer">
+        {filterProducts.map((item: Product) => (
+          <tr
+            key={item.id}
+            className="text-center hover:bg-black/[0.05] cursor-pointer"
+          >
             <td className="py-5">{item.name}</td>
             <td className="py-5">{item.description}</td>
             <td className="py-5">{formatPrice(item.selling_price)}</td>

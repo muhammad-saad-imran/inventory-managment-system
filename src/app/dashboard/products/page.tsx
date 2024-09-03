@@ -34,7 +34,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [getProducts]);
 
   return (
     <div>

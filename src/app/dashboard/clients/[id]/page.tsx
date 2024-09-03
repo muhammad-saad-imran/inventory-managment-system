@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FormikValues } from "formik";
 import { get, isEqual } from "lodash";
@@ -33,7 +33,7 @@ const ClientInfoPage = () => {
     alert(error);
   };
 
-  const getClient = async () => {
+  const getClient = useCallback(async () => {
     const supabase = createSupabaseClient();
     const { data } = await supabase
       .from(DB_TABLES.CLIENTS)
@@ -43,11 +43,11 @@ const ClientInfoPage = () => {
     const client = get(data, "[0]");
 
     setInitialValues(client);
-  };
+  }, [id]);
 
   useEffect(() => {
     getClient();
-  }, []);
+  }, [getClient]);
 
   const disableUpdate = isEqual(initialValues, values) || isSubmitting;
 

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDate, formatPrice } from "@/utils/datetime";
+import { Order } from "@/utils/supabase/types";
 import orders from "@/config/orders.json";
 import SearchBar from "@/components/dashboard/SearchBar";
 
@@ -20,8 +21,11 @@ const OrderPage = () => {
           <th className="py-5">Status</th>
           <th className="py-5">Amount</th>
         </tr>
-        {filterProducts.map((item) => (
-          <tr className="text-center hover:bg-black/[0.05] cursor-pointer">
+        {filterProducts.map((item: Order) => (
+          <tr
+            key={item.id}
+            className="text-center hover:bg-black/[0.05] cursor-pointer"
+          >
             <td className="py-5">{item.id}</td>
             <td className="py-5">
               {formatDate({ date: item.order_date, outputDate: "MMM D, YYYY" })}
