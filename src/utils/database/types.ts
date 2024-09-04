@@ -18,15 +18,22 @@ export type Supplier = {
 };
 
 export type Product = {
-  id?: string; // UUID
+  id: string; // UUID
   name: string; // varchar
   description: string; // text
-  cost_price: number; // decimal
-  selling_price: number; // decimal
-  stock_quantity: number; // number
-  reorder_limit: number; // number
-  supplier_id?: string; // UUID (foreign key from suppliers)
-  created_at?: string; // timestamp
+  price: number; // decimal
+  created_at: string; // timestamp
+  suppliers?: Supplier;
+};
+
+export type Inventory = {
+  id: string; // UUID
+  cost: number; // DECIMAL
+  supplier_id: string; // UUID, foreign key to suppliers
+  product_id: string; // UUID, foreign key to products
+  stock_quantity: number; // INTEGER
+  reorder_limit: number; // INTEGER
+  created_at: string; // TIMESTAMP WITH TIME ZONE
 };
 
 export type Client = {

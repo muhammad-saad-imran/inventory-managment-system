@@ -1,22 +1,22 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { get, isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { Supplier } from "@/utils/supabase/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import {
-  deleteSupplier,
-  updateSupplier,
-} from "@/utils/actions/supplier.actions";
+import { Supplier } from "@/utils/database/types";
+import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
 const SupplierInfoPage = () => {
+  const router = useRouter();
   const { id } = useParams<{ id: string }>();
+
+  const supplier = new SupplierRepo(createSupabaseClient());
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
@@ -24,30 +24,38 @@ const SupplierInfoPage = () => {
     enableReinitialize: true,
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
-      const { error } = await updateSupplier(values as Supplier);
-      if (error) alert(error);
-      else setInitialValues(values);
+      try {
+        const supplierData = await supplier.update(id, values as Supplier);
+        setInitialValues(supplierData);
+        router.push("/dashboard/suppliers");
+      } catch (error) {
+        alert("Error while updating supplier");
+      }
       setSubmitting(false);
     },
   });
 
   const handleDelete = async () => {
-    const { error } = await deleteSupplier(values.id);
-    alert(error);
+    try {
+      await supplier.delete(id);
+      router.push("/dashboard/suppliers");
+    } catch (error) {
+      alert("Error while deleting supplier");
+    }
   };
 
-  const getSupplier = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data } = await supabase.from("suppliers").select(`*`).eq("id", id);
-
-    const supplier = get(data, "[0]");
-
-    setInitialValues(supplier);
+  const fetchSupplier = useCallback(async () => {
+    try {
+      const supplierData = await supplier.get(id);
+      setInitialValues(supplierData);
+    } catch (error) {
+      alert("Error while fetching supplier");
+    }
   }, [id]);
 
   useEffect(() => {
-    getSupplier();
-  }, [getSupplier]);
+    fetchSupplier();
+  }, [fetchSupplier]);
 
   const disableUpdate = isEqual(values, initialValues) || isSubmitting;
 
@@ -62,10 +70,18 @@ const SupplierInfoPage = () => {
           type="number"
         />
         <div className="flex gap-4">
-          <SecondaryButton className="w-fit" disabled={disableUpdate}>
+          <SecondaryButton
+            className="w-fit"
+            type="submit"
+            disabled={disableUpdate}
+          >
             Update
           </SecondaryButton>
-          <SecondaryButton className="w-fit" onClick={handleDelete}>
+          <SecondaryButton
+            className="w-fit"
+            type="button"
+            onClick={handleDelete}
+          >
             Delete
           </SecondaryButton>
         </div>

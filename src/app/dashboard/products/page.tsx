@@ -3,7 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import { Product } from "@/utils/supabase/types";
+import { ProductRepo } from "@/utils/database/ProductRepo";
+import { Product } from "@/utils/database/types";
 import { formatDate, formatPrice } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
 
@@ -13,6 +14,8 @@ const ProductPage = () => {
 
   const router = useRouter();
 
+  const product = new ProductRepo(createSupabaseClient());
+
   const filterProducts = data.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -20,15 +23,13 @@ const ProductPage = () => {
   );
 
   const getProducts = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data, error } = await supabase.from("products").select();
-
-    if (error) {
-      alert(error.message);
-    }
-
-    if (data) {
-      setData(data);
+    try {
+      const data = await product.getAll();
+      if (data) {
+        setData(data);
+      }
+    } catch (error) {
+      alert("Error fetching products");
     }
   }, []);
 
@@ -54,7 +55,7 @@ const ProductPage = () => {
           >
             <td className="py-5">{item.name}</td>
             <td className="py-5">{item.description}</td>
-            <td className="py-5">{formatPrice(item.selling_price)}</td>
+            <td className="py-5">{formatPrice(item.price)}</td>
             <td className="py-5">
               {formatDate({ date: item.created_at, outputDate: "MMM D, YYYY" })}
             </td>

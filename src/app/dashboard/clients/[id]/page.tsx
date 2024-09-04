@@ -1,19 +1,22 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
-import { get, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { Client, DB_TABLES } from "@/utils/supabase/types";
+import { Client } from "@/utils/database/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
+import { ClientRepo } from "@/utils/database/ClientRepo";
 import { clientSchema } from "@/utils/validations/client.validation";
-import { deleteClient, updateClient } from "@/utils/actions/client.actions";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
 const ClientInfoPage = () => {
+  const router = useRouter();
   const { id } = useParams<{ id: string }>();
+
+  const client = new ClientRepo(createSupabaseClient());
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
@@ -21,33 +24,38 @@ const ClientInfoPage = () => {
     enableReinitialize: true,
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
-      const { error } = await updateClient(values as Client);
-      if (error) alert(error);
-      else setInitialValues(values);
+      try {
+        const clientData = await client.update(values.id, values as Client);
+        setInitialValues(clientData);
+        router.push("/dashboard/clients");
+      } catch (error) {
+        alert("Error updating client");
+      }
       setSubmitting(false);
     },
   });
 
   const handleDelete = async () => {
-    const { error } = await deleteClient(values.id);
-    alert(error);
+    try {
+      await client.delete(values.id);
+      router.push("/dashboard/clients");
+    } catch (error) {
+      alert("Error deleting client");
+    }
   };
 
-  const getClient = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data } = await supabase
-      .from(DB_TABLES.CLIENTS)
-      .select()
-      .eq("id", id);
-
-    const client = get(data, "[0]");
-
-    setInitialValues(client);
+  const fetchClient = useCallback(async () => {
+    try {
+      const clientData = await client.get(id);
+      setInitialValues(clientData);
+    } catch (error) {
+      alert("Error fetching clients");
+    }
   }, [id]);
 
   useEffect(() => {
-    getClient();
-  }, [getClient]);
+    fetchClient();
+  }, [fetchClient]);
 
   const disableUpdate = isEqual(initialValues, values) || isSubmitting;
 

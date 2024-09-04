@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { formatDate, formatPrice } from "@/utils/datetime";
-import { Product } from "@/utils/supabase/types";
+import { Product } from "@/utils/database/types";
 import products from "@/config/products.json";
 import SearchBar from "@/components/dashboard/SearchBar";
 

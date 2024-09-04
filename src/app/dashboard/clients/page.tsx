@@ -2,36 +2,38 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { formatDate } from "@/utils/datetime";
 import { createSupabaseClient } from "@/utils/supabase/client";
+import { formatDate } from "@/utils/datetime";
+import { Client } from "@/utils/database/types";
+import { ClientRepo } from "@/utils/database/ClientRepo";
 import SearchBar from "@/components/dashboard/SearchBar";
 
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<Client[]>([]);
 
   const router = useRouter();
+
+  const client = new ClientRepo(createSupabaseClient());
 
   const filterProducts = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getClients = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data, error } = await supabase.from("clients").select();
-
-    if (error) {
-      alert(error.message);
-    }
-
-    if (data) {
-      setData(data);
+  const fetchClients = useCallback(async () => {
+    try {
+      const data = await client.getAll();
+      if (data) {
+        setData(data);
+      }
+    } catch (error) {
+      alert("Error fetching clients");
     }
   }, []);
 
   useEffect(() => {
-    getClients();
-  }, [getClients]);
+    fetchClients();
+  }, [fetchClients]);
 
   return (
     <div>

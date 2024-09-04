@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
-import useFormikForm from "@/utils/hooks/useFormikForm";
-import { Client } from "@/utils/supabase/types";
-import { createClient } from "@/utils/actions/client.actions";
+import { useRouter } from "next/navigation";
+import { createSupabaseClient } from "@/utils/supabase/client";
+import { ClientRepo } from "@/utils/database/ClientRepo";
+import { Client } from "@/utils/database/types";
 import { clientSchema } from "@/utils/validations/client.validation";
+import useFormikForm from "@/utils/hooks/useFormikForm";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
@@ -15,12 +17,19 @@ const initialValues = {
 };
 
 const CreateClientPage = () => {
+  const router = useRouter();
+  const client = new ClientRepo(createSupabaseClient());
+
   const { handleSubmit, getFieldAttrs } = useFormikForm({
     initialValues,
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
-      const { error } = await createClient(values as Client);
-      alert(error);
+      try {
+        await client.create(values as Client);
+        router.push("/dashboard/clients");
+      } catch (error) {
+        alert("Error updating client");
+      }
       setSubmitting(false);
     },
   });
