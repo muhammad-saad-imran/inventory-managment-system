@@ -23,7 +23,7 @@ const InvoicePage = () => {
           <th className="py-5">Price</th>
           <th className="py-5">Created At</th>
         </tr>
-        {filterProducts.map((item: Product) => (
+        {filterProducts.map((item: any) => (
           <tr
             key={item.id}
             className="text-center hover:bg-black/[0.05] cursor-pointer"

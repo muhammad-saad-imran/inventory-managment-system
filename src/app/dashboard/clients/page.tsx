@@ -8,13 +8,13 @@ import { Client } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import SearchBar from "@/components/dashboard/SearchBar";
 
+const client = new ClientRepo(createSupabaseClient());
+
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<Client[]>([]);
 
   const router = useRouter();
-
-  const client = new ClientRepo(createSupabaseClient());
 
   const filterProducts = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())

@@ -12,13 +12,13 @@ import { productSchema } from "@/utils/validations/product.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
+const product = new ProductRepo(createSupabaseClient());
+
 const ProductInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
-
-  const product = new ProductRepo(createSupabaseClient());
 
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
     initialValues,

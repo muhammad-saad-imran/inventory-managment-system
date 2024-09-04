@@ -8,14 +8,14 @@ import { Product } from "@/utils/database/types";
 import { formatDate, formatPrice } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
 
+const product = new ProductRepo(createSupabaseClient());
+
 const ProductPage = () => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState<any[]>([]);
 
   const router = useRouter();
-
-  const product = new ProductRepo(createSupabaseClient());
-
+  
   const filterProducts = data.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) ||

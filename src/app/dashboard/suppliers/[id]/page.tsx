@@ -12,11 +12,11 @@ import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
+const supplier = new SupplierRepo(createSupabaseClient());
+
 const SupplierInfoPage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-
-  const supplier = new SupplierRepo(createSupabaseClient());
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({

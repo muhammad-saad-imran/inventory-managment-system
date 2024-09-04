@@ -8,11 +8,11 @@ import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { formatDate } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
 
+const supplier = new SupplierRepo(createSupabaseClient());
+
 const SupplierPage = () => {
   const [data, setData] = useState<any[]>([]);
   const [search, setSearch] = useState("");
-
-  const supplier = new SupplierRepo(createSupabaseClient());
 
   const router = useRouter();
 

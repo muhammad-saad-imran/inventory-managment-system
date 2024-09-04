@@ -12,11 +12,11 @@ import { clientSchema } from "@/utils/validations/client.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
+const client = new ClientRepo(createSupabaseClient());
+
 const ClientInfoPage = () => {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
-
-  const client = new ClientRepo(createSupabaseClient());
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
