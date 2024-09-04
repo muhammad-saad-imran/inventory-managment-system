@@ -9,6 +9,13 @@ export enum DB_TABLES {
   SUPPLIERS = "suppliers",
 }
 
+export enum ORDER_STATUS {
+  PROCESSING = "PROCESSING",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED",
+}
+
 export type Supplier = {
   id: string; // UUID
   name: string; // varchar
@@ -41,9 +48,10 @@ export type Order = {
   id: string; // UUID
   client_id: string; // UUID (foreign key from clients)
   order_date: string; // timestamp
-  status: string; // varchar
-  total_amount: number; // decimal
+  status: ORDER_STATUS; // varchar
   created_at: string; // timestamp
+  clients?: Client;
+  order_items?: OrderItem[];
 };
 
 export type OrderItem = {
@@ -53,6 +61,7 @@ export type OrderItem = {
   quantity: number; // integer
   price: number; // decimal
   created_at: string; // timestamp
+  products?: Product;
 };
 
 export type Invoice = {

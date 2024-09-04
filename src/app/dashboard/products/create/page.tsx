@@ -7,7 +7,7 @@ import { createProduct } from "@/utils/actions/product.actions";
 import { productSchema } from "@/utils/validations/product.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-import SelectInput from "@/components/common/SelectInput";
+import AsyncSelectInput from "@/components/common/AsyncSelectInput";
 
 const initialValues = {
   name: "",
@@ -42,7 +42,7 @@ const CreateProductPage = () => {
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <InputField {...getFieldAttrs("Name", "name")} />
         <InputField {...getFieldAttrs("Description", "description")} />
-        <SelectInput {...selectOptions} />
+        <AsyncSelectInput {...selectOptions} />
         <div className="w-full flex gap-2">
           <InputField
             {...getFieldAttrs("Cost Price", "cost_price")}
