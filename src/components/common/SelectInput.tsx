@@ -1,5 +1,4 @@
 import React from "react";
-import { GroupBase, OptionsOrGroups } from "react-select";
 import ReactSelectAsync from "react-select/async";
 
 type Props = {

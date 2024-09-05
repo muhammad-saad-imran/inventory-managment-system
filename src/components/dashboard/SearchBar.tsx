@@ -1,15 +1,15 @@
-import React from "react";
+import React, { InputHTMLAttributes } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { InputBase } from "@/elements/inputs";
 import { SecondaryButton } from "@/elements/buttons";
 
-type Props = {
+type Props = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   search: string;
   setSearch: any;
 };
 
-const SearchBar = ({ label, search, setSearch }: Props) => {
+const SearchBar = ({ label, search, setSearch, ...inputAttrs }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
   return (
@@ -21,6 +21,7 @@ const SearchBar = ({ label, search, setSearch }: Props) => {
           className="border-0 text-lg"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
+          {...inputAttrs}
         />
         <SecondaryButton onClick={() => router.push(pathname + "/create")}>
           <p className="text-xl">+</p>

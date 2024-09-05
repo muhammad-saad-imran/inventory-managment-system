@@ -7,6 +7,7 @@ export enum DB_TABLES {
   ORDER_ITEMS = "order_items",
   PRODUCTS = "products",
   SUPPLIERS = "suppliers",
+  INVENTORY = "inventory",
 }
 
 export type Supplier = {
@@ -34,6 +35,8 @@ export type Inventory = {
   stock_quantity: number; // INTEGER
   reorder_limit: number; // INTEGER
   created_at: string; // TIMESTAMP WITH TIME ZONE
+  suppliers?: Supplier;
+  products?: Product;
 };
 
 export type Client = {
