@@ -2,10 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Supplier } from "@/utils/supabase/types";
+import { Supplier } from "@/utils/database/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
+import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { formatDate } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
+
+const supplier = new SupplierRepo(createSupabaseClient());
 
 const SupplierPage = () => {
   const [data, setData] = useState<any[]>([]);
@@ -17,24 +20,18 @@ const SupplierPage = () => {
     item.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getSuppliers = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data: suppliers, error } = await supabase
-      .from("suppliers")
-      .select();
-
-    if (error) {
-      alert(error.message);
-    }
-
-    if (suppliers) {
-      setData(suppliers);
+  const fetchSuppliers = useCallback(async () => {
+    try {
+      const supplierData = await supplier.getAll();
+      setData(supplierData);
+    } catch (error) {
+      alert("Error while fetching suppliers");
     }
   }, []);
 
   useEffect(() => {
-    getSuppliers();
-  }, [getSuppliers]);
+    fetchSuppliers();
+  }, [fetchSuppliers]);
 
   return (
     <div>

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { FormikConfig, FormikValues } from "formik";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import { Product, Supplier } from "@/utils/supabase/types";
+import { Supplier } from "@/utils/database/types";
+import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { createProduct } from "@/utils/actions/product.actions";
-import { productSchema } from "@/utils/validations/product.validation";
 
 type Option = {
   value: string;
@@ -18,23 +17,23 @@ type Props = FormikConfig<FormikValues> & {
 const useCreateProduct = ({ initialSelectValue, ...formikConfig }: Props) => {
   const [selectValue, setSelectValue] = useState<Option>(initialSelectValue);
 
+  const supplier = new SupplierRepo(createSupabaseClient());
+
   const formik = useFormikForm(formikConfig);
 
   const { errors, touched, setFieldValue } = formik;
 
   const loadOptions = async (input: string) => {
-    const supabase = createSupabaseClient();
-    const { data: suppliers } = await supabase
-      .from("suppliers")
-      .select()
-      .ilike("name", `%${input}%`);
+    try {
+      const suppliers = await supplier.getWithName(input);
 
-    return suppliers
-      ? suppliers.map(({ id, name }: Supplier) => ({
-          value: id,
-          label: name,
-        }))
-      : [];
+      return suppliers.map(({ id, name }: Supplier) => ({
+        value: id,
+        label: name,
+      }));
+    } catch (error) {
+      return [];
+    }
   };
 
   const selectOptions = {

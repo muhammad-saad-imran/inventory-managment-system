@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createSupabaseClient } from "@/utils/supabase/client";
@@ -7,6 +8,13 @@ import { DB_TABLES, Order } from "@/utils/supabase/types";
 import { formatDate } from "@/utils/datetime";
 import OrderSearchBar from "@/components/order/OrderSearchBar";
 import CreateOrderBar from "@/components/order/CreateOrderBar";
+=======
+import React, { useState } from "react";
+import { formatDate, formatPrice } from "@/utils/datetime";
+import { Order } from "@/utils/database/types";
+import orders from "@/config/orders.json";
+import SearchBar from "@/components/dashboard/SearchBar";
+>>>>>>> feature/inventory
 
 const OrderPage = () => {
   const [search, setSearch] = useState("");

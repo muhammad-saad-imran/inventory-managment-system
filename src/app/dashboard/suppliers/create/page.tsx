@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { createSupplier } from "@/utils/actions/supplier.actions";
-import { Supplier } from "@/utils/supabase/types";
-import { SecondaryButton } from "@/elements/buttons";
+import { Supplier } from "@/utils/database/types";
+import { SupplierRepo } from "@/utils/database/SupplierRepo";
+import { createSupabaseClient } from "@/utils/supabase/client";
 import { supplierSchema } from "@/utils/validations/supplier.validtion";
+import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
 const initialValues = {
@@ -15,12 +17,19 @@ const initialValues = {
 };
 
 const CreateSupplierPage = () => {
+  const router = useRouter();
+  const supplier = new SupplierRepo(createSupabaseClient());
+
   const { handleSubmit, getFieldAttrs } = useFormikForm({
     initialValues,
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
-      const { error } = await createSupplier(values as Supplier);
-      alert(error);
+      try {
+        const supplierData = await supplier.create(values as Supplier);
+        router.push("/dashboard/suppliers");
+      } catch (error) {
+        alert("Error while creating supplier");
+      }
       setSubmitting(false);
     },
   });

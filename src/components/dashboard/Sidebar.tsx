@@ -13,6 +13,9 @@ const Sidebar = () => {
         $justifyContent="start"
       >
         My Inventory
+        <Link className="w-full" href="/dashboard/inventory">
+          <Button className="w-full">Inventory</Button>
+        </Link>
         <Link className="w-full" href="/dashboard/products">
           <Button className="w-full">Products</Button>
         </Link>

@@ -1,94 +1,80 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
-import { get, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import { Product } from "@/utils/supabase/types";
-import useCreateProduct from "@/utils/hooks/useCreateProduct";
-import { deleteProduct, updateProduct } from "@/utils/actions/product.actions";
+import { Product } from "@/utils/database/types";
+import { ProductRepo } from "@/utils/database/ProductRepo";
+import useFormikForm from "@/utils/hooks/useFormikForm";
 import { productSchema } from "@/utils/validations/product.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-import AsyncSelectInput from "@/components/common/AsyncSelectInput";
+
+const product = new ProductRepo(createSupabaseClient());
 
 const ProductInfoPage = () => {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
-  const [initialSelectValue, setInitialSelectValue] = useState({
-    value: "",
-    label: "",
+
+  const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
+    initialValues,
+    enableReinitialize: true,
+    validationSchema: productSchema,
+    async onSubmit(values, { setSubmitting }) {
+      try {
+        await product.update(id, values as Product);
+        router.push("/dashboard/products");
+      } catch (error) {
+        return alert("Error ocurred while updating product");
+      }
+      setSubmitting(false);
+    },
   });
 
-  const { values, handleSubmit, getFieldAttrs, selectOptions, isSubmitting } =
-    useCreateProduct({
-      initialSelectValue,
-      initialValues,
-      enableReinitialize: true,
-      validationSchema: productSchema,
-      async onSubmit(values, { setSubmitting }) {
-        const { error } = await updateProduct(values as Product);
-        alert(error);
-        setSubmitting(false);
-      },
-    });
-
   const handleDelete = async () => {
-    const { error } = await deleteProduct(values.id);
-    alert(error);
+    try {
+      await product.delete(id);
+      router.push("/dashboard/products");
+    } catch (error) {
+      return alert("Error ocurred while deleting product");
+    }
   };
 
-  const getProduct = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data } = await supabase
-      .from("products")
-      .select(`*, suppliers ( id, name )`)
-      .eq("id", id);
-
-    const { suppliers, ...product } = get(data, "[0]");
-
-    setInitialValues(product);
-    setInitialSelectValue({ value: suppliers?.id, label: suppliers?.name });
+  const fetchProduct = useCallback(async () => {
+    try {
+      const productValue = await product.get(id);
+      setInitialValues(productValue);
+    } catch (error) {
+      alert("Error fetching products");
+    }
   }, [id]);
 
   useEffect(() => {
-    getProduct();
-  }, [getProduct]);
+    fetchProduct();
+  }, [fetchProduct]);
 
-  const { suppliers, ...product } = initialValues;
-  const disableUpdate = isEqual(product, values) || isSubmitting;
-  
+  const { suppliers, ...initialProduct } = initialValues;
+  const disableUpdate = isEqual(initialProduct, values) || isSubmitting;
+
   return (
     <div>
-      <p className="text-3xl text-center mb-8">Create Product</p>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <p className="text-3xl text-center mb-8">Product</p>
+      <form
+        className="flex flex-col gap-4 bg-white p-3"
+        onSubmit={handleSubmit}
+      >
         <InputField {...getFieldAttrs("Name", "name")} />
         <InputField {...getFieldAttrs("Description", "description")} />
-        <AsyncSelectInput {...selectOptions} />
-        <div className="w-full flex gap-2">
-          <InputField
-            {...getFieldAttrs("Cost Price", "cost_price")}
-            type="number"
-          />
-          <InputField
-            {...getFieldAttrs("Selling Price", "selling_price")}
-            type="number"
-          />
-        </div>
-        <div className="w-full flex gap-2">
-          <InputField
-            {...getFieldAttrs("Stock", "stock_quantity")}
-            type="number"
-          />
-          <InputField
-            {...getFieldAttrs("Reorder Limit", "reorder_limit")}
-            type="number"
-          />
-        </div>
         <div className="flex gap-4">
-          <SecondaryButton className="w-fit" disabled={disableUpdate}>
+          <SecondaryButton
+            className="w-fit"
+            disabled={disableUpdate}
+            type="submit"
+          >
             Update
           </SecondaryButton>
           <SecondaryButton className="w-fit" onClick={handleDelete}>

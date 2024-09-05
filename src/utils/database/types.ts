@@ -7,6 +7,7 @@ export enum DB_TABLES {
   ORDER_ITEMS = "order_items",
   PRODUCTS = "products",
   SUPPLIERS = "suppliers",
+  INVENTORY = "inventory",
 }
 
 export enum ORDER_STATUS {
@@ -25,15 +26,24 @@ export type Supplier = {
 };
 
 export type Product = {
-  id?: string; // UUID
+  id: string; // UUID
   name: string; // varchar
   description: string; // text
-  cost_price: number; // decimal
-  selling_price: number; // decimal
-  stock_quantity: number; // number
-  reorder_limit: number; // number
-  supplier_id?: string; // UUID (foreign key from suppliers)
-  created_at?: string; // timestamp
+  created_at: string; // timestamp
+  suppliers?: Supplier;
+};
+
+export type Inventory = {
+  id: string; // UUID
+  cost: number; // DECIMAL
+  supplier_id: string; // UUID, foreign key to suppliers
+  product_id: string; // UUID, foreign key to products
+  stock_quantity: number; // INTEGER
+  reorder_limit: number; // INTEGER
+  supply_date: string; // TIMESTAMP WITH TIME ZONE
+  created_at: string; // TIMESTAMP WITH TIME ZONE
+  suppliers?: Supplier;
+  products?: Product;
 };
 
 export type Client = {
