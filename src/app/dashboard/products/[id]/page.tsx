@@ -63,12 +63,12 @@ const ProductInfoPage = () => {
   return (
     <div>
       <p className="text-3xl text-center mb-8">Product</p>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="w-full flex gap-2">
-          <InputField {...getFieldAttrs("Name", "name")} />
-          <InputField {...getFieldAttrs("Description", "description")} />
-        </div>
-        <InputField {...getFieldAttrs("Price", "price")} type="number" />
+      <form
+        className="flex flex-col gap-4 bg-white p-3"
+        onSubmit={handleSubmit}
+      >
+        <InputField {...getFieldAttrs("Name", "name")} />
+        <InputField {...getFieldAttrs("Description", "description")} />
         <div className="flex gap-4">
           <SecondaryButton
             className="w-fit"

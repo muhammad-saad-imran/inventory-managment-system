@@ -13,7 +13,6 @@ import useFormikForm from "@/utils/hooks/useFormikForm";
 const initialValues = {
   name: "",
   description: "",
-  price: 0,
 };
 
 const CreateProductPage = () => {
@@ -37,12 +36,9 @@ const CreateProductPage = () => {
   return (
     <div>
       <p className="text-3xl text-center mb-8">Create Product</p>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="w-full flex gap-2">
-          <InputField {...getFieldAttrs("Name", "name")} />
-          <InputField {...getFieldAttrs("Description", "description")} />
-        </div>
-        <InputField {...getFieldAttrs("Price", "price")} type="number" />
+      <form className="flex flex-col gap-4 bg-white p-3" onSubmit={handleSubmit}>
+        <InputField {...getFieldAttrs("Name", "name")} />
+        <InputField {...getFieldAttrs("Description", "description")} />
         <SecondaryButton className="w-fit" type="submit">
           Create
         </SecondaryButton>

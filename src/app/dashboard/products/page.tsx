@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ProductRepo } from "@/utils/database/ProductRepo";
 import { Product } from "@/utils/database/types";
-import { formatDate, formatPrice } from "@/utils/datetime";
+import { formatDate } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
 
 const product = new ProductRepo(createSupabaseClient());
@@ -15,7 +15,7 @@ const ProductPage = () => {
   const [data, setData] = useState<any[]>([]);
 
   const router = useRouter();
-  
+
   const filterProducts = data.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -44,7 +44,6 @@ const ProductPage = () => {
         <tr>
           <th className="py-5">Name</th>
           <th className="py-5">Description</th>
-          <th className="py-5">Price</th>
           <th className="py-5">Created At</th>
         </tr>
         {filterProducts.map((item: Product) => (
@@ -55,7 +54,6 @@ const ProductPage = () => {
           >
             <td className="py-5">{item.name}</td>
             <td className="py-5">{item.description}</td>
-            <td className="py-5">{formatPrice(item.price)}</td>
             <td className="py-5">
               {formatDate({ date: item.created_at, outputDate: "MMM D, YYYY" })}
             </td>

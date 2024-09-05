@@ -22,7 +22,6 @@ export type Product = {
   id: string; // UUID
   name: string; // varchar
   description: string; // text
-  price: number; // decimal
   created_at: string; // timestamp
   suppliers?: Supplier;
 };
