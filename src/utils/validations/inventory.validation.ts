@@ -1,5 +1,8 @@
 import * as Yup from "yup";
 
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
 export const inventorySchema = Yup.object({
   cost: Yup.number()
     .typeError("Cost must be a number")
@@ -25,4 +28,8 @@ export const inventorySchema = Yup.object({
     .integer("Reorder limit must be an integer")
     .min(0, "Reorder limit must be at least 0")
     .required("Reorder limit is required"),
+
+  supply_date: Yup.date()
+    .min(today, "Supply date cannot be in the past")
+    .required("Supply date is required"),
 });

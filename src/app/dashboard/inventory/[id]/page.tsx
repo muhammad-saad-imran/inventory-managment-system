@@ -10,6 +10,7 @@ import { inventorySchema } from "@/utils/validations/inventory.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import SelectInput from "@/components/common/SelectInput";
 import InputField from "@/components/common/InputField";
+import { formatDate } from "@/utils/datetime";
 
 const inventory = new InventoryRepo(createSupabaseClient());
 
@@ -39,7 +40,11 @@ const InventoryInfoPage = () => {
     enableReinitialize: true,
     async onSubmit(values, { setSubmitting }) {
       try {
-        await inventory.update(id, values as Inventory);
+        const supply_date = formatDate({
+          date: values.supply_date,
+          outputDate: "",
+        });
+        await inventory.update(id, { ...values, supply_date } as Inventory);
         router.push("/dashboard/inventory");
       } catch (error) {
         alert("Error creating new inventory");
@@ -64,8 +69,12 @@ const InventoryInfoPage = () => {
         id,
         "*, suppliers (*), products (*)"
       );
+      const supply_date = formatDate({
+        date: inventoryData.supply_date,
+        outputDate: "YYYY-MM-DD",
+      });
 
-      setInitialValues(inventoryData);
+      setInitialValues({ ...inventoryData, supply_date });
       setInitialSelectedProduct({
         label: products?.name!,
         value: products?.id!,
@@ -87,17 +96,23 @@ const InventoryInfoPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p className="text-3xl text-center">Create Repository</p>
+      <p className="text-3xl text-center">Create Inventory</p>
       <div className="flex flex-col gap-3 w-full bg-white mt-3 p-3">
         <div className="flex gap-4">
           <SelectInput {...selectProductAttrs} />
           <SelectInput {...selectSupplierAttrs} />
         </div>
-        <InputField
-          {...getFieldAttrs("Cost", "cost")}
-          type="number"
-          value={values.cost === 0 ? "" : values.cost}
-        />
+        <div className="flex gap-4">
+          <InputField
+            {...getFieldAttrs("Cost", "cost")}
+            type="number"
+            value={values.cost === 0 ? "" : values.cost}
+          />
+          <InputField
+            {...getFieldAttrs("Supply date", "supply_date")}
+            type="date"
+          />
+        </div>
         <div className="flex gap-4">
           <InputField
             {...getFieldAttrs("Stock", "stock_quantity")}

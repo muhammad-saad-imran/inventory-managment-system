@@ -33,6 +33,7 @@ export type Inventory = {
   product_id: string; // UUID, foreign key to products
   stock_quantity: number; // INTEGER
   reorder_limit: number; // INTEGER
+  supply_date: string; // TIMESTAMP WITH TIME ZONE
   created_at: string; // TIMESTAMP WITH TIME ZONE
   suppliers?: Supplier;
   products?: Product;

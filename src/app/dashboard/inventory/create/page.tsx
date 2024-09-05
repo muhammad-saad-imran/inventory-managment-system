@@ -18,6 +18,7 @@ const initialValues = {
   cost: 0,
   stock_quantity: 0,
   reorder_limit: 0,
+  supply_date: "",
 };
 
 const CreateInventoryPage = () => {
@@ -46,17 +47,23 @@ const CreateInventoryPage = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p className="text-3xl text-center">Create Repository</p>
+      <p className="text-3xl text-center">Create Inventory</p>
       <div className="flex flex-col gap-3 w-full bg-white mt-3 p-3">
         <div className="flex gap-4">
           <SelectInput {...selectProductAttrs} />
           <SelectInput {...selectSupplierAttrs} />
         </div>
-        <InputField
-          {...getFieldAttrs("Cost", "cost")}
-          type="number"
-          value={values.cost === 0 ? "" : values.cost}
-        />
+        <div className="flex gap-4">
+          <InputField
+            {...getFieldAttrs("Cost", "cost")}
+            type="number"
+            value={values.cost === 0 ? "" : values.cost}
+          />
+          <InputField
+            {...getFieldAttrs("Supply date", "supply_date")}
+            type="date"
+          />
+        </div>
         <div className="flex gap-4">
           <InputField
             {...getFieldAttrs("Stock", "stock_quantity")}
