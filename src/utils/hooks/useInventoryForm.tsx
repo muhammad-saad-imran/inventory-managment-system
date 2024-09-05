@@ -17,7 +17,7 @@ const product = new ProductRepo(createSupabaseClient());
 const loadSuppliers = async (input: string) => {
   try {
     const supplierData = await supplier.getWithName(input);
-    console.log({ supplierData });
+
     return supplierData.map((item) => ({
       label: item.name,
       value: item.id,
@@ -31,7 +31,7 @@ const loadSuppliers = async (input: string) => {
 const loadProducts = async (input: string) => {
   try {
     const productData = await product.getWithName(input);
-    console.log({ productData });
+
     return productData.map((item) => ({
       label: item.name,
       value: item.id,

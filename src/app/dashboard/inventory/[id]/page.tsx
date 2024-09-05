@@ -85,12 +85,6 @@ const InventoryInfoPage = () => {
     fetchInventory();
   }, [fetchInventory]);
 
-  console.log({
-    initialSelectedSupplier,
-    initialSelectedProduct,
-    initialValues,
-  });
-
   return (
     <form onSubmit={handleSubmit}>
       <p className="text-3xl text-center">Create Repository</p>

@@ -20,7 +20,6 @@ const InventoryPage = () => {
   const fetchInventory = useCallback(async (input: string) => {
     try {
       const inventoryData = await inventory.getWithProductName(input);
-      console.log({ inventoryData });
       setData(inventoryData);
     } catch (error) {
       alert("Error fetching inventory data");

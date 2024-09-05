@@ -25,7 +25,6 @@ const CreateProductPage = () => {
     validationSchema: productSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
-        console.log("create");
         await product.create(values as Product);
         router.push("/dashboard/products");
       } catch (error) {
