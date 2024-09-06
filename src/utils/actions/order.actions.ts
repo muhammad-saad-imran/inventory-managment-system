@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseClient } from "@/utils/supabase/server";
-import { DB_TABLES, Order, OrderItem } from "@/utils/supabase/types";
+import { DB_TABLES, Order, OrderItem } from "@/utils/database/types";
 
 const supabase = createSupabaseClient();
 

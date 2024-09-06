@@ -27,7 +27,6 @@ export abstract class GenericRepo<T> {
       .from(this.tableName)
       .select(include)
       .eq("id", id)
-      // .limit(1)
       .single();
 
     if (entity) {
@@ -42,7 +41,6 @@ export abstract class GenericRepo<T> {
       .from(this.tableName)
       .insert(insertValue)
       .select(include)
-      // .limit(1)
       .single();
 
     if (entity) {
@@ -52,13 +50,16 @@ export abstract class GenericRepo<T> {
     }
   }
 
-  async update(id: string, updateValue: T, include?: string): Promise<T> {
+  async update(
+    id: string,
+    updateValue: Partial<T>,
+    include?: string
+  ): Promise<T> {
     const { data: entity, error } = await this.supabase
       .from(this.tableName)
       .update(updateValue)
       .eq("id", id)
       .select(include)
-      // .limit(1)
       .single();
 
     if (entity) {
@@ -68,7 +69,7 @@ export abstract class GenericRepo<T> {
     }
   }
 
-  async delete(id: string, include?: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     const { error } = await this.supabase
       .from(this.tableName)
       .delete()

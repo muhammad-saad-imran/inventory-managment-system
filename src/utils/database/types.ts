@@ -8,6 +8,7 @@ export enum DB_TABLES {
   PRODUCTS = "products",
   SUPPLIERS = "suppliers",
   INVENTORY = "inventory",
+  INVENTORY_PRODUCTS_VIEW = "product_inventory_view",
 }
 
 export enum ORDER_STATUS {
@@ -67,11 +68,11 @@ export type Order = {
 export type OrderItem = {
   id: string; // UUID
   order_id: string; // UUID (foreign key from orders)
-  product_id: string; // UUID (foreign key from products)
+  inventory_id: string; // UUID (foreign key from products)
   quantity: number; // integer
   price: number; // decimal
   created_at: string; // timestamp
-  products?: Product;
+  inventory?: Inventory;
 };
 
 export type Invoice = {

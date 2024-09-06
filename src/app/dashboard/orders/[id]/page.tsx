@@ -4,46 +4,40 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { reduce } from "lodash";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import { Client, DB_TABLES, Order, OrderItem } from "@/utils/supabase/types";
+import { Order } from "@/utils/database/types";
+import { OrderRepo } from "@/utils/database/OrderRepo";
 import { formatPrice } from "@/utils/datetime";
 import { SecondaryButton } from "@/elements/buttons";
 import AddProductBar from "@/components/order/AddProductBar";
 import OrderInfo from "@/components/order/OrderInfo";
 
+const order = new OrderRepo(createSupabaseClient());
+
 const OrderInfoPage = () => {
   const { id } = useParams<{ id: string }>();
 
-  const [order, setOrder] = useState<Order>();
-  const [client, setClient] = useState<Client>();
-  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [orderData, setOrderData] = useState<Order>();
 
   const fetchOrder = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const {
-      data: { clients, order_items, ...order },
-    } = await supabase
-      .from(DB_TABLES.ORDERS)
-      .select(`*, order_items (*, products (*)), clients (*)`)
-      .eq("id", id)
-      .limit(1)
-      .single();
-
-    setOrder(order);
-    setClient(clients);
-    setOrderItems(order_items);
+    try {
+      const fetchedOrder = await order.get(
+        id,
+        `*, order_items (*, inventory (*, products (*))), clients (*)`
+      );
+      setOrderData(fetchedOrder);
+    } catch (error) {
+      alert("Error ocurred fetching order");
+    }
   }, [id]);
 
-  // const handleDelete = async (id: string) => {
-  //   const { success, error } = await deleteOrderItem(id);
+  const clientData = orderData?.clients;
+  const orderItemsData = orderData?.order_items;
 
-  //   if (success) {
-  //     fetchOrder();
-  //   } else {
-  //     alert(error);
-  //   }
-  // };
-
-  const totalPrice = reduce(orderItems, (total, item) => total + item.price, 0);
+  const totalPrice = reduce(
+    orderItemsData,
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   useEffect(() => {
     fetchOrder();
@@ -52,7 +46,11 @@ const OrderInfoPage = () => {
   return (
     <div>
       <p className="text-3xl text-center">Order</p>
-      <OrderInfo client={client} order={order} refetch={fetchOrder} />
+      <OrderInfo
+        clientData={clientData}
+        orderData={orderData}
+        setOrderData={setOrderData}
+      />
       <AddProductBar refetch={fetchOrder} />
       <table className="w-full bg-white mt-3 p-3 text-center">
         <thead>
@@ -63,12 +61,12 @@ const OrderInfoPage = () => {
           </tr>
         </thead>
         <tbody>
-          {orderItems.map((item) => (
+          {orderItemsData?.map((item) => (
             <tr key={item.id} className="border-t border-b">
               <td className="py-5 w-1/3">
                 <div className="flex justify-center px-3">
                   <img className="cursor-pointer" src="/cross.svg" alt="" />
-                  <p className="mx-auto">{item.products?.name}</p>
+                  <p className="mx-auto">{item.inventory?.products?.name}</p>
                 </div>
               </td>
               <td className="py-5 w-1/3">
@@ -78,7 +76,9 @@ const OrderInfoPage = () => {
                   <SecondaryButton>-</SecondaryButton>
                 </div>
               </td>
-              <td className="py-5 w-1/3">{formatPrice(item.price)}</td>
+              <td className="py-5 w-1/3">
+                {formatPrice(item.price * item.quantity)}
+              </td>
             </tr>
           ))}
           <tr className="border-t border-b">

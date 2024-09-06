@@ -1,35 +1,40 @@
 import React, { useState } from "react";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { Client, DB_TABLES, Order } from "@/utils/supabase/types";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { createOrder } from "@/utils/actions/order.actions";
+import { createSupabaseClient } from "@/utils/supabase/client";
+import { Client, Order } from "@/utils/database/types";
+import { ClientRepo } from "@/utils/database/ClientRepo";
+import { OrderRepo } from "@/utils/database/OrderRepo";
 import { formatDate } from "@/utils/datetime";
 import { orderSchema } from "@/utils/validations/order.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import AsyncSelectInput from "@/components/common/AsyncSelectInput";
 import InputField from "@/components/common/InputField";
 
+type Props = {
+  refetch: () => void;
+};
+
 type Option = {
   value: "";
   label: "";
 };
 
-const loadOptions = async (input: string) => {
-  const supabase = createSupabaseClient();
-  const { data: clients } = await supabase
-    .from(DB_TABLES.CLIENTS)
-    .select()
-    .ilike("name", `%${input}%`);
+const client = new ClientRepo(createSupabaseClient());
+const order = new OrderRepo(createSupabaseClient());
 
-  return clients
-    ? clients.map(({ id, name }: Client) => ({
-        value: id,
-        label: name,
-      }))
-    : [];
+const loadOptions = async (input: string) => {
+  try {
+    const clients = await client.getWithName(input);
+    return clients.map(({ id, name }: Client) => ({
+      value: id,
+      label: name,
+    }));
+  } catch (error) {
+    return [];
+  }
 };
 
-const CreateOrderBar = () => {
+const CreateOrderBar = ({ refetch }: Props) => {
   const [selectedClient, setSelectedClient] = useState<Option>();
 
   const { errors, touched, setFieldValue, getFieldAttrs, handleSubmit } =
@@ -37,12 +42,20 @@ const CreateOrderBar = () => {
       initialValues: { client_id: "", order_date: "" },
       validationSchema: orderSchema,
       async onSubmit(values, { setSubmitting }) {
-        const order_date = formatDate({
-          date: values.order_date,
-          outputDate: "",
-        });
-        const { error } = await createOrder({ ...values, order_date } as Order);
-        alert(error);
+        try {
+          const newOrder = {
+            ...values,
+            order_date: formatDate({
+              date: values.order_date,
+              outputDate: "",
+            }),
+          } as Order;
+
+          await order.create(newOrder);
+          await refetch();
+        } catch (error) {
+          alert("Error occurred while creating order");
+        }
         setSubmitting(false);
       },
     });
@@ -51,7 +64,8 @@ const CreateOrderBar = () => {
     loadOptions,
     label: "Client",
     value: selectedClient as any,
-    errors: errors["client_id"] as string,
+    error: errors["client_id"] as string,
+    touched: touched["client_id"] as boolean,
     onChange: (newOption: Option) => {
       setSelectedClient(newOption);
       setFieldValue("client_id", newOption.value);

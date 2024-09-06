@@ -1,20 +1,16 @@
 "use client";
 
-<<<<<<< HEAD
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { debounce } from "lodash";
 import { createSupabaseClient } from "@/utils/supabase/client";
-import { DB_TABLES, Order } from "@/utils/supabase/types";
+import { Order } from "@/utils/database/types";
+import { OrderRepo } from "@/utils/database/OrderRepo";
 import { formatDate } from "@/utils/datetime";
 import OrderSearchBar from "@/components/order/OrderSearchBar";
 import CreateOrderBar from "@/components/order/CreateOrderBar";
-=======
-import React, { useState } from "react";
-import { formatDate, formatPrice } from "@/utils/datetime";
-import { Order } from "@/utils/database/types";
-import orders from "@/config/orders.json";
-import SearchBar from "@/components/dashboard/SearchBar";
->>>>>>> feature/inventory
+
+const order = new OrderRepo(createSupabaseClient());
 
 const OrderPage = () => {
   const [search, setSearch] = useState("");
@@ -22,28 +18,26 @@ const OrderPage = () => {
 
   const router = useRouter();
 
-  const filterProducts = data.filter((item) =>
-    item.clients?.name.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const getOrders = useCallback(async () => {
-    const supabase = createSupabaseClient();
-    const { data: orders } = await supabase
-      .from(DB_TABLES.ORDERS)
-      .select(`*, clients (id, name)`)
-      .order("order_date", { ascending: false });
-
-    if (orders) setData(orders);
+  const fetchOrders = useCallback(async (clientName: string) => {
+    try {
+      const allOrders = await order.getWithClientName(clientName);
+      setData(allOrders);
+    } catch (error) {
+      setData([]);
+      alert("Error ocurred while fetching order");
+    }
   }, []);
 
+  const debounceFetch = useCallback(debounce(fetchOrders, 1000), [fetchOrders]);
+
   useEffect(() => {
-    getOrders();
-  }, [getOrders]);
+    debounceFetch(search);
+  }, [debounceFetch, search]);
 
   return (
     <div className="flex flex-col gap-3">
       <OrderSearchBar label="Orders" search={search} setSearch={setSearch} />
-      <CreateOrderBar />
+      <CreateOrderBar refetch={() => fetchOrders("")} />
       <table className="w-full bg-white">
         <thead>
           <tr>
@@ -54,7 +48,7 @@ const OrderPage = () => {
           </tr>
         </thead>
         <tbody>
-          {filterProducts.map((item: Order) => (
+          {data.map((item) => (
             <tr
               key={item.id}
               className="text-center hover:bg-black/[0.05] cursor-pointer"
