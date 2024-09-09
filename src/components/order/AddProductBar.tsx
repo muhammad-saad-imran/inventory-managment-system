@@ -7,7 +7,7 @@ import { Inventory, OrderItem } from "@/utils/database/types";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { OrderItemService } from "@/utils/services/OrderItemService";
 import { orderItemSchema } from "@/utils/validations/order.validation";
-import { formatPrice } from "@/utils/datetime";
+import { formatDate, formatPrice } from "@/utils/datetime";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 import AsyncSelectInput from "@/components/common/AsyncSelectInput";
@@ -23,7 +23,10 @@ const loadProducts = async (input: string) => {
   try {
     const data = await inventory.getWithProductName(input);
     return data.map((item) => ({
-      label: `${item.products?.name} (${item.suppliers?.name})`,
+      label: `${item.products?.name} (${item.suppliers?.name}) - ${formatDate({
+        date: item.supply_date,
+        outputDate: "DD MMM, YYYY",
+      })}`,
       value: item.id,
       ...item,
     }));
