@@ -32,7 +32,9 @@ const OrderPage = () => {
 
   useEffect(() => {
     debounceFetch(search);
-  }, [debounceFetch, search]);
+    // Cleanup: cancel the debounced function when dependencies change or on unmount
+    return () => debounceFetch.cancel();
+  }, [search, debounceFetch]);
 
   return (
     <div className="flex flex-col gap-3">

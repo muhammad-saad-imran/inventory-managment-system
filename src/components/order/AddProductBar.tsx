@@ -110,18 +110,20 @@ const AddProductBar = ({ refetch }: Props) => {
       </div>
       <div className="flex gap-4 w-full mt-3">
         <InputField {...getFieldAttrs("Quantity", "quantity")} type="number" />
-        <InputField
-          label="Total Price"
-          value={formatPrice(values.price * values.quantity || 0)}
-          disabled
-        />
-        <SecondaryButton
-          className="h-9 self-end"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          Add
-        </SecondaryButton>
+        <div className="w-full flex gap-4">
+          <InputField
+            label="Total Price"
+            value={formatPrice(values.price * values.quantity || 0)}
+            disabled
+          />
+          <SecondaryButton
+            className="h-9 self-end"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            Add
+          </SecondaryButton>
+        </div>
       </div>
     </form>
   );

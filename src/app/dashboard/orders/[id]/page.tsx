@@ -2,16 +2,19 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { reduce } from "lodash";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Order } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";
+import { OrderItemService } from "@/utils/services/OrderItemService";
 import { formatPrice } from "@/utils/datetime";
 import { SecondaryButton } from "@/elements/buttons";
 import AddProductBar from "@/components/order/AddProductBar";
 import OrderInfo from "@/components/order/OrderInfo";
 
 const order = new OrderRepo(createSupabaseClient());
+const orderItemService = new OrderItemService(createSupabaseClient());
 
 const OrderInfoPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +32,33 @@ const OrderInfoPage = () => {
       alert("Error ocurred fetching order");
     }
   }, [id]);
+
+  const handleIncrement = async (id: string) => {
+    try {
+      await orderItemService.incrementQuantity(id);
+      await fetchOrder();
+    } catch (error) {
+      alert("Error occured while incrementing order item quantity");
+    }
+  };
+
+  const handleDecrement = async (id: string) => {
+    try {
+      await orderItemService.decrementQuantity(id);
+      await fetchOrder();
+    } catch (error) {
+      alert("Error occured while decrementing order item quantity");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await orderItemService.delete(id);
+      await fetchOrder();
+    } catch (error) {
+      alert("Error occured while deleting order item");
+    }
+  };
 
   const clientData = orderData?.clients;
   const orderItemsData = orderData?.order_items;
@@ -65,15 +95,26 @@ const OrderInfoPage = () => {
             <tr key={item.id} className="border-t border-b">
               <td className="py-5 w-1/3">
                 <div className="flex justify-center px-3">
-                  <img className="cursor-pointer" src="/cross.svg" alt="" />
+                  <Image
+                    className="cursor-pointer"
+                    src="/cross.svg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    onClick={() => handleDelete(item.id)}
+                  />
                   <p className="mx-auto">{item.inventory?.products?.name}</p>
                 </div>
               </td>
               <td className="py-5 w-1/3">
                 <div className="flex gap-2 justify-center items-center">
                   {item.quantity}
-                  <SecondaryButton>+</SecondaryButton>
-                  <SecondaryButton>-</SecondaryButton>
+                  <SecondaryButton onClick={() => handleIncrement(item.id)}>
+                    +
+                  </SecondaryButton>
+                  <SecondaryButton onClick={() => handleDecrement(item.id)}>
+                    -
+                  </SecondaryButton>
                 </div>
               </td>
               <td className="py-5 w-1/3">

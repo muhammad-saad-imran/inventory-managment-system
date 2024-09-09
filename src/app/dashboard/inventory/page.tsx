@@ -32,6 +32,7 @@ const InventoryPage = () => {
 
   useEffect(() => {
     debouncedFetch(search);
+    return () => debouncedFetch.cancel();
   }, [debouncedFetch, search]);
 
   return (
