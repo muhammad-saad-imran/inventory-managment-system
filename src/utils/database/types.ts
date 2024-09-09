@@ -31,7 +31,6 @@ export type Product = {
   name: string; // varchar
   description: string; // text
   created_at: string; // timestamp
-  suppliers?: Supplier;
 };
 
 export type Inventory = {
