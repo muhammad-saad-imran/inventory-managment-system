@@ -37,7 +37,7 @@ const OrderInfoPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   const handleIncrement = async (id: string) => {
     try {

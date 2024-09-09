@@ -62,7 +62,7 @@ const SupplierInfoPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchSupplier();

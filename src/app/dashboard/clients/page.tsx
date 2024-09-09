@@ -35,7 +35,7 @@ const ClientsPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchClients();

@@ -33,7 +33,7 @@ const SupplierPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     fetchSuppliers();

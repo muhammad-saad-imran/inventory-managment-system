@@ -98,7 +98,7 @@ const InventoryInfoPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchInventory();

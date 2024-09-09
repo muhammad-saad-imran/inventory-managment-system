@@ -30,7 +30,7 @@ const InventoryPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, []);
+  }, [dispatch]);
 
   const debouncedFetch = useCallback(debounce(fetchInventory, 2000), [
     fetchInventory,

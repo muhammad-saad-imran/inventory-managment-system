@@ -37,7 +37,7 @@ const ProductPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     getProducts();

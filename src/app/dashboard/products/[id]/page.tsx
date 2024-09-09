@@ -62,7 +62,7 @@ const ProductInfoPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchProduct();

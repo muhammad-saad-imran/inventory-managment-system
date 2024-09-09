@@ -32,7 +32,7 @@ const OrderPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, []);
+  }, [dispatch]);
 
   const debounceFetch = useCallback(debounce(fetchOrders, 1000), [fetchOrders]);
 

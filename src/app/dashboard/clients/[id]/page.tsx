@@ -62,7 +62,7 @@ const ClientInfoPage = () => {
     } finally {
       dispatch(completeLoading());
     }
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     fetchClient();
