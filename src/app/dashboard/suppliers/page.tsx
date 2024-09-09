@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { Supplier } from "@/utils/database/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { SupplierRepo } from "@/utils/database/SupplierRepo";
@@ -15,6 +17,7 @@ const SupplierPage = () => {
   const [search, setSearch] = useState("");
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const filterProducts = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
@@ -22,10 +25,13 @@ const SupplierPage = () => {
 
   const fetchSuppliers = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const supplierData = await supplier.getAll();
       setData(supplierData);
     } catch (error) {
       alert("Error while fetching suppliers");
+    } finally {
+      dispatch(completeLoading());
     }
   }, []);
 

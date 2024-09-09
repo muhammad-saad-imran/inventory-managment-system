@@ -3,6 +3,8 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { Supplier } from "@/utils/database/types";
 import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { createSupabaseClient } from "@/utils/supabase/client";
@@ -18,6 +20,7 @@ const initialValues = {
 
 const CreateSupplierPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const supplier = new SupplierRepo(createSupabaseClient());
 
   const { handleSubmit, getFieldAttrs } = useFormikForm({
@@ -25,12 +28,15 @@ const CreateSupplierPage = () => {
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         const supplierData = await supplier.create(values as Supplier);
         router.push("/dashboard/suppliers");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error while creating supplier");
+      } finally {
+        setSubmitting(false);
       }
-      setSubmitting(false);
     },
   });
 

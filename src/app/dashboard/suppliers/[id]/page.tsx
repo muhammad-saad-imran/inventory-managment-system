@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { get, isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Supplier } from "@/utils/database/types";
 import { SupplierRepo } from "@/utils/database/SupplierRepo";
@@ -16,6 +18,7 @@ const supplier = new SupplierRepo(createSupabaseClient());
 
 const SupplierInfoPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
@@ -25,31 +28,39 @@ const SupplierInfoPage = () => {
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         const supplierData = await supplier.update(id, values as Supplier);
         setInitialValues(supplierData);
         router.push("/dashboard/suppliers");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error while updating supplier");
+      } finally {
+        setSubmitting(false);
       }
-      setSubmitting(false);
     },
   });
 
   const handleDelete = async () => {
     try {
+      dispatch(startLoading());
       await supplier.delete(id);
       router.push("/dashboard/suppliers");
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error while deleting supplier");
     }
   };
 
   const fetchSupplier = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const supplierData = await supplier.get(id);
       setInitialValues(supplierData);
     } catch (error) {
       alert("Error while fetching supplier");
+    } finally {
+      dispatch(completeLoading());
     }
   }, [id]);
 

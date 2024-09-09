@@ -28,9 +28,6 @@ const Sidebar = () => {
         <Link className="w-full" href="/dashboard/orders">
           <Button className="w-full">Orders</Button>
         </Link>
-        <Link className="w-full" href="/dashboard/invoices">
-          <Button className="w-full">Invoices</Button>
-        </Link>
         <Button className="w-full" formAction={signout}>
           Signout
         </Button>

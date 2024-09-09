@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { debounce } from "lodash";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { Inventory } from "@/utils/database/types";
@@ -13,16 +15,20 @@ const inventory = new InventoryRepo(createSupabaseClient());
 
 const InventoryPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [search, setSearch] = useState("");
   const [data, setData] = useState<Inventory[]>([]);
 
   const fetchInventory = useCallback(async (input: string) => {
     try {
+      dispatch(startLoading());
       const inventoryData = await inventory.getWithProductName(input);
       setData(inventoryData);
     } catch (error) {
       alert("Error fetching inventory data");
+    } finally {
+      dispatch(completeLoading());
     }
   }, []);
 

@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useInventoryForm from "@/utils/hooks/useInventoryForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { Inventory, Product, Supplier } from "@/utils/database/types";
@@ -16,6 +18,7 @@ const inventory = new InventoryRepo(createSupabaseClient());
 
 const InventoryInfoPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
   const [initialValues, setInitialValues] = useState({});
@@ -44,9 +47,11 @@ const InventoryInfoPage = () => {
           date: values.supply_date,
           outputDate: "",
         });
+        dispatch(startLoading());
         await inventory.update(id, { ...values, supply_date } as Inventory);
         router.push("/dashboard/inventory");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error creating new inventory");
       } finally {
         setSubmitting(false);
@@ -56,15 +61,18 @@ const InventoryInfoPage = () => {
 
   const handleDelete = async () => {
     try {
+      dispatch(startLoading());
       await inventory.delete(id);
       router.push("/dashboard/inventory");
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error deleting new inventory");
     }
   };
 
   const fetchInventory = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const { suppliers, products, ...inventoryData } = await inventory.get(
         id,
         "*, suppliers (*), products (*)"
@@ -87,6 +95,8 @@ const InventoryInfoPage = () => {
       });
     } catch (error) {
       alert("Error occured fetching inventory record");
+    } finally {
+      dispatch(completeLoading());
     }
   }, [id]);
 

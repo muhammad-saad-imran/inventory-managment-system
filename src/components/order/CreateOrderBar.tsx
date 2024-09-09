@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Client, Order } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";
@@ -37,6 +39,8 @@ const loadOptions = async (input: string) => {
 const CreateOrderBar = ({ refetch }: Props) => {
   const [selectedClient, setSelectedClient] = useState<Option>();
 
+  const dispatch = useAppDispatch();
+
   const { errors, touched, setFieldValue, getFieldAttrs, handleSubmit } =
     useFormikForm({
       initialValues: { client_id: "", order_date: "" },
@@ -51,9 +55,11 @@ const CreateOrderBar = ({ refetch }: Props) => {
             }),
           } as Order;
 
+          dispatch(startLoading());
           await order.create(newOrder);
           await refetch();
         } catch (error) {
+          dispatch(completeLoading());
           alert("Error occurred while creating order");
         }
         setSubmitting(false);

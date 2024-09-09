@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { formatDate } from "@/utils/datetime";
 import { Client } from "@/utils/database/types";
@@ -15,6 +17,7 @@ const ClientsPage = () => {
   const [data, setData] = useState<Client[]>([]);
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const filterProducts = data.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
@@ -22,12 +25,15 @@ const ClientsPage = () => {
 
   const fetchClients = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const data = await client.getAll();
       if (data) {
         setData(data);
       }
     } catch (error) {
       alert("Error fetching clients");
+    } finally {
+      dispatch(completeLoading());
     }
   }, []);
 

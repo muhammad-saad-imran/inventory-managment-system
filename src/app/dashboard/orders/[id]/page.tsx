@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { reduce } from "lodash";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Order } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";
@@ -18,11 +20,13 @@ const orderItemService = new OrderItemService(createSupabaseClient());
 
 const OrderInfoPage = () => {
   const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
 
   const [orderData, setOrderData] = useState<Order>();
 
   const fetchOrder = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const fetchedOrder = await order.get(
         id,
         `*, order_items (*, inventory (*, products (*))), clients (*)`
@@ -30,32 +34,40 @@ const OrderInfoPage = () => {
       setOrderData(fetchedOrder);
     } catch (error) {
       alert("Error ocurred fetching order");
+    } finally {
+      dispatch(completeLoading());
     }
   }, [id]);
 
   const handleIncrement = async (id: string) => {
     try {
+      dispatch(startLoading());
       await orderItemService.incrementQuantity(id);
       await fetchOrder();
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error occured while incrementing order item quantity");
     }
   };
 
   const handleDecrement = async (id: string) => {
     try {
+      dispatch(startLoading());
       await orderItemService.decrementQuantity(id);
       await fetchOrder();
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error occured while decrementing order item quantity");
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
+      dispatch(startLoading());
       await orderItemService.delete(id);
       await fetchOrder();
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error occured while deleting order item");
     }
   };

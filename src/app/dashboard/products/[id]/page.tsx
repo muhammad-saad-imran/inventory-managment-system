@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { isEqual } from "lodash";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Product } from "@/utils/database/types";
 import { ProductRepo } from "@/utils/database/ProductRepo";
@@ -17,6 +19,7 @@ const product = new ProductRepo(createSupabaseClient());
 const ProductInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
 
@@ -26,30 +29,38 @@ const ProductInfoPage = () => {
     validationSchema: productSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         await product.update(id, values as Product);
         router.push("/dashboard/products");
       } catch (error) {
         return alert("Error ocurred while updating product");
+      } finally {
+        setSubmitting(false);
+        dispatch(completeLoading());
       }
-      setSubmitting(false);
     },
   });
 
   const handleDelete = async () => {
     try {
+      dispatch(startLoading());
       await product.delete(id);
       router.push("/dashboard/products");
     } catch (error) {
+      dispatch(completeLoading());
       return alert("Error ocurred while deleting product");
     }
   };
 
   const fetchProduct = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const productValue = await product.get(id);
       setInitialValues(productValue);
     } catch (error) {
       alert("Error fetching products");
+    } finally {
+      dispatch(completeLoading());
     }
   }, [id]);
 

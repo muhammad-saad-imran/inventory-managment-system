@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Client, Order, ORDER_STATUS } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";
@@ -21,6 +23,7 @@ const orderStatusOptions = Object.values(ORDER_STATUS).map((status) => ({
 }));
 
 const OrderInfo = ({ orderData, clientData, setOrderData }: Props) => {
+  const dispatch = useAppDispatch();
   const [selectedStatus, setSelectedStatus] = useState(orderData?.status);
 
   const orderDate = formatDate({
@@ -30,6 +33,7 @@ const OrderInfo = ({ orderData, clientData, setOrderData }: Props) => {
 
   const handleUpdate = async () => {
     try {
+      dispatch(startLoading());
       const updatedOrder = await order.update(
         orderData?.id!,
         {
@@ -40,6 +44,8 @@ const OrderInfo = ({ orderData, clientData, setOrderData }: Props) => {
       setOrderData(updatedOrder);
     } catch (error) {
       alert("Error ocurred while updating");
+    } finally {
+      dispatch(completeLoading());
     }
   };
 

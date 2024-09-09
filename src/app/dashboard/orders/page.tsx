@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { debounce } from "lodash";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Order } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";
@@ -17,14 +19,18 @@ const OrderPage = () => {
   const [data, setData] = useState<Order[]>([]);
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const fetchOrders = useCallback(async (clientName: string) => {
     try {
+      dispatch(startLoading());
       const allOrders = await order.getWithClientName(clientName);
       setData(allOrders);
     } catch (error) {
       setData([]);
       alert("Error ocurred while fetching order");
+    } finally {
+      dispatch(completeLoading());
     }
   }, []);
 
@@ -39,7 +45,7 @@ const OrderPage = () => {
   return (
     <div className="flex flex-col gap-3">
       <OrderSearchBar label="Orders" search={search} setSearch={setSearch} />
-      <CreateOrderBar refetch={() => fetchOrders("")} />
+      <CreateOrderBar refetch={() => fetchOrders(search)} />
       <table className="w-full bg-white">
         <thead>
           <tr>
@@ -54,7 +60,10 @@ const OrderPage = () => {
             <tr
               key={item.id}
               className="text-center hover:bg-black/[0.05] cursor-pointer"
-              onClick={() => router.push(`/dashboard/orders/${item.id}`)}
+              onClick={() => {
+                dispatch(startLoading());
+                router.push(`/dashboard/orders/${item.id}`);
+              }}
             >
               <td className="py-5 w-1/4">{item.id}</td>
               <td className="py-5 w-1/4">{item.clients?.name}</td>

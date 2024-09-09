@@ -2,6 +2,8 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import { Client } from "@/utils/database/types";
@@ -18,6 +20,7 @@ const initialValues = {
 
 const CreateClientPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const client = new ClientRepo(createSupabaseClient());
 
   const { handleSubmit, getFieldAttrs } = useFormikForm({
@@ -25,9 +28,11 @@ const CreateClientPage = () => {
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         await client.create(values as Client);
         router.push("/dashboard/clients");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error updating client");
       }
       setSubmitting(false);

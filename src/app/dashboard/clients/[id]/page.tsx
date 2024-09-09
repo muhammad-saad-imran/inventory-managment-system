@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { Client } from "@/utils/database/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ClientRepo } from "@/utils/database/ClientRepo";
@@ -16,6 +18,7 @@ const client = new ClientRepo(createSupabaseClient());
 
 const ClientInfoPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
   const [initialValues, setInitialValues] = useState<FormikValues>({});
@@ -25,31 +28,39 @@ const ClientInfoPage = () => {
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         const clientData = await client.update(values.id, values as Client);
         setInitialValues(clientData);
         router.push("/dashboard/clients");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error updating client");
+      } finally {
+        setSubmitting(false);
       }
-      setSubmitting(false);
     },
   });
 
   const handleDelete = async () => {
     try {
+      dispatch(startLoading());
       await client.delete(values.id);
       router.push("/dashboard/clients");
     } catch (error) {
+      dispatch(completeLoading());
       alert("Error deleting client");
     }
   };
 
   const fetchClient = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const clientData = await client.get(id);
       setInitialValues(clientData);
     } catch (error) {
       alert("Error fetching clients");
+    } finally {
+      dispatch(completeLoading());
     }
   }, [id]);
 

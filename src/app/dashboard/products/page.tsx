@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ProductRepo } from "@/utils/database/ProductRepo";
 import { Product } from "@/utils/database/types";
@@ -15,6 +17,7 @@ const ProductPage = () => {
   const [data, setData] = useState<any[]>([]);
 
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const filterProducts = data.filter(
     (item) =>
@@ -24,12 +27,15 @@ const ProductPage = () => {
 
   const getProducts = useCallback(async () => {
     try {
+      dispatch(startLoading());
       const data = await product.getAll();
       if (data) {
         setData(data);
       }
     } catch (error) {
       alert("Error fetching products");
+    } finally {
+      dispatch(completeLoading());
     }
   }, []);
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { round, get } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Inventory, OrderItem } from "@/utils/database/types";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
@@ -37,6 +39,7 @@ const loadProducts = async (input: string) => {
 
 const AddProductBar = ({ refetch }: Props) => {
   const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
 
   const [cost, setCost] = useState(0);
   const [selectedInventory, setSelectedInventory] = useState<
@@ -56,6 +59,7 @@ const AddProductBar = ({ refetch }: Props) => {
     validationSchema: orderItemSchema,
     async onSubmit(values, { setFieldError, setSubmitting, resetForm }) {
       try {
+        dispatch(startLoading());
         if (values.quantity > get(selectedInventory, "stock_quantity", 0)) {
           setFieldError(
             "quantity",
@@ -72,6 +76,7 @@ const AddProductBar = ({ refetch }: Props) => {
         setSelectedInventory(null);
         resetForm();
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error occured while adding order item");
       }
     },

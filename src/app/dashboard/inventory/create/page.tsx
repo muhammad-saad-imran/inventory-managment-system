@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import useInventoryForm from "@/utils/hooks/useInventoryForm";
+import { useAppDispatch } from "@/store/hooks";
+import { completeLoading, startLoading } from "@/store/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { Inventory } from "@/utils/database/types";
@@ -23,6 +25,7 @@ const initialValues = {
 
 const CreateInventoryPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const {
     values,
@@ -35,9 +38,11 @@ const CreateInventoryPage = () => {
     validationSchema: inventorySchema,
     async onSubmit(values, { setSubmitting }) {
       try {
+        dispatch(startLoading());
         await inventory.create(values as Inventory);
         router.push("/dashboard/inventory");
       } catch (error) {
+        dispatch(completeLoading());
         alert("Error creating new inventory");
       } finally {
         setSubmitting(false);
