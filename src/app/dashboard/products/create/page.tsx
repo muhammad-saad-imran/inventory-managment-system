@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { Product } from "@/utils/database/types";
 import { productSchema } from "@/utils/validations/product.validation";
 import { ProductRepo } from "@/utils/database/ProductRepo";

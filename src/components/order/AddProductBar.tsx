@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { round, get } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Inventory, OrderItem } from "@/utils/database/types";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";

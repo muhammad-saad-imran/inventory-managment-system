@@ -1,4 +1,4 @@
-import LoadingSlice from "@/store/LoadingSlice";
+import LoadingSlice from "@/store/features/loading/LoadingSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const makeStore = () => {

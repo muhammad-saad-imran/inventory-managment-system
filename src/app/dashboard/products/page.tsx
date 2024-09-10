@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ProductRepo } from "@/utils/database/ProductRepo";
 import { Product } from "@/utils/database/types";

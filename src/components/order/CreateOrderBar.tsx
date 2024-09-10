@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Client, Order } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";

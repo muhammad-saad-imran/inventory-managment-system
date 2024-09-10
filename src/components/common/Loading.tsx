@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { useAppSelector } from "@/store/hooks";
-import { LOADING_STATES, selectLoadingStatus } from "@/store/LoadingSlice";
+import { LOADING_STATES, selectLoadingStatus } from "@/store/features/loading/LoadingSlice";
 import { usePathname } from "next/navigation";
 
 const Loader = () => {

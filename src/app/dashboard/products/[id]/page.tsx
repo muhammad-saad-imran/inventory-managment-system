@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { isEqual } from "lodash";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Product } from "@/utils/database/types";
 import { ProductRepo } from "@/utils/database/ProductRepo";

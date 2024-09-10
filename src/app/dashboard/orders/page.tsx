@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { debounce } from "lodash";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Order } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";

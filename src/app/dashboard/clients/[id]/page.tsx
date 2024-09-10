@@ -6,7 +6,7 @@ import { FormikValues } from "formik";
 import { isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
 import { Client } from "@/utils/database/types";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ClientRepo } from "@/utils/database/ClientRepo";
