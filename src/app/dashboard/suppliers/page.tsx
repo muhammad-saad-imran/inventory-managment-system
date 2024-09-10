@@ -2,42 +2,30 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { debounce } from "lodash";
+import { getAllSupplier } from "@/store/features/suppliers/thunk";
+import { selectAllSuppliers } from "@/store/features/suppliers";
 import { Supplier } from "@/utils/database/types";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { formatDate } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
 
-const supplier = new SupplierRepo(createSupabaseClient());
-
 const SupplierPage = () => {
-  const [data, setData] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const filterProducts = data.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  const allSupplier = useAppSelector(selectAllSuppliers);
+
+  const debouncedGetAllSupplier = useCallback(
+    debounce((search: string) => dispatch(getAllSupplier(search)), 1000),
+    [dispatch]
   );
 
-  const fetchSuppliers = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const supplierData = await supplier.getAll();
-      setData(supplierData);
-    } catch (error) {
-      alert("Error while fetching suppliers");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [dispatch]);
-
   useEffect(() => {
-    fetchSuppliers();
-  }, [fetchSuppliers]);
+    debouncedGetAllSupplier(search);
+  }, [debouncedGetAllSupplier, search]);
 
   return (
     <div>
@@ -49,7 +37,7 @@ const SupplierPage = () => {
           <th className="py-5">Phone</th>
           <th className="py-5">Created At</th>
         </tr>
-        {filterProducts.map((item: Supplier) => (
+        {allSupplier.map((item: Supplier) => (
           <tr
             key={item.id}
             className="text-center hover:bg-black/[0.05] cursor-pointer"

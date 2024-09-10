@@ -4,10 +4,8 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
+import { createSupplier } from "@/store/features/suppliers/thunk";
 import { Supplier } from "@/utils/database/types";
-import { SupplierRepo } from "@/utils/database/SupplierRepo";
-import { createSupabaseClient } from "@/utils/supabase/client";
 import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
@@ -21,22 +19,15 @@ const initialValues = {
 const CreateSupplierPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const supplier = new SupplierRepo(createSupabaseClient());
 
   const { handleSubmit, getFieldAttrs } = useFormikForm({
     initialValues,
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        const supplierData = await supplier.create(values as Supplier);
-        router.push("/dashboard/suppliers");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error while creating supplier");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(createSupplier(values as Supplier))
+        .unwrap()
+        .then(() => router.push("/dashboard/suppliers"))
+        .finally(() => setSubmitting(false));
     },
   });
 

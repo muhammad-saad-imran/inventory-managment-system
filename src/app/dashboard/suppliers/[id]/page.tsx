@@ -1,74 +1,50 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { FormikValues } from "formik";
-import { get, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectSupplier } from "@/store/features/suppliers";
+import {
+  deleteSupplier,
+  getSupplier,
+  updateSupplier,
+} from "@/store/features/suppliers/thunk";
 import { Supplier } from "@/utils/database/types";
-import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { supplierSchema } from "@/utils/validations/supplier.validtion";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-
-const supplier = new SupplierRepo(createSupabaseClient());
 
 const SupplierInfoPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const [initialValues, setInitialValues] = useState<FormikValues>({});
+  const supplierData = useAppSelector(selectSupplier);
+
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
-    initialValues,
+    initialValues: supplierData,
     enableReinitialize: true,
     validationSchema: supplierSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        const supplierData = await supplier.update(id, values as Supplier);
-        setInitialValues(supplierData);
-        router.push("/dashboard/suppliers");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error while updating supplier");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(updateSupplier({ id, ...values } as Supplier))
+        .unwrap()
+        .finally(() => setSubmitting(false));
     },
   });
 
   const handleDelete = async () => {
-    try {
-      dispatch(startLoading());
-      await supplier.delete(id);
-      router.push("/dashboard/suppliers");
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while deleting supplier");
-    }
+    await dispatch(deleteSupplier(id))
+      .unwrap()
+      .then(() => router.push("/dashboard/suppliers"));
   };
 
-  const fetchSupplier = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const supplierData = await supplier.get(id);
-      setInitialValues(supplierData);
-    } catch (error) {
-      alert("Error while fetching supplier");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [id, dispatch]);
-
   useEffect(() => {
-    fetchSupplier();
-  }, [fetchSupplier]);
+    dispatch(getSupplier(id));
+  }, [dispatch, id]);
 
-  const disableUpdate = isEqual(values, initialValues) || isSubmitting;
+  const disableUpdate = isEqual(values, supplierData) || isSubmitting;
 
   return (
     <div>

@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
 import { Supplier } from "@/utils/database/types";
+import {
+  getAllSupplier,
+  getSupplier,
+  updateSupplier,
+} from "@/store/features/suppliers/thunk";
 
 interface SupplierState {
   supplier: Supplier;
@@ -38,22 +43,22 @@ const SupplierSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(getAllProducts.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.allProducts = action.payload;
-    //     }
-    //   })
-    //   .addCase(getProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   })
-    //   .addCase(updateProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   });
+    builder
+      .addCase(getAllSupplier.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.allSuppliers = action.payload;
+        }
+      })
+      .addCase(getSupplier.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.supplier = action.payload;
+        }
+      })
+      .addCase(updateSupplier.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.supplier = action.payload;
+        }
+      });
   },
 });
 
