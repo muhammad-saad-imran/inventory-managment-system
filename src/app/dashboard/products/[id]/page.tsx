@@ -1,75 +1,51 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { FormikValues } from "formik";
 import { isEqual } from "lodash";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
-import { createSupabaseClient } from "@/utils/supabase/client";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectProduct } from "@/store/features/products";
+import {
+  deleteProduct,
+  getProduct,
+  updateProduct,
+} from "@/store/features/products/thunk";
 import { Product } from "@/utils/database/types";
-import { ProductRepo } from "@/utils/database/ProductRepo";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { productSchema } from "@/utils/validations/product.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-
-const product = new ProductRepo(createSupabaseClient());
 
 const ProductInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const [initialValues, setInitialValues] = useState<FormikValues>({});
+  const productValue = useAppSelector(selectProduct);
 
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
-    initialValues,
+    initialValues: productValue,
     enableReinitialize: true,
     validationSchema: productSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        await product.update(id, values as Product);
-        router.push("/dashboard/products");
-      } catch (error) {
-        return alert("Error ocurred while updating product");
-      } finally {
-        setSubmitting(false);
-        dispatch(completeLoading());
-      }
+      await dispatch(updateProduct({ id, ...values } as Product))
+        .unwrap()
+        .finally(() => setSubmitting(false));
     },
   });
 
   const handleDelete = async () => {
-    try {
-      dispatch(startLoading());
-      await product.delete(id);
-      router.push("/dashboard/products");
-    } catch (error) {
-      dispatch(completeLoading());
-      return alert("Error ocurred while deleting product");
-    }
+    await dispatch(deleteProduct(id))
+      .unwrap()
+      .then(() => router.push("/dashboard/products"));
   };
 
-  const fetchProduct = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const productValue = await product.get(id);
-      setInitialValues(productValue);
-    } catch (error) {
-      alert("Error fetching products");
-    } finally {
-      dispatch(completeLoading());
-    }
+  useEffect(() => {
+    dispatch(getProduct(id));
   }, [id, dispatch]);
 
-  useEffect(() => {
-    fetchProduct();
-  }, [fetchProduct]);
-
-  const { suppliers, ...initialProduct } = initialValues;
-  const disableUpdate = isEqual(initialProduct, values) || isSubmitting;
+  const disableUpdate = isEqual(productValue, values) || isSubmitting;
 
   return (
     <div>
@@ -88,7 +64,11 @@ const ProductInfoPage = () => {
           >
             Update
           </SecondaryButton>
-          <SecondaryButton className="w-fit" onClick={handleDelete}>
+          <SecondaryButton
+            className="w-fit"
+            onClick={handleDelete}
+            type="button"
+          >
             Delete
           </SecondaryButton>
         </div>

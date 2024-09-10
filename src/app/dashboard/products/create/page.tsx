@@ -4,11 +4,9 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { createProduct } from "@/store/features/products/thunk";
 import { Product } from "@/utils/database/types";
 import { productSchema } from "@/utils/validations/product.validation";
-import { ProductRepo } from "@/utils/database/ProductRepo";
-import { createSupabaseClient } from "@/utils/supabase/client";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
@@ -20,22 +18,15 @@ const initialValues = {
 const CreateProductPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const product = new ProductRepo(createSupabaseClient());
 
   const { handleSubmit, getFieldAttrs } = useFormikForm({
     initialValues,
     validationSchema: productSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        await product.create(values as Product);
-        router.push("/dashboard/products");
-      } catch (error) {
-        dispatch(completeLoading());
-        return alert("Error ocurred while updating product");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(createProduct(values as Product))
+        .unwrap()
+        .then(() => router.push("/dashboard/products"))
+        .finally(() => setSubmitting(false));
     },
   });
 

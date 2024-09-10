@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useFormik } from "formik";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { login } from "@/utils/actions/auth.actions";
 import { loginSchema } from "@/utils/validations/auth.validation";
 import { FlexContainer } from "@/elements/containers";

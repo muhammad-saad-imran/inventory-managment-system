@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import { Client } from "@/utils/database/types";

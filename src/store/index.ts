@@ -1,10 +1,12 @@
-import LoadingSlice from "@/store/features/loading/LoadingSlice";
 import { configureStore } from "@reduxjs/toolkit";
+import LoadingSlice from "@/store/features/loading";
+import productSlice from "@/store/features/products"
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       loading: LoadingSlice,
+      product: productSlice
     },
   });
 };

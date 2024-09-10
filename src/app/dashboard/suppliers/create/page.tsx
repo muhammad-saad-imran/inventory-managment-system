@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { Supplier } from "@/utils/database/types";
 import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import { createSupabaseClient } from "@/utils/supabase/client";

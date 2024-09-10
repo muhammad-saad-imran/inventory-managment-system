@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useInventoryForm from "@/utils/hooks/useInventoryForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { Inventory, Product, Supplier } from "@/utils/database/types";

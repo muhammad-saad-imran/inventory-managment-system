@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Client, Order, ORDER_STATUS } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";

@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { reduce } from "lodash";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading/LoadingSlice";
+import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { Order } from "@/utils/database/types";
 import { OrderRepo } from "@/utils/database/OrderRepo";
