@@ -62,6 +62,5 @@ const OrderSlice = createSlice({
 export const { setAllOrders, setOrder } = OrderSlice.actions;
 export default OrderSlice.reducer;
 
-export const selectInventory = (state: RootState) => state.inventory.inventory;
-export const selectAllInventories = (state: RootState) =>
-  state.inventory.allInventories;
+export const selectOrder = (state: RootState) => state.order.order;
+export const selectAllOrders = (state: RootState) => state.order.allOrders;
