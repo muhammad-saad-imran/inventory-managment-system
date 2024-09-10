@@ -2,44 +2,29 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
+import { debounce } from "lodash";
+import { selectAllClients } from "@/store/features/clients";
+import { getAllClient } from "@/store/features/clients/thunk";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { formatDate } from "@/utils/datetime";
-import { Client } from "@/utils/database/types";
-import { ClientRepo } from "@/utils/database/ClientRepo";
 import SearchBar from "@/components/dashboard/SearchBar";
-
-const client = new ClientRepo(createSupabaseClient());
 
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState<Client[]>([]);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const filterProducts = data.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
+  const allClients = useAppSelector(selectAllClients);
+
+  const debouncedGetAllClients = useCallback(
+    debounce((search: string) => dispatch(getAllClient(search)), 1000),
+    [dispatch]
   );
 
-  const fetchClients = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const data = await client.getAll();
-      if (data) {
-        setData(data);
-      }
-    } catch (error) {
-      alert("Error fetching clients");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [dispatch]);
-
   useEffect(() => {
-    fetchClients();
-  }, [fetchClients]);
+    debouncedGetAllClients(search);
+  }, [debouncedGetAllClients, search]);
 
   return (
     <div>
@@ -54,7 +39,7 @@ const ClientsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {filterProducts.map((item) => (
+          {allClients.map((item) => (
             <tr
               key={item.id}
               className="text-center hover:bg-black/[0.05] cursor-pointer"

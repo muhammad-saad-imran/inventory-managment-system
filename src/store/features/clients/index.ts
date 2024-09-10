@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
 import { Client } from "@/utils/database/types";
+import {
+  getAllClient,
+  getClient,
+  updateClient,
+} from "@/store/features/clients/thunk";
 
 interface ClientState {
   client: Client;
@@ -38,22 +43,22 @@ const ClientSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(getAllProducts.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.allProducts = action.payload;
-    //     }
-    //   })
-    //   .addCase(getProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   })
-    //   .addCase(updateProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   });
+    builder
+      .addCase(getAllClient.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.allClients = action.payload;
+        }
+      })
+      .addCase(getClient.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.client = action.payload;
+        }
+      })
+      .addCase(updateClient.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.client = action.payload;
+        }
+      });
   },
 });
 

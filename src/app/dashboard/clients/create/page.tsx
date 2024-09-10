@@ -3,12 +3,10 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { ClientRepo } from "@/utils/database/ClientRepo";
-import { Client } from "@/utils/database/types";
-import { clientSchema } from "@/utils/validations/client.validation";
 import useFormikForm from "@/utils/hooks/useFormikForm";
+import { Client } from "@/utils/database/types";
+import { createClient } from "@/store/features/clients/thunk";
+import { clientSchema } from "@/utils/validations/client.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 
@@ -21,21 +19,15 @@ const initialValues = {
 const CreateClientPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const client = new ClientRepo(createSupabaseClient());
 
   const { handleSubmit, getFieldAttrs } = useFormikForm({
     initialValues,
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        await client.create(values as Client);
-        router.push("/dashboard/clients");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error updating client");
-      }
-      setSubmitting(false);
+      await dispatch(createClient(values as Client))
+        .unwrap()
+        .then(() => router.push("/dashboard/clients"))
+        .finally(() => setSubmitting(false));
     },
   });
 

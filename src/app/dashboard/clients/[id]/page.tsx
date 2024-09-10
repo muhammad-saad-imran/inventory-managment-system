@@ -1,74 +1,50 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { FormikValues } from "formik";
 import { isEqual } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  deleteClient,
+  getClient,
+  updateClient,
+} from "@/store/features/clients/thunk";
+import { selectClient } from "@/store/features/clients";
 import { Client } from "@/utils/database/types";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { ClientRepo } from "@/utils/database/ClientRepo";
 import { clientSchema } from "@/utils/validations/client.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-
-const client = new ClientRepo(createSupabaseClient());
 
 const ClientInfoPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const [initialValues, setInitialValues] = useState<FormikValues>({});
+  const initialClient = useAppSelector(selectClient);
+
   const { values, handleSubmit, getFieldAttrs, isSubmitting } = useFormikForm({
-    initialValues,
+    initialValues: initialClient,
     enableReinitialize: true,
     validationSchema: clientSchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        const clientData = await client.update(values.id, values as Client);
-        setInitialValues(clientData);
-        router.push("/dashboard/clients");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error updating client");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(updateClient({ id, ...values } as Client))
+        .unwrap()
+        .finally(() => setSubmitting(false));
     },
   });
 
   const handleDelete = async () => {
-    try {
-      dispatch(startLoading());
-      await client.delete(values.id);
-      router.push("/dashboard/clients");
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error deleting client");
-    }
+    await dispatch(deleteClient(id))
+      .unwrap()
+      .then(() => router.push("/dashboard/clients"));
   };
 
-  const fetchClient = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const clientData = await client.get(id);
-      setInitialValues(clientData);
-    } catch (error) {
-      alert("Error fetching clients");
-    } finally {
-      dispatch(completeLoading());
-    }
+  useEffect(() => {
+    dispatch(getClient(id));
   }, [id, dispatch]);
 
-  useEffect(() => {
-    fetchClient();
-  }, [fetchClient]);
-
-  const disableUpdate = isEqual(initialValues, values) || isSubmitting;
+  const disableUpdate = isEqual(initialClient, values) || isSubmitting;
 
   return (
     <div>
