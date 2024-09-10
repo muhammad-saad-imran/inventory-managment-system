@@ -1,12 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import LoadingSlice from "@/store/features/loading";
-import productSlice from "@/store/features/products"
+import loadingSlice from "@/store/features/loading";
+import productSlice from "@/store/features/products";
+import supplierSlice from "@/store/features/suppliers";
+import clientSlice from "@/store/features/clients";
+import inventorySlice from "@/store/features/inventory";
+import orderSlice from "@/store/features/orders";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      loading: LoadingSlice,
-      product: productSlice
+      loading: loadingSlice,
+      product: productSlice,
+      supplier: supplierSlice,
+      client: clientSlice,
+      inventory: inventorySlice,
+      order: orderSlice,
     },
   });
 };
