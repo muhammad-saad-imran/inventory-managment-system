@@ -3,41 +3,16 @@ import { useParams } from "next/navigation";
 import { round, get } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
+import { createAndFetchOrderItems } from "@/store/features/orders/thunk";
+import { getAllInventory } from "@/store/features/inventory/thunk";
 import { Inventory, OrderItem } from "@/utils/database/types";
-import { InventoryRepo } from "@/utils/database/InventoryRepo";
-import { OrderItemService } from "@/utils/services/OrderItemService";
 import { orderItemSchema } from "@/utils/validations/order.validation";
 import { formatDate, formatPrice } from "@/utils/datetime";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 import AsyncSelectInput from "@/components/common/AsyncSelectInput";
 
-type Props = {
-  refetch: () => void;
-};
-
-const inventory = new InventoryRepo(createSupabaseClient());
-const orderitemService = new OrderItemService(createSupabaseClient());
-
-const loadProducts = async (input: string) => {
-  try {
-    const data = await inventory.getWithProductName(input);
-    return data.map((item) => ({
-      label: `${item.products?.name} (${item.suppliers?.name}) - ${formatDate({
-        date: item.supply_date,
-        outputDate: "DD MMM, YYYY",
-      })}`,
-      value: item.id,
-      ...item,
-    }));
-  } catch (error) {
-    return [];
-  }
-};
-
-const AddProductBar = ({ refetch }: Props) => {
+const AddProductBar = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
@@ -58,29 +33,45 @@ const AddProductBar = ({ refetch }: Props) => {
     initialValues: { order_id: id, inventory_id: "", quantity: 0, price: 0 },
     validationSchema: orderItemSchema,
     async onSubmit(values, { setFieldError, setSubmitting, resetForm }) {
-      try {
-        dispatch(startLoading());
-        if (values.quantity > get(selectedInventory, "stock_quantity", 0)) {
-          setFieldError(
-            "quantity",
-            `Quantity should be less than stock available`
-          );
-          return;
-        }
-
-        await orderitemService.create(values as OrderItem);
-
-        refetch();
-        setSubmitting(false);
-        setCost(0);
-        setSelectedInventory(null);
-        resetForm();
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error occured while adding order item");
+      if (values.quantity > get(selectedInventory, "stock_quantity", 0)) {
+        setFieldError(
+          "quantity",
+          `Quantity should be less than stock available`
+        );
+        return;
       }
+
+      await createAndFetchOrderItems(id, values as OrderItem, dispatch)
+        .then(() => {
+          setCost(0);
+          setSelectedInventory(null);
+          resetForm();
+        })
+        .finally(() => setSubmitting(false));
     },
   });
+
+  const loadProducts = async (input: string) => {
+    try {
+      const data = await dispatch(getAllInventory(input)).unwrap();
+      return data
+        ? data.map((item) => ({
+            // format label as - `product (supplier) - supply-date`
+            label: `${item.products?.name} (${
+              item.suppliers?.name
+            }) - ${formatDate({
+              date: item.supply_date,
+              outputDate: "DD MMM, YYYY",
+            })}`,
+
+            value: item.id,
+            ...item,
+          }))
+        : [];
+    } catch (error) {
+      return [];
+    }
+  };
 
   const selectAttrs = {
     label: "Inventory",

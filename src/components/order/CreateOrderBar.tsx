@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
+import {
+  createAndFetchOrders,
+  createOrder,
+} from "@/store/features/orders/thunk";
+import { getAllClient } from "@/store/features/clients/thunk";
 import { Client, Order } from "@/utils/database/types";
-import { ClientRepo } from "@/utils/database/ClientRepo";
-import { OrderRepo } from "@/utils/database/OrderRepo";
-import { formatDate } from "@/utils/datetime";
 import { orderSchema } from "@/utils/validations/order.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import AsyncSelectInput from "@/components/common/AsyncSelectInput";
 import InputField from "@/components/common/InputField";
 
 type Props = {
-  refetch: () => void;
+  search: string;
 };
 
 type Option = {
@@ -21,22 +21,7 @@ type Option = {
   label: "";
 };
 
-const client = new ClientRepo(createSupabaseClient());
-const order = new OrderRepo(createSupabaseClient());
-
-const loadOptions = async (input: string) => {
-  try {
-    const clients = await client.getWithName(input);
-    return clients.map(({ id, name }: Client) => ({
-      value: id,
-      label: name,
-    }));
-  } catch (error) {
-    return [];
-  }
-};
-
-const CreateOrderBar = ({ refetch }: Props) => {
+const CreateOrderBar = ({ search }: Props) => {
   const [selectedClient, setSelectedClient] = useState<Option>();
 
   const dispatch = useAppDispatch();
@@ -46,25 +31,25 @@ const CreateOrderBar = ({ refetch }: Props) => {
       initialValues: { client_id: "", order_date: "" },
       validationSchema: orderSchema,
       async onSubmit(values, { setSubmitting }) {
-        try {
-          const newOrder = {
-            ...values,
-            order_date: formatDate({
-              date: values.order_date,
-              outputDate: "",
-            }),
-          } as Order;
-
-          dispatch(startLoading());
-          await order.create(newOrder);
-          await refetch();
-        } catch (error) {
-          dispatch(completeLoading());
-          alert("Error occurred while creating order");
-        }
-        setSubmitting(false);
+        await createAndFetchOrders(search, values as Order, dispatch).finally(
+          () => setSubmitting(false)
+        );
       },
     });
+
+  const loadOptions = async (input: string) => {
+    try {
+      const clients = await dispatch(getAllClient(input)).unwrap();
+      return clients
+        ? clients.map(({ id, name }: Client) => ({
+            value: id,
+            label: name,
+          }))
+        : [];
+    } catch (error) {
+      return [];
+    }
+  };
 
   const selectOptions = {
     loadOptions,

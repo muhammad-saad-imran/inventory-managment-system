@@ -5,11 +5,25 @@ import { OrderItemRepo } from "@/utils/database/OrderItem";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 
 export class OrderItemService extends GenericService<OrderItem> {
+  orderItem: OrderItemRepo;
   inventory: InventoryRepo;
 
   constructor(_client: SupabaseClient) {
     super(new OrderItemRepo(_client));
+    this.orderItem = new OrderItemRepo(_client);
     this.inventory = new InventoryRepo(_client);
+  }
+
+  override async getAll(
+    orderId?: string,
+    include?: string
+  ): Promise<OrderItem[]> {
+    try {
+      const orderItems = await this.orderItem.getAll(orderId, include);
+      return orderItems;
+    } catch (error) {
+      throw error;
+    }
   }
 
   override async create(

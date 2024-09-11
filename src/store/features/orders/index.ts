@@ -1,6 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
 import { Order, ORDER_STATUS } from "@/utils/database/types";
+import {
+  decrementOrderItem,
+  deleteOrderItem,
+  getAllOrderItem,
+  getAllOrders,
+  getOrder,
+  incrementOrderItem,
+  updateOrder,
+} from "@/store/features/orders/thunk";
 
 interface OrderState {
   order: Order;
@@ -40,22 +49,31 @@ const OrderSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(getAllProducts.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.allProducts = action.payload;
-    //     }
-    //   })
-    //   .addCase(getProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   })
-    //   .addCase(updateProduct.fulfilled, (state, action) => {
-    //     if (action.payload) {
-    //       state.product = action.payload;
-    //     }
-    //   });
+    builder
+      .addCase(getAllOrders.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.allOrders = action.payload;
+        }
+      })
+      .addMatcher(
+        isAnyOf(getOrder.fulfilled, updateOrder.fulfilled),
+        (state, action) => {
+          if (action.payload) {
+            state.order = action.payload;
+          }
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          getAllOrderItem.fulfilled,
+          incrementOrderItem.fulfilled,
+          decrementOrderItem.fulfilled,
+          deleteOrderItem.fulfilled
+        ),
+        (state, action) => {
+          if (action.payload) state.order.order_items = [...action.payload];
+        }
+      );
   },
 });
 

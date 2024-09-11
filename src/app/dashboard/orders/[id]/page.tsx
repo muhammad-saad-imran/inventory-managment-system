@@ -1,75 +1,38 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { reduce } from "lodash";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { Order } from "@/utils/database/types";
-import { OrderRepo } from "@/utils/database/OrderRepo";
-import { OrderItemService } from "@/utils/services/OrderItemService";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectOrder } from "@/store/features/orders";
+import {
+  decrementOrderItem,
+  deleteOrderItem,
+  getOrder,
+  incrementOrderItem,
+} from "@/store/features/orders/thunk";
 import { formatPrice } from "@/utils/datetime";
 import { SecondaryButton } from "@/elements/buttons";
 import AddProductBar from "@/components/order/AddProductBar";
 import OrderInfo from "@/components/order/OrderInfo";
 
-const order = new OrderRepo(createSupabaseClient());
-const orderItemService = new OrderItemService(createSupabaseClient());
-
 const OrderInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
-  const [orderData, setOrderData] = useState<Order>();
-
-  const fetchOrder = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const fetchedOrder = await order.get(
-        id,
-        `*, order_items (*, inventory (*, products (*))), clients (*)`
-      );
-      setOrderData(fetchedOrder);
-    } catch (error) {
-      alert("Error ocurred fetching order");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [id, dispatch]);
+  const orderData = useAppSelector(selectOrder);
 
   const handleIncrement = async (id: string) => {
-    try {
-      dispatch(startLoading());
-      await orderItemService.incrementQuantity(id);
-      await fetchOrder();
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error occured while incrementing order item quantity");
-    }
+    await dispatch(incrementOrderItem(id)).unwrap();
   };
 
   const handleDecrement = async (id: string) => {
-    try {
-      dispatch(startLoading());
-      await orderItemService.decrementQuantity(id);
-      await fetchOrder();
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error occured while decrementing order item quantity");
-    }
+    await dispatch(decrementOrderItem(id)).unwrap();
   };
 
   const handleDelete = async (id: string) => {
-    try {
-      dispatch(startLoading());
-      await orderItemService.delete(id);
-      await fetchOrder();
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error occured while deleting order item");
-    }
+    await dispatch(deleteOrderItem(id)).unwrap();
   };
 
   const clientData = orderData?.clients;
@@ -82,18 +45,14 @@ const OrderInfoPage = () => {
   );
 
   useEffect(() => {
-    fetchOrder();
-  }, [fetchOrder]);
+    dispatch(getOrder(id));
+  }, [dispatch, id]);
 
   return (
     <div>
       <p className="text-3xl text-center">Order</p>
-      <OrderInfo
-        clientData={clientData}
-        orderData={orderData}
-        setOrderData={setOrderData}
-      />
-      <AddProductBar refetch={fetchOrder} />
+      <OrderInfo clientData={clientData} orderData={orderData} />
+      <AddProductBar />
       <table className="w-full bg-white mt-3 p-3 text-center">
         <thead>
           <tr>

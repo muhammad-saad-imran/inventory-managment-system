@@ -16,6 +16,6 @@ export class OrderRepo extends GenericRepo<Order> {
 
     if (error) throw error;
 
-    return allOrders;
+    return allOrders as Order[];
   }
 }

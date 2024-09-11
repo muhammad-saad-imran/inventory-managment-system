@@ -8,21 +8,19 @@ import { formatDate } from "@/utils/datetime";
 import { Select } from "@/elements/inputs";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
+import { updateOrder } from "@/store/features/orders/thunk";
 
 type Props = {
   orderData?: Order;
   clientData?: Client;
-  setOrderData: (_orderData: Order) => void;
 };
-
-const order = new OrderRepo(createSupabaseClient());
 
 const orderStatusOptions = Object.values(ORDER_STATUS).map((status) => ({
   label: status.charAt(0) + status.slice(1).toLowerCase(),
   value: status,
 }));
 
-const OrderInfo = ({ orderData, clientData, setOrderData }: Props) => {
+const OrderInfo = ({ orderData, clientData }: Props) => {
   const dispatch = useAppDispatch();
   const [selectedStatus, setSelectedStatus] = useState(orderData?.status);
 
@@ -32,21 +30,12 @@ const OrderInfo = ({ orderData, clientData, setOrderData }: Props) => {
   });
 
   const handleUpdate = async () => {
-    try {
-      dispatch(startLoading());
-      const updatedOrder = await order.update(
-        orderData?.id!,
-        {
-          status: selectedStatus!,
-        },
-        `*, order_items (*, inventory (*)), clients (*)`
-      );
-      setOrderData(updatedOrder);
-    } catch (error) {
-      alert("Error ocurred while updating");
-    } finally {
-      dispatch(completeLoading());
-    }
+    await dispatch(
+      updateOrder({
+        id: orderData?.id!,
+        status: selectedStatus!,
+      } as Order)
+    );
   };
 
   useEffect(() => {
