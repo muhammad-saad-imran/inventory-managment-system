@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
 import { Client, Order, ORDER_STATUS } from "@/utils/database/types";
-import { OrderRepo } from "@/utils/database/OrderRepo";
+import { updateOrder } from "@/store/features/orders/thunk";
 import { formatDate } from "@/utils/datetime";
 import { Select } from "@/elements/inputs";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
-import { updateOrder } from "@/store/features/orders/thunk";
 
 type Props = {
   orderData?: Order;

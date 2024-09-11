@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import { debounce } from "lodash";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { startLoading } from "@/store/features/loading";
+import { selectAllOrders } from "@/store/features/orders";
 import { getAllOrders } from "@/store/features/orders/thunk";
-import { Order } from "@/utils/database/types";
 import { formatDate } from "@/utils/datetime";
 import OrderSearchBar from "@/components/order/OrderSearchBar";
 import CreateOrderBar from "@/components/order/CreateOrderBar";
-import { selectAllOrders } from "@/store/features/orders";
 
 const OrderPage = () => {
   const [search, setSearch] = useState("");
