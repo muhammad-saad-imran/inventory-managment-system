@@ -1,62 +1,56 @@
-import { useEffect, useState } from "react";
 import { FormikConfig, FormikValues } from "formik";
 import useFormikForm from "@/utils/hooks/useFormikForm";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { ProductRepo } from "@/utils/database/ProductRepo";
-import { SupplierRepo } from "@/utils/database/SupplierRepo";
-import { Product, Supplier } from "@/utils/database/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  selectSelectedProduct,
+  selectSelectedSupplier,
+  setSelectedProduct,
+  setSelectedSupplier,
+} from "@/store/features/inventory";
+import { getAllProducts } from "@/store/features/products/thunk";
+import { getAllSupplier } from "@/store/features/suppliers/thunk";
 
-type Props = FormikConfig<FormikValues> & {
-  initialSelectedProduct?: Product & { label: string };
-  initialSelectedSupplier?: Supplier & { label: string };
-};
+const useInventoryForm = (formikConfig: FormikConfig<FormikValues>) => {
+  const dispatch = useAppDispatch();
 
-const supplier = new SupplierRepo(createSupabaseClient());
-const product = new ProductRepo(createSupabaseClient());
-
-const loadSuppliers = async (input: string) => {
-  try {
-    const supplierData = await supplier.getWithName(input);
-
-    return supplierData.map((item) => ({
-      label: item.name,
-      value: item.id,
-      ...item,
-    }));
-  } catch (error) {
-    return [];
-  }
-};
-
-const loadProducts = async (input: string) => {
-  try {
-    const productData = await product.getWithName(input);
-
-    return productData.map((item) => ({
-      label: item.name,
-      value: item.id,
-      ...item,
-    }));
-  } catch (error) {
-    return [];
-  }
-};
-
-const useInventoryForm = ({
-  initialSelectedProduct,
-  initialSelectedSupplier,
-  ...formikConfig
-}: Props) => {
-  const [selectedProduct, setSelectedProduct] = useState(
-    initialSelectedProduct
-  );
-  const [selectedSupplier, setSelectedSupplier] = useState(
-    initialSelectedSupplier
-  );
+  const selectedProduct = useAppSelector(selectSelectedProduct);
+  const selectedSupplier = useAppSelector(selectSelectedSupplier);
 
   const formik = useFormikForm(formikConfig);
 
   const { errors, touched, setFieldValue } = formik;
+
+  const loadProducts = async (input: string) => {
+    try {
+      const productData = await dispatch(getAllProducts(input)).unwrap();
+
+      return productData
+        ? productData.map((item) => ({
+            label: item.name,
+            value: item.id,
+            ...item,
+          }))
+        : [];
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const loadSuppliers = async (input: string) => {
+    try {
+      const supplierData = await dispatch(getAllSupplier(input)).unwrap();
+
+      return supplierData
+        ? supplierData.map((item) => ({
+            label: item.name,
+            value: item.id,
+            ...item,
+          }))
+        : [];
+    } catch (error) {
+      return [];
+    }
+  };
 
   const selectProductAttrs = {
     label: "Product",
@@ -65,7 +59,7 @@ const useInventoryForm = ({
     touched: touched.product_id as boolean,
     loadOptions: loadProducts,
     onChange(newOption: any) {
-      setSelectedProduct(newOption);
+      dispatch(setSelectedProduct(newOption));
       setFieldValue("product_id", newOption.id);
     },
   };
@@ -77,18 +71,10 @@ const useInventoryForm = ({
     touched: touched.supplier_id as boolean,
     loadOptions: loadSuppliers,
     onChange(newOption: any) {
-      setSelectedSupplier(newOption);
+      dispatch(setSelectedSupplier(newOption));
       setFieldValue("supplier_id", newOption.id);
     },
   };
-
-  useEffect(() => {
-    setSelectedProduct(initialSelectedProduct);
-  }, [initialSelectedProduct]);
-
-  useEffect(() => {
-    setSelectedSupplier(initialSelectedSupplier);
-  }, [initialSelectedSupplier]);
 
   return {
     ...formik,

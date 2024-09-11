@@ -3,38 +3,24 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { debounce } from "lodash";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { InventoryRepo } from "@/utils/database/InventoryRepo";
-import { Inventory } from "@/utils/database/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectAllInventories } from "@/store/features/inventory";
+import { getAllInventory } from "@/store/features/inventory/thunk";
 import { formatPrice } from "@/utils/datetime";
 import SearchBar from "@/components/dashboard/SearchBar";
-
-const inventory = new InventoryRepo(createSupabaseClient());
 
 const InventoryPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const [search, setSearch] = useState("");
-  const [data, setData] = useState<Inventory[]>([]);
 
-  const fetchInventory = useCallback(async (input: string) => {
-    try {
-      dispatch(startLoading());
-      const inventoryData = await inventory.getWithProductName(input);
-      setData(inventoryData);
-    } catch (error) {
-      alert("Error fetching inventory data");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [dispatch]);
+  const allInventory = useAppSelector(selectAllInventories)
 
-  const debouncedFetch = useCallback(debounce(fetchInventory, 2000), [
-    fetchInventory,
-  ]);
+  const debouncedFetch = useCallback(
+    debounce((input: string) => dispatch(getAllInventory(input)), 1000),
+    [dispatch]
+  );
 
   useEffect(() => {
     debouncedFetch(search);
@@ -54,7 +40,7 @@ const InventoryPage = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {allInventory.map((item) => (
             <tr
               key={item.id}
               className="hover:bg-black/[0.05] cursor-pointer"

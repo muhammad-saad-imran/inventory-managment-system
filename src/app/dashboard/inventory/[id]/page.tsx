@@ -1,33 +1,27 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useInventoryForm from "@/utils/hooks/useInventoryForm";
-import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { InventoryRepo } from "@/utils/database/InventoryRepo";
-import { Inventory, Product, Supplier } from "@/utils/database/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { selectInventory } from "@/store/features/inventory";
+import {
+  deleteInventory,
+  getInventory,
+  updateInventory,
+} from "@/store/features/inventory/thunk";
+import { Inventory } from "@/utils/database/types";
 import { inventorySchema } from "@/utils/validations/inventory.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import SelectInput from "@/components/common/AsyncSelectInput";
 import InputField from "@/components/common/InputField";
-import { formatDate } from "@/utils/datetime";
-
-const inventory = new InventoryRepo(createSupabaseClient());
 
 const InventoryInfoPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const [initialValues, setInitialValues] = useState({});
-  const [initialSelectedProduct, setInitialSelectedProduct] = useState<
-    Product & { label: string; value: string }
-  >();
-  const [initialSelectedSupplier, setInitialSelectedSupplier] = useState<
-    Supplier & { label: string; value: string }
-  >();
+  const inventoryData = useAppSelector(selectInventory);
 
   const {
     values,
@@ -36,73 +30,25 @@ const InventoryInfoPage = () => {
     handleSubmit,
     getFieldAttrs,
   } = useInventoryForm({
-    initialSelectedProduct,
-    initialSelectedSupplier,
-    initialValues,
+    initialValues: inventoryData,
     validationSchema: inventorySchema,
     enableReinitialize: true,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        const supply_date = formatDate({
-          date: values.supply_date,
-          outputDate: "",
-        });
-        dispatch(startLoading());
-        await inventory.update(id, { ...values, supply_date } as Inventory);
-        router.push("/dashboard/inventory");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error creating new inventory");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(updateInventory({ id, ...values } as Inventory)).finally(
+        () => setSubmitting(false)
+      );
     },
   });
 
   const handleDelete = async () => {
-    try {
-      dispatch(startLoading());
-      await inventory.delete(id);
-      router.push("/dashboard/inventory");
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error deleting new inventory");
-    }
+    await dispatch(deleteInventory(id))
+      .unwrap()
+      .then(() => router.push("/dashboard/inventory"));
   };
 
-  const fetchInventory = useCallback(async () => {
-    try {
-      dispatch(startLoading());
-      const { suppliers, products, ...inventoryData } = await inventory.get(
-        id,
-        "*, suppliers (*), products (*)"
-      );
-      const supply_date = formatDate({
-        date: inventoryData.supply_date,
-        outputDate: "YYYY-MM-DD",
-      });
-
-      setInitialValues({ ...inventoryData, supply_date });
-      setInitialSelectedProduct({
-        label: products?.name!,
-        value: products?.id!,
-        ...products!,
-      });
-      setInitialSelectedSupplier({
-        label: suppliers?.name!,
-        value: suppliers?.id!,
-        ...suppliers!,
-      });
-    } catch (error) {
-      alert("Error occured fetching inventory record");
-    } finally {
-      dispatch(completeLoading());
-    }
-  }, [id, dispatch]);
-
   useEffect(() => {
-    fetchInventory();
-  }, [fetchInventory]);
+    dispatch(getInventory(id));
+  }, [id, dispatch]);
 
   return (
     <form onSubmit={handleSubmit}>

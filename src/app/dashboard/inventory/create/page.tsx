@@ -1,18 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useInventoryForm from "@/utils/hooks/useInventoryForm";
 import { useAppDispatch } from "@/store/hooks";
-import { completeLoading, startLoading } from "@/store/features/loading";
-import { createSupabaseClient } from "@/utils/supabase/client";
-import { InventoryRepo } from "@/utils/database/InventoryRepo";
+import { resetSelectedValues } from "@/store/features/inventory";
+import { createInventory } from "@/store/features/inventory/thunk";
 import { Inventory } from "@/utils/database/types";
 import { inventorySchema } from "@/utils/validations/inventory.validation";
 import { SecondaryButton } from "@/elements/buttons";
 import InputField from "@/components/common/InputField";
 import SelectInput from "@/components/common/AsyncSelectInput";
-
-const inventory = new InventoryRepo(createSupabaseClient());
 
 const initialValues = {
   supplier_id: "",
@@ -37,18 +35,16 @@ const CreateInventoryPage = () => {
     initialValues,
     validationSchema: inventorySchema,
     async onSubmit(values, { setSubmitting }) {
-      try {
-        dispatch(startLoading());
-        await inventory.create(values as Inventory);
-        router.push("/dashboard/inventory");
-      } catch (error) {
-        dispatch(completeLoading());
-        alert("Error creating new inventory");
-      } finally {
-        setSubmitting(false);
-      }
+      await dispatch(createInventory(values as Inventory))
+        .unwrap()
+        .then(() => router.push("/dashboard/inventory"))
+        .finally(() => setSubmitting(false));
     },
   });
+
+  useEffect(() => {
+    dispatch(resetSelectedValues());
+  }, [dispatch]);
 
   return (
     <form onSubmit={handleSubmit}>
