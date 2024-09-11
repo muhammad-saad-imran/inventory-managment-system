@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import {
-  createAndFetchOrders,
-  createOrder,
-} from "@/store/features/orders/thunk";
+import { createOrder } from "@/store/features/orders/thunk";
 import { getAllClient } from "@/store/features/clients/thunk";
 import { Client, Order } from "@/utils/database/types";
 import { orderSchema } from "@/utils/validations/order.validation";
@@ -31,9 +28,11 @@ const CreateOrderBar = ({ search }: Props) => {
       initialValues: { client_id: "", order_date: "" },
       validationSchema: orderSchema,
       async onSubmit(values, { setSubmitting }) {
-        await createAndFetchOrders(search, values as Order, dispatch).finally(
-          () => setSubmitting(false)
-        );
+        await dispatch(
+          createOrder({ order: values as Order, clientName: search })
+        )
+          .unwrap()
+          .finally(() => setSubmitting(false));
       },
     });
 

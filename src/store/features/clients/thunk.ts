@@ -1,8 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import { Client } from "@/utils/database/types";
+import { customThunkCreator } from "@/store/utils";
 
 const FETCH_ALL_CLIENTS = "client/getAll";
 const FETCH_CLIENT_BY_ID = "client/get";
@@ -12,82 +11,46 @@ const DELETE_CLIENT = "client/delete";
 
 const client = new ClientRepo(createSupabaseClient());
 
-export const getAllClient = createAsyncThunk(
+export const getAllClient = customThunkCreator<string, Client[]>(
   FETCH_ALL_CLIENTS,
-  async (clientName: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const allClientData = await client.getWithName(clientName);
-      dispatch(completeLoading());
-      return allClientData;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while fetching suppliers");
-      rejectWithValue(error);
-    }
+  "Error ocuured fetching clients",
+  async (clientName: string) => {
+    const allClientData = await client.getWithName(clientName);
+    return allClientData;
   }
 );
 
-export const getClient = createAsyncThunk(
+export const getClient = customThunkCreator<string, Client>(
   FETCH_CLIENT_BY_ID,
-  async (clientId: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const clientData = await client.get(clientId);
-      dispatch(completeLoading());
-      return clientData;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while fetching supplier");
-      rejectWithValue(error);
-    }
+  "Error ocuured fetching products",
+  async (clientId: string) => {
+    const clientData = await client.get(clientId);
+    return clientData;
   }
 );
 
-export const createClient = createAsyncThunk(
+export const createClient = customThunkCreator<Client, Client>(
   CREATE_CLIENT,
-  async (newClient: Client, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const clientData = await client.create(newClient);
-      dispatch(completeLoading());
-      return clientData;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while creating supplier");
-      rejectWithValue(error);
-    }
+  "Error ocuured creating products",
+  async (newClient: Client) => {
+    const clientData = await client.create(newClient);
+    return clientData;
   }
 );
 
-export const updateClient = createAsyncThunk(
+export const updateClient = customThunkCreator<Client, Client>(
   UPDATE_CLIENT,
-  async (clientValues: Client, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const clientData = await client.update(clientValues.id, clientValues);
-      dispatch(completeLoading());
-      return clientData;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while updating supplier");
-      rejectWithValue(error);
-    }
+  "Error ocuured updating products",
+  async (clientValues: Client) => {
+    const clientData = await client.update(clientValues.id, clientValues);
+    return clientData;
   }
 );
 
-export const deleteClient = createAsyncThunk(
+export const deleteClient = customThunkCreator<string, void>(
   DELETE_CLIENT,
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      await client.delete(id);
-      dispatch(completeLoading());
-      return;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while deleting supplier");
-      rejectWithValue(error);
-    }
+  "Error ocuured deleting products",
+  async (id: string) => {
+    await client.delete(id);
   }
 );

@@ -2,9 +2,10 @@ import { createSlice, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "@/store";
 import { Order, ORDER_STATUS } from "@/utils/database/types";
 import {
+  createOrder,
+  createOrderItem,
   decrementOrderItem,
   deleteOrderItem,
-  getAllOrderItem,
   getAllOrders,
   getOrder,
   incrementOrderItem,
@@ -50,11 +51,14 @@ const OrderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAllOrders.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.allOrders = action.payload;
+      .addMatcher(
+        isAnyOf(getAllOrders.fulfilled, createOrder.fulfilled),
+        (state, action) => {
+          if (action.payload) {
+            state.allOrders = action.payload;
+          }
         }
-      })
+      )
       .addMatcher(
         isAnyOf(getOrder.fulfilled, updateOrder.fulfilled),
         (state, action) => {
@@ -65,7 +69,7 @@ const OrderSlice = createSlice({
       )
       .addMatcher(
         isAnyOf(
-          getAllOrderItem.fulfilled,
+          createOrderItem.fulfilled,
           incrementOrderItem.fulfilled,
           decrementOrderItem.fulfilled,
           deleteOrderItem.fulfilled

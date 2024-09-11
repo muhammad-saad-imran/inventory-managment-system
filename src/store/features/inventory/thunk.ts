@@ -1,9 +1,8 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { completeLoading, startLoading } from "@/store/features/loading";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { Inventory } from "@/utils/database/types";
 import { formatDate } from "@/utils/datetime";
+import { customThunkCreator } from "@/store/utils";
 
 const FETCH_ALL_INVENTORY = "inventory/getAll";
 const FETCH_INVENTORY_BY_ID = "inventory/get";
@@ -13,130 +12,107 @@ const DELETE_INVENTORY = "inventory/delete";
 
 const inventory = new InventoryRepo(createSupabaseClient());
 
-export const getAllInventory = createAsyncThunk(
+export const getAllInventory = customThunkCreator<string, Inventory[]>(
   FETCH_ALL_INVENTORY,
-  async (productName: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const allInventoryData = await inventory.getWithProductName(productName);
-      dispatch(completeLoading());
-      return allInventoryData.map((data) => ({
-        ...data,
-        supply_date: formatDate({
-          date: data.supply_date,
-          outputDate: "YYYY-MM-DD",
-        }),
-      }));
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while fetching inventory");
-      rejectWithValue(error);
-    }
+  "Error ocuured fetching inventory",
+  async (productName: string) => {
+    const allInventoryData = await inventory.getWithProductName(productName);
+    return allInventoryData.map((data) => ({
+      ...data,
+      // Change date to format accepted by input element
+      supply_date: formatDate({
+        date: data.supply_date,
+        outputDate: "YYYY-MM-DD",
+      }),
+    }));
   }
 );
 
-export const getInventory = createAsyncThunk(
+export const getInventory = customThunkCreator<string, Inventory>(
   FETCH_INVENTORY_BY_ID,
-  async (inventoryId: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const inventoryData = await inventory.get(
-        inventoryId,
-        "*, suppliers (*), products (*)"
-      );
-      const supply_date = formatDate({
+  "Error ocuured fetching inventory",
+  async (inventoryId: string) => {
+    const inventoryData = await inventory.get(
+      inventoryId,
+      "*, suppliers (*), products (*)"
+    );
+    // Change date to format accepted by input element
+    const supply_date = formatDate({
+      date: inventoryData.supply_date,
+      outputDate: "YYYY-MM-DD",
+    });
+    return { ...inventoryData, supply_date };
+  }
+);
+
+export const createInventory = customThunkCreator<Inventory, Inventory>(
+  CREATE_INVENTORY,
+  "Error ocuured creating inventory",
+  async (newInventory: Inventory) => {
+    // Change date to UTC format
+    const supply_date = formatDate({
+      date: newInventory.supply_date,
+      outputDate: "",
+    });
+    const { products, suppliers, ...values } = newInventory;
+
+    const inventoryData = await inventory.create(
+      {
+        ...values,
+        supply_date,
+      },
+      "*, suppliers (*), products (*)"
+    );
+
+    return {
+      ...inventoryData,
+      // Change date to format accepted by input element
+      supply_date: formatDate({
         date: inventoryData.supply_date,
         outputDate: "YYYY-MM-DD",
-      });
-      dispatch(completeLoading());
-      return { ...inventoryData, supply_date };
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while fetching inventory");
-      rejectWithValue(error);
-    }
+      }),
+    };
   }
 );
 
-export const createInventory = createAsyncThunk(
-  CREATE_INVENTORY,
-  async (newInventory: Inventory, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const supply_date = formatDate({
-        date: newInventory.supply_date,
-        outputDate: "",
-      });
-      const { products, suppliers, ...values } = newInventory;
-      const inventoryData = await inventory.create(
-        {
-          ...values,
-          supply_date,
-        },
-        "*, suppliers (*), products (*)"
-      );
-      dispatch(completeLoading());
-      return {
-        ...inventoryData,
-        supply_date: formatDate({
-          date: inventoryData.supply_date,
-          outputDate: "YYYY-MM-DD",
-        }),
-      };
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while creating inventory");
-      rejectWithValue(error);
-    }
-  }
-);
-
-export const updateInventory = createAsyncThunk(
+export const updateInventory = customThunkCreator<Inventory, Inventory>(
   UPDATE_INVENTORY,
-  async (inventoryValues: Inventory, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const supply_date = formatDate({
-        date: inventoryValues.supply_date,
-        outputDate: "",
-      });
-      const { products, suppliers, ...values } = inventoryValues;
-      const inventoryData = await inventory.update(
-        inventoryValues.id,
-        {
-          ...values,
-          supply_date,
-        },
-        "*, suppliers (*), products (*)"
-      );
-      dispatch(completeLoading());
-      return {
-        ...inventoryData,
-        supply_date: formatDate({
-          date: inventoryData.supply_date,
-          outputDate: "YYYY-MM-DD",
-        }),
-      };
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while updating inventory");
-      rejectWithValue(error);
-    }
+  "Error ocuured updating inventory",
+  async (inventoryValues: Inventory) => {
+    // Change date to UTC format
+    const supply_date = formatDate({
+      date: inventoryValues.supply_date,
+      outputDate: "",
+    });
+
+    // removed joined products & suppliers values
+    // only update inventory columns
+    const { products, suppliers, ...values } = inventoryValues;
+
+    const inventoryData = await inventory.update(
+      inventoryValues.id,
+      {
+        ...values,
+        supply_date,
+      },
+      "*, suppliers (*), products (*)"
+    );
+
+    return {
+      ...inventoryData,
+      // Change date to format accepted by input element
+      supply_date: formatDate({
+        date: inventoryData.supply_date,
+        outputDate: "YYYY-MM-DD",
+      }),
+    };
   }
 );
 
-export const deleteInventory = createAsyncThunk(
+export const deleteInventory = customThunkCreator<string, void>(
   DELETE_INVENTORY,
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      await inventory.delete(id);
-      dispatch(completeLoading());
-      return;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error while deleting inventory");
-      rejectWithValue(error);
-    }
+  "Error ocuured deleting inventory",
+  async (id: string) => {
+    await inventory.delete(id);
   }
 );

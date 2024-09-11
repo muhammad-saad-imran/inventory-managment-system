@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { round, get } from "lodash";
 import useFormikForm from "@/utils/hooks/useFormikForm";
 import { useAppDispatch } from "@/store/hooks";
-import { createAndFetchOrderItems } from "@/store/features/orders/thunk";
+import { createOrderItem } from "@/store/features/orders/thunk";
 import { getAllInventory } from "@/store/features/inventory/thunk";
 import { Inventory, OrderItem } from "@/utils/database/types";
 import { orderItemSchema } from "@/utils/validations/order.validation";
@@ -41,7 +41,8 @@ const AddProductBar = () => {
         return;
       }
 
-      await createAndFetchOrderItems(id, values as OrderItem, dispatch)
+      await dispatch(createOrderItem(values as OrderItem))
+        .unwrap()
         .then(() => {
           setCost(0);
           setSelectedInventory(null);

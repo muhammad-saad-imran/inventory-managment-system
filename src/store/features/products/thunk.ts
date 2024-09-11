@@ -1,8 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createSupabaseClient } from "@/utils/supabase/client";
 import { ProductRepo } from "@/utils/database/ProductRepo";
-import { completeLoading, startLoading } from "@/store/features/loading";
 import { Product } from "@/utils/database/types";
+import { customThunkCreator } from "@/store/utils";
 
 const FETCH_ALL_PRODUCTS = "products/getAll";
 const FETCH_PRODUCT_BY_ID = "products/get";
@@ -12,85 +11,49 @@ const DELETE_PRODUCT = "products/delete";
 
 const product = new ProductRepo(createSupabaseClient());
 
-export const getAllProducts = createAsyncThunk(
+export const getAllProducts = customThunkCreator<string, Product[]>(
   FETCH_ALL_PRODUCTS,
-  async (productName: string, { dispatch, rejectWithValue, getState }) => {
-    try {
-      dispatch(startLoading());
-      const data = await product.getWithName(productName);
-      dispatch(completeLoading());
-      return data;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error fetching products");
-      rejectWithValue(error);
-    }
+  "Error ocuured fetching products",
+  async (productName: string) => {
+    const data = await product.getWithName(productName);
+    return data;
   }
 );
 
-export const getProduct = createAsyncThunk(
+export const getProduct = customThunkCreator<string, Product>(
   FETCH_PRODUCT_BY_ID,
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const productValue = await product.get(id);
-      dispatch(completeLoading());
-      return productValue;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error fetching products");
-      rejectWithValue(error);
-    }
+  "Error ocuured fetching products",
+  async (id: string) => {
+    const productValue = await product.get(id);
+    return productValue;
   }
 );
 
-export const createProduct = createAsyncThunk(
+export const createProduct = customThunkCreator<Product, Product>(
   CREATE_PRODUCT,
-  async (newProduct: Product, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const createdProduct = await product.create(newProduct);
-      dispatch(completeLoading());
-      return createdProduct;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error ocurred while updating product");
-      rejectWithValue(error);
-    }
+  "Error ocuured creating products",
+  async (newProduct: Product) => {
+    const createdProduct = await product.create(newProduct);
+    return createdProduct;
   }
 );
 
-export const updateProduct = createAsyncThunk(
+export const updateProduct = customThunkCreator<Product, Product>(
   UPDATE_PRODUCT,
-  async (productValues: Product, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      const updatedProduct = await product.update(
-        productValues.id,
-        productValues
-      );
-      dispatch(completeLoading());
-      return updatedProduct;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error ocurred while updating product");
-      rejectWithValue(error);
-    }
+  "Error ocuured updating products",
+  async (productValues: Product) => {
+    const updatedProduct = await product.update(
+      productValues.id,
+      productValues
+    );
+    return updatedProduct;
   }
 );
 
-export const deleteProduct = createAsyncThunk(
+export const deleteProduct = customThunkCreator<string, void>(
   DELETE_PRODUCT,
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      dispatch(startLoading());
-      await product.delete(id);
-      dispatch(completeLoading());
-      return;
-    } catch (error) {
-      dispatch(completeLoading());
-      alert("Error ocurred while deleting product");
-      rejectWithValue(error);
-    }
+  "Error ocuured deleting products",
+  async (id: string) => {
+    await product.delete(id);
   }
 );
