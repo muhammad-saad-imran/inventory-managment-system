@@ -1,8 +1,10 @@
-import { CookieMethodsServer } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import { CookieMethodsServer } from "@supabase/ssr";
+import { createSupabaseClient } from "@/utils/supabase/server";
 
-export async function updateSession(request: NextRequest) {
+export async function validateSession(request: NextRequest) {
+  const baseUrl = new URL(request.url).origin;
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -24,10 +26,17 @@ export async function updateSession(request: NextRequest) {
     },
   };
 
-  const supabase = createClient({ cookies });
+  const supabase = createSupabaseClient({ cookies });
 
-  // refreshing the auth token
-  await supabase.auth.getUser();
+  // updates the auth token
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  // redirect to login if user is not signed in
+  if (user) {
+    return supabaseResponse;
+  } else {
+    return NextResponse.redirect(new URL("/", baseUrl));
+  }
 }

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "s1e9a0b2-5d2e-41b8-9294-a1b0e2f6a6a1",
+    "name": "Widgets Ltd.",
+    "email": "contact@widgets.com",
+    "phone_number": "1112223333",
+    "created_at": "2024-09-02T09:00:00Z"
+  },
+  {
+    "id": "s2b9c9f4e-7845-4b8e-930f-9a8b6dc5bda9",
+    "name": "Gadgets Inc.",
+    "email": "info@gadgets.com",
+    "phone_number": "4445556666",
+    "created_at": "2024-09-02T10:00:00Z"
+  },
+  {
+    "id": "s3c5d6e7-7845-4b8e-930f-9a8b6dc5bda9",
+    "name": "TechCorp",
+    "email": "sales@techcorp.com",
+    "phone_number": "7778889999",
+    "created_at": "2024-09-02T11:00:00Z"
+  },
+  {
+    "id": "s4d7e8f9-7845-4b8e-930f-9a8b6dc5bda9",
+    "name": "Smart Devices",
+    "email": "support@smartdevices.com",
+    "phone_number": "2223334444",
+    "created_at": "2024-09-02T12:00:00Z"
+  },
+  {
+    "id": "s5f8g9h1-7845-4b8e-930f-9a8b6dc5bda9",
+    "name": "FutureTech",
+    "email": "info@futuretech.com",
+    "phone_number": "5556667777",
+    "created_at": "2024-09-02T13:00:00Z"
+  }
+]
