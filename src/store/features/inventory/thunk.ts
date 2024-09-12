@@ -12,6 +12,11 @@ const DELETE_INVENTORY = "inventory/delete";
 
 const inventory = new InventoryRepo(createSupabaseClient());
 
+/**
+ * Async thunk for Inventory CRUD,
+ * `getAllInventory`, `getInventory` & `updateInventory` update redux state after they are fulfilled
+ */
+
 export const getAllInventory = customThunkCreator<string, Inventory[]>(
   FETCH_ALL_INVENTORY,
   "Error ocuured fetching inventory",

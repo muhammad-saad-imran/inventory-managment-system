@@ -11,6 +11,11 @@ const DELETE_SUPPLIER = "supplier/delete";
 
 const supplier = new SupplierRepo(createSupabaseClient());
 
+/**
+ * Async thunk for Supplier CRUD,
+ * `getAllSupplier`, `getSupplier` & `updateSupplier` update redux state after they are fulfilled
+ */
+
 export const getAllSupplier = customThunkCreator<string, Supplier[]>(
   FETCH_ALL_SUPPLIERS,
   "Error ocuured fetching suppliers",

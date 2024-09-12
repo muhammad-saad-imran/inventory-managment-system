@@ -11,6 +11,11 @@ const DELETE_PRODUCT = "products/delete";
 
 const product = new ProductRepo(createSupabaseClient());
 
+/**
+ * Async thunk for Product CRUD,
+ * `getAllProducts`, `getProduct` & `updateProduct` update redux state after they are fulfilled
+ */
+
 export const getAllProducts = customThunkCreator<string, Product[]>(
   FETCH_ALL_PRODUCTS,
   "Error ocuured fetching products",

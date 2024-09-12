@@ -11,6 +11,11 @@ const DELETE_CLIENT = "client/delete";
 
 const client = new ClientRepo(createSupabaseClient());
 
+/**
+ * Async thunk for Client CRUD,
+ * `getAllClient`, `getClient` & `updateClient` update redux state after they are fulfilled
+ */
+
 export const getAllClient = customThunkCreator<string, Client[]>(
   FETCH_ALL_CLIENTS,
   "Error ocuured fetching clients",

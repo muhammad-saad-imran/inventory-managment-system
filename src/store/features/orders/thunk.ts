@@ -19,7 +19,8 @@ const order = new OrderRepo(createSupabaseClient());
 const orderItemService = new OrderItemService(createSupabaseClient());
 
 /**
- * Async thunk for order CRUD
+ * Async thunk for order CRUD,
+ * `getAllOrders`, `getOrder` & `updateOrder` update redux state after they are fulfilled
  */
 
 const includeOrder = `*, order_items (*, inventory (*, products (*))), clients (*)`;

@@ -4,8 +4,8 @@ import { completeLoading, startLoading } from "@/store/features/loading";
 const handleThunkProcessing = async <TReturn>(
   errorMessage: string,
   thunkFunc: () => Promise<TReturn>,
-  { dispatch, rejectWithValue }: { dispatch: any; rejectWithValue: any }
-): Promise<TReturn | undefined> => {
+  { dispatch }: { dispatch: any }
+): Promise<TReturn> => {
   try {
     dispatch(startLoading());
     const data = await thunkFunc();
@@ -14,7 +14,7 @@ const handleThunkProcessing = async <TReturn>(
   } catch (error) {
     dispatch(completeLoading());
     alert(errorMessage);
-    rejectWithValue(error);
+    throw error;
   }
 };
 
