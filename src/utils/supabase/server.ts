@@ -8,7 +8,7 @@ type ServerClientOptions = SupabaseClientOptions<"public"> & {
   cookieEncoding?: "raw" | "base64url";
 };
 
-export function createClient(clientOptions?: ServerClientOptions) {
+export function createSupabaseClient(clientOptions?: ServerClientOptions) {
   const cookieStore = cookies();
 
   // Use default options if, no options passed 
