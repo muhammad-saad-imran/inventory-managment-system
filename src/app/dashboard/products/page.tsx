@@ -25,7 +25,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     deboucedGetAllProducts(search);
-  }, [search]);
+  }, [search, deboucedGetAllProducts]);
 
   return (
     <div>
