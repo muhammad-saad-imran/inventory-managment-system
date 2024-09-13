@@ -31,24 +31,32 @@ const ProductPage = () => {
     <div>
       <SearchBar label="Products" search={search} setSearch={setSearch} />
       <table className="w-full mt-3 bg-white">
-        <tr>
-          <th className="py-5">Name</th>
-          <th className="py-5">Description</th>
-          <th className="py-5">Created At</th>
-        </tr>
-        {allProducts.map((item: Product) => (
-          <tr
-            key={item.id}
-            className="text-center hover:bg-black/[0.05] cursor-pointer"
-            onClick={() => router.push(`/dashboard/products/${item.id}`)}
-          >
-            <td className="py-5">{item.name}</td>
-            <td className="py-5">{item.description}</td>
-            <td className="py-5">
-              {formatDate({ date: item.created_at, outputDate: "MMM D, YYYY" })}
-            </td>
+        <thead>
+          <tr>
+            <th className="py-5">Name</th>
+            <th className="py-5">Description</th>
+            <th className="py-5">Created At</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {allProducts.map((item: Product) => (
+            <tr
+              key={item.id}
+              data-testid="product-row"
+              className="text-center hover:bg-black/[0.05] cursor-pointer"
+              onClick={() => router.push(`/dashboard/products/${item.id}`)}
+            >
+              <td className="py-5">{item.name}</td>
+              <td className="py-5">{item.description}</td>
+              <td className="py-5">
+                {formatDate({
+                  date: item.created_at,
+                  outputDate: "MMM D, YYYY",
+                })}
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

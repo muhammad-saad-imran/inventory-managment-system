@@ -2,13 +2,11 @@
 
 export enum DB_TABLES {
   CLIENTS = "clients",
-  INVOICES = "invoices",
   ORDERS = "orders",
   ORDER_ITEMS = "order_items",
   PRODUCTS = "products",
   SUPPLIERS = "suppliers",
-  INVENTORY = "inventory",
-  INVENTORY_PRODUCTS_VIEW = "product_inventory_view",
+  INVENTORY = "inventory"
 }
 
 export enum ORDER_STATUS {
@@ -74,12 +72,3 @@ export type OrderItem = {
   inventory?: Inventory;
 };
 
-export type Invoice = {
-  id: string; // UUID
-  order_id: string; // UUID (foreign key from orders)
-  invoice_date: string; // timestamp
-  due_date: string; // timestamp
-  amount: number; // decimal
-  status: string; // varchar
-  created_at: string; // timestamp
-};

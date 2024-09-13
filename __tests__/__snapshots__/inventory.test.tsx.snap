@@ -1,0 +1,640 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Inventory features CreateInventoryPage should match snapshot 1`] = `
+<div>
+  <form>
+    <p
+      class="text-3xl text-center"
+    >
+      Create Inventory
+    </p>
+    <div
+      class="flex flex-col gap-3 w-full bg-white mt-3 p-3"
+    >
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label>
+            Product
+          </label>
+          <div
+            class=" css-b62m3t-container"
+          >
+            <span
+              class="css-1f43avz-a11yText-A11yText"
+              id="react-select-2-live-region"
+            />
+            <span
+              aria-atomic="false"
+              aria-live="polite"
+              aria-relevant="additions text"
+              class="css-1f43avz-a11yText-A11yText"
+              role="log"
+            />
+            <div
+              class=" css-13cymwt-control"
+            >
+              <div
+                class=" css-hlgwow"
+              >
+                <div
+                  class=" css-1dimb5e-singleValue"
+                />
+                <div
+                  class=" css-19bb58m"
+                  data-value=""
+                >
+                  <input
+                    aria-activedescendant=""
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    autocapitalize="none"
+                    autocomplete="off"
+                    autocorrect="off"
+                    class=""
+                    id="react-select-2-input"
+                    role="combobox"
+                    spellcheck="false"
+                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class=" css-1wy0on6"
+              >
+                <div
+                  aria-hidden="true"
+                  class=" css-pogzpp-loadingIndicator"
+                >
+                  <span
+                    class="css-1h1juvu-LoadingDot"
+                  />
+                  <span
+                    class="css-1swgd6a-LoadingDot"
+                  />
+                  <span
+                    class="css-41hts2-LoadingDot"
+                  />
+                </div>
+                <span
+                  class=" css-1u9des2-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class=" css-1xc3v61-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-tj5bde-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label>
+            Supplier
+          </label>
+          <div
+            class=" css-b62m3t-container"
+          >
+            <span
+              class="css-1f43avz-a11yText-A11yText"
+              id="react-select-3-live-region"
+            />
+            <span
+              aria-atomic="false"
+              aria-live="polite"
+              aria-relevant="additions text"
+              class="css-1f43avz-a11yText-A11yText"
+              role="log"
+            />
+            <div
+              class=" css-13cymwt-control"
+            >
+              <div
+                class=" css-hlgwow"
+              >
+                <div
+                  class=" css-1dimb5e-singleValue"
+                />
+                <div
+                  class=" css-19bb58m"
+                  data-value=""
+                >
+                  <input
+                    aria-activedescendant=""
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    autocapitalize="none"
+                    autocomplete="off"
+                    autocorrect="off"
+                    class=""
+                    id="react-select-3-input"
+                    role="combobox"
+                    spellcheck="false"
+                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class=" css-1wy0on6"
+              >
+                <div
+                  aria-hidden="true"
+                  class=" css-pogzpp-loadingIndicator"
+                >
+                  <span
+                    class="css-1h1juvu-LoadingDot"
+                  />
+                  <span
+                    class="css-1swgd6a-LoadingDot"
+                  />
+                  <span
+                    class="css-41hts2-LoadingDot"
+                  />
+                </div>
+                <span
+                  class=" css-1u9des2-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class=" css-1xc3v61-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-tj5bde-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="cost"
+          >
+            Cost
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="cost"
+            name="cost"
+            type="number"
+            value=""
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="supply_date"
+          >
+            Supply date
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="supply_date"
+            name="supply_date"
+            type="date"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="stock_quantity"
+          >
+            Stock
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="stock_quantity"
+            name="stock_quantity"
+            type="number"
+            value="0"
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="reorder_limit"
+          >
+            Reorder limit
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="reorder_limit"
+            name="reorder_limit"
+            type="number"
+            value="0"
+          />
+        </div>
+      </div>
+      <button
+        class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+        type="submit"
+      >
+        Create
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`Inventory features InventoryInfoPage should match snapshot 1`] = `
+<div>
+  <form>
+    <p
+      class="text-3xl text-center"
+    >
+      Create Inventory
+    </p>
+    <div
+      class="flex flex-col gap-3 w-full bg-white mt-3 p-3"
+    >
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label>
+            Product
+          </label>
+          <div
+            class=" css-b62m3t-container"
+          >
+            <span
+              class="css-1f43avz-a11yText-A11yText"
+              id="react-select-4-live-region"
+            />
+            <span
+              aria-atomic="false"
+              aria-live="polite"
+              aria-relevant="additions text"
+              class="css-1f43avz-a11yText-A11yText"
+              role="log"
+            />
+            <div
+              class=" css-13cymwt-control"
+            >
+              <div
+                class=" css-hlgwow"
+              >
+                <div
+                  class=" css-1dimb5e-singleValue"
+                />
+                <div
+                  class=" css-19bb58m"
+                  data-value=""
+                >
+                  <input
+                    aria-activedescendant=""
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    autocapitalize="none"
+                    autocomplete="off"
+                    autocorrect="off"
+                    class=""
+                    id="react-select-4-input"
+                    role="combobox"
+                    spellcheck="false"
+                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class=" css-1wy0on6"
+              >
+                <div
+                  aria-hidden="true"
+                  class=" css-pogzpp-loadingIndicator"
+                >
+                  <span
+                    class="css-1h1juvu-LoadingDot"
+                  />
+                  <span
+                    class="css-1swgd6a-LoadingDot"
+                  />
+                  <span
+                    class="css-41hts2-LoadingDot"
+                  />
+                </div>
+                <span
+                  class=" css-1u9des2-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class=" css-1xc3v61-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-tj5bde-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label>
+            Supplier
+          </label>
+          <div
+            class=" css-b62m3t-container"
+          >
+            <span
+              class="css-1f43avz-a11yText-A11yText"
+              id="react-select-5-live-region"
+            />
+            <span
+              aria-atomic="false"
+              aria-live="polite"
+              aria-relevant="additions text"
+              class="css-1f43avz-a11yText-A11yText"
+              role="log"
+            />
+            <div
+              class=" css-13cymwt-control"
+            >
+              <div
+                class=" css-hlgwow"
+              >
+                <div
+                  class=" css-1dimb5e-singleValue"
+                />
+                <div
+                  class=" css-19bb58m"
+                  data-value=""
+                >
+                  <input
+                    aria-activedescendant=""
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    autocapitalize="none"
+                    autocomplete="off"
+                    autocorrect="off"
+                    class=""
+                    id="react-select-5-input"
+                    role="combobox"
+                    spellcheck="false"
+                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class=" css-1wy0on6"
+              >
+                <div
+                  aria-hidden="true"
+                  class=" css-pogzpp-loadingIndicator"
+                >
+                  <span
+                    class="css-1h1juvu-LoadingDot"
+                  />
+                  <span
+                    class="css-1swgd6a-LoadingDot"
+                  />
+                  <span
+                    class="css-41hts2-LoadingDot"
+                  />
+                </div>
+                <span
+                  class=" css-1u9des2-indicatorSeparator"
+                />
+                <div
+                  aria-hidden="true"
+                  class=" css-1xc3v61-indicatorContainer"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="css-tj5bde-Svg"
+                    focusable="false"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    width="20"
+                  >
+                    <path
+                      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="cost"
+          >
+            Cost
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="cost"
+            name="cost"
+            type="number"
+            value=""
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="supply_date"
+          >
+            Supply date
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="supply_date"
+            name="supply_date"
+            type="date"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="stock_quantity"
+          >
+            Stock
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="stock_quantity"
+            name="stock_quantity"
+            type="number"
+            value="0"
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="reorder_limit"
+          >
+            Reorder limit
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="reorder_limit"
+            name="reorder_limit"
+            type="number"
+            value="0"
+          />
+        </div>
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+          type="submit"
+        >
+          Update
+        </button>
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`Inventory features InventoryPage should match snapshot 1`] = `
+<div>
+  <div>
+    <div>
+      <p
+        class="text-3xl text-center"
+      >
+        Inventory
+      </p>
+      <div
+        class="flex gap-8 bg-white w-full p-5 mt-3"
+      >
+        <input
+          class="sc-23ee340d-0 cwYaeo border-0 text-lg"
+          placeholder="Search"
+          value=""
+        />
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb"
+        >
+          <p
+            class="text-xl"
+          >
+            +
+          </p>
+        </button>
+      </div>
+    </div>
+    <table
+      class="w-full bg-white mt-3 text-center"
+    >
+      <thead>
+        <tr>
+          <th
+            class="py-5"
+          >
+            Product
+          </th>
+          <th
+            class="py-5"
+          >
+            Supplier
+          </th>
+          <th
+            class="py-5"
+          >
+            cost
+          </th>
+          <th
+            class="py-5"
+          >
+            stock
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
