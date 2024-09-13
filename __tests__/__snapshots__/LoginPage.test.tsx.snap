@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login Page should match snapshot 1`] = `
+<div>
+  <div
+    class="sc-267e98d2-0 eAqqCL"
+  >
+    <div
+      class="flex p-5 bg-white rounded-lg shadow-lg"
+    >
+      <img
+        alt=""
+        class="pr-8"
+        data-nimg="1"
+        decoding="async"
+        height="500"
+        loading="lazy"
+        src="/_next/image?url=%2Flogin.jpg&w=1080&q=75"
+        srcset="/_next/image?url=%2Flogin.jpg&w=640&q=75 1x, /_next/image?url=%2Flogin.jpg&w=1080&q=75 2x"
+        style="color: transparent;"
+        width="500"
+      />
+      <form
+        class="flex flex-col justify-center w-96 p-8 gap-6"
+        method="POST"
+      >
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="email"
+          >
+            Email:
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="email"
+            name="email"
+            required=""
+            type="email"
+            value=""
+          />
+        </div>
+        <div
+          class="flex flex-col gap-1 w-full"
+        >
+          <label
+            for="password"
+          >
+            Password:
+          </label>
+          <input
+            class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            id="password"
+            name="password"
+            required=""
+            type="password"
+            value=""
+          />
+        </div>
+        <button
+          class="sc-7d679c72-0 zDViG ml-auto"
+          type="submit"
+        >
+          Log in
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;

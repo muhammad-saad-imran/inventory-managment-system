@@ -31,26 +31,33 @@ const SupplierPage = () => {
     <div>
       <SearchBar label="Suppliers" search={search} setSearch={setSearch} />
       <table className="w-full mt-3 bg-white">
-        <tr>
-          <th className="py-5">Name</th>
-          <th className="py-5">Email</th>
-          <th className="py-5">Phone</th>
-          <th className="py-5">Created At</th>
-        </tr>
-        {allSupplier.map((item: Supplier) => (
-          <tr
-            key={item.id}
-            className="text-center hover:bg-black/[0.05] cursor-pointer"
-            onClick={() => router.push(`/dashboard/suppliers/${item.id}`)}
-          >
-            <td className="py-5">{item.name}</td>
-            <td className="py-5">{item.email}</td>
-            <td className="py-5">{item.phone_number}</td>
-            <td className="py-5">
-              {formatDate({ date: item.created_at, outputDate: "MMM D, YYYY" })}
-            </td>
+        <thead>
+          <tr>
+            <th className="py-5">Name</th>
+            <th className="py-5">Email</th>
+            <th className="py-5">Phone</th>
+            <th className="py-5">Created At</th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {allSupplier.map((item: Supplier) => (
+            <tr
+              key={item.id}
+              className="text-center hover:bg-black/[0.05] cursor-pointer"
+              onClick={() => router.push(`/dashboard/suppliers/${item.id}`)}
+            >
+              <td className="py-5">{item.name}</td>
+              <td className="py-5">{item.email}</td>
+              <td className="py-5">{item.phone_number}</td>
+              <td className="py-5">
+                {formatDate({
+                  date: item.created_at,
+                  outputDate: "MMM D, YYYY",
+                })}
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

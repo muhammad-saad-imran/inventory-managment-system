@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Supplier features CreateSupplierPage should match snapshot 1`] = `
+<div>
+  <div>
+    <p
+      class="text-3xl text-center mb-8"
+    >
+      Create Supplier
+    </p>
+    <form
+      class="flex flex-col gap-4"
+    >
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="name"
+        >
+          Name
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="name"
+          name="name"
+          value=""
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="email"
+        >
+          Email
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="email"
+          name="email"
+          type="email"
+          value=""
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="phone_number"
+        >
+          Phone Number
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="phone_number"
+          name="phone_number"
+          type="number"
+          value=""
+        />
+      </div>
+      <button
+        class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+      >
+        Create
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
+<div>
+  <div>
+    <p
+      class="text-3xl text-center mb-8"
+    >
+      Create Supplier
+    </p>
+    <form
+      class="flex flex-col gap-4"
+    >
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="name"
+        >
+          Name
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="name"
+          name="name"
+          value=""
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="email"
+        >
+          Email
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="email"
+          name="email"
+          type="email"
+          value=""
+        />
+      </div>
+      <div
+        class="flex flex-col gap-1 w-full"
+      >
+        <label
+          for="phone_number"
+        >
+          Phone Number
+        </label>
+        <input
+          class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          id="phone_number"
+          name="phone_number"
+          type="number"
+          value="0"
+        />
+      </div>
+      <div
+        class="flex gap-4"
+      >
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 gkXiWL iTQhfb w-fit"
+          disabled=""
+          type="submit"
+        >
+          Update
+        </button>
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`Supplier features SupplierPage should match snapshot 1`] = `
+<div>
+  <div>
+    <div>
+      <p
+        class="text-3xl text-center"
+      >
+        Suppliers
+      </p>
+      <div
+        class="flex gap-8 bg-white w-full p-5 mt-3"
+      >
+        <input
+          class="sc-23ee340d-0 cwYaeo border-0 text-lg"
+          placeholder="Search"
+          value=""
+        />
+        <button
+          class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb"
+        >
+          <p
+            class="text-xl"
+          >
+            +
+          </p>
+        </button>
+      </div>
+    </div>
+    <table
+      class="w-full mt-3 bg-white"
+    >
+      <thead>
+        <tr>
+          <th
+            class="py-5"
+          >
+            Name
+          </th>
+          <th
+            class="py-5"
+          >
+            Email
+          </th>
+          <th
+            class="py-5"
+          >
+            Phone
+          </th>
+          <th
+            class="py-5"
+          >
+            Created At
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
