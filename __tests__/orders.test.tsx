@@ -2,7 +2,7 @@ import { renderWithProviders } from "@/utils/test-utils";
 import { Order } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import { OrderRepo } from "@/utils/database/OrderRepo";
-import { OrderItemService } from "@/utils/services/OrderItemService";
+import { OrderItemRepo } from "@/utils/database/OrderItemRepo";
 import database from "@/../__mocks__/database.json";
 import OrderPage from "@/app/dashboard/orders/page";
 import OrderInfoPage from "@/app/dashboard/orders/[id]/page";
@@ -20,7 +20,7 @@ jest.mock("next/navigation", () => {
 jest.mock("@/utils/supabase/client");
 jest.mock("@/utils/database/OrderRepo");
 jest.mock("@/utils/database/ClientRepo");
-jest.mock("@/utils/services/OrderItemService");
+jest.mock("@/utils/database/OrderItemRepo");
 
 describe("Order feature", () => {
   // Order Repo mocks
@@ -30,17 +30,10 @@ describe("Order feature", () => {
   let updateOrderMock = jest.spyOn(OrderRepo.prototype, "create");
 
   // OrderItems service mocks
-  let getAllOrderItemsMock = jest.spyOn(OrderItemService.prototype, "getAll");
-  let getItemMock = jest.spyOn(OrderItemService.prototype, "get");
-  let createOrderItemMock = jest.spyOn(OrderItemService.prototype, "create");
-  let incrementItemMock = jest.spyOn(
-    OrderItemService.prototype,
-    "incrementQuantity"
-  );
-  let decrementItemMock = jest.spyOn(
-    OrderItemService.prototype,
-    "decrementQuantity"
-  );
+  let getAllOrderItemsMock = jest.spyOn(OrderItemRepo.prototype, "getAll");
+  let getItemMock = jest.spyOn(OrderItemRepo.prototype, "get");
+  let createOrderItemMock = jest.spyOn(OrderItemRepo.prototype, "create");
+  let updateOrderItemMock = jest.spyOn(OrderItemRepo.prototype, "update");
 
   // Cliets Repo mocks
   let getClientsMock = jest.spyOn(ClientRepo.prototype, "getWithName");
@@ -68,8 +61,7 @@ describe("Order feature", () => {
     getAllOrderItemsMock.mockResolvedValue(database.orders[0].order_items);
     getItemMock.mockResolvedValue(database.orders[0].order_items[0]);
     createOrderItemMock.mockResolvedValue(database.orders[0].order_items[0]);
-    decrementItemMock.mockResolvedValue(database.orders[0].order_items[0]);
-    incrementItemMock.mockResolvedValue(database.orders[0].order_items[0]);
+    updateOrderItemMock.mockResolvedValue(database.orders[0].order_items[0]);
 
     // mock Client Repo methods
     getClientsMock.mockResolvedValue(database.clients);
@@ -86,8 +78,7 @@ describe("Order feature", () => {
     getAllOrderItemsMock.mockClear();
     getItemMock.mockClear();
     createOrderItemMock.mockClear();
-    decrementItemMock.mockClear();
-    incrementItemMock.mockClear();
+    updateOrderItemMock.mockClear();
     getClientsMock.mockClear();
   });
 
