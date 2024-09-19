@@ -14,8 +14,14 @@ type Props = {
 const AsyncSelectInput = ({ label, error, touched, ...selectInput }: Props) => {
   return (
     <div className="flex flex-col gap-1 w-full">
-      <label>{label}</label>
-      <ReactSelectAsync defaultOptions isClearable {...selectInput} />
+      <label htmlFor={label}>{label}</label>
+      <ReactSelectAsync
+        defaultOptions
+        isClearable
+        name={label}
+        inputId={label}
+        {...selectInput}
+      />
       {touched && error && <p className="text-xs text-rose-500">{error}</p>}
     </div>
   );

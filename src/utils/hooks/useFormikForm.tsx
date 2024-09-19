@@ -6,6 +6,7 @@ const useFormikForm = (formikConfig: FormikConfig<FormikValues>) => {
   const getFieldAttrs = (label: string, fieldName: keyof FormikValues) => ({
     label,
     id: fieldName as string,
+    "data-testid": fieldName as string,
     name: fieldName as string,
     value: formik.values[fieldName],
     error: formik.errors[fieldName] as string,

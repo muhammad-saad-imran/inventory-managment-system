@@ -43,6 +43,7 @@ const InventoryPage = () => {
           {allInventory.map((item) => (
             <tr
               key={item.id}
+              data-testid="inventory-row"
               className="hover:bg-black/[0.05] cursor-pointer"
               onClick={() => router.push(`/dashboard/inventory/${item.id}`)}
             >

@@ -67,6 +67,7 @@ const OrderInfoPage = () => {
               <td className="py-5 w-1/3">
                 <div className="flex justify-center px-3">
                   <Image
+                    data-testid="delete-btn"
                     className="cursor-pointer"
                     src="/cross.svg"
                     alt=""

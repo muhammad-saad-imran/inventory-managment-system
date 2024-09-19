@@ -41,7 +41,9 @@ const CreateClientPage = () => {
           {...getFieldAttrs("Phone Number", "phone_number")}
           type="number"
         />
-        <SecondaryButton className="w-fit">Create</SecondaryButton>
+        <SecondaryButton className="w-fit" data-testid="submit-btn">
+          Create
+        </SecondaryButton>
       </form>
     </div>
   );

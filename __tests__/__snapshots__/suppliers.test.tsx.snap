@@ -21,6 +21,7 @@ exports[`Supplier features CreateSupplierPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="name"
           id="name"
           name="name"
           value=""
@@ -36,6 +37,7 @@ exports[`Supplier features CreateSupplierPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="email"
           id="email"
           name="email"
           type="email"
@@ -52,6 +54,7 @@ exports[`Supplier features CreateSupplierPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="phone_number"
           id="phone_number"
           name="phone_number"
           type="number"
@@ -60,6 +63,8 @@ exports[`Supplier features CreateSupplierPage should match snapshot 1`] = `
       </div>
       <button
         class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+        data-testid="submit-btn"
+        type="submit"
       >
         Create
       </button>
@@ -89,6 +94,7 @@ exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="name"
           id="name"
           name="name"
           value=""
@@ -104,6 +110,7 @@ exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="email"
           id="email"
           name="email"
           type="email"
@@ -120,6 +127,7 @@ exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="phone_number"
           id="phone_number"
           name="phone_number"
           type="number"
@@ -131,6 +139,7 @@ exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
       >
         <button
           class="sc-7d679c72-0 sc-7d679c72-1 gkXiWL iTQhfb w-fit"
+          data-testid="update-btn"
           disabled=""
           type="submit"
         >
@@ -138,6 +147,7 @@ exports[`Supplier features SupplierInfoPage should match snapshot 1`] = `
         </button>
         <button
           class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+          data-testid="delete-btn"
           type="button"
         >
           Delete

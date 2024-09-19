@@ -43,6 +43,7 @@ const SupplierPage = () => {
           {allSupplier.map((item: Supplier) => (
             <tr
               key={item.id}
+              data-testid="supplier-row"
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => router.push(`/dashboard/suppliers/${item.id}`)}
             >

@@ -41,7 +41,13 @@ const CreateSupplierPage = () => {
           {...getFieldAttrs("Phone Number", "phone_number")}
           type="number"
         />
-        <SecondaryButton className="w-fit">Create</SecondaryButton>
+        <SecondaryButton
+          data-testid="submit-btn"
+          className="w-fit"
+          type="submit"
+        >
+          Create
+        </SecondaryButton>
       </form>
     </div>
   );

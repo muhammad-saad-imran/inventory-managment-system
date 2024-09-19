@@ -39,7 +39,7 @@ const CreateProductPage = () => {
       >
         <InputField {...getFieldAttrs("Name", "name")} />
         <InputField {...getFieldAttrs("Description", "description")} />
-        <SecondaryButton className="w-fit" type="submit">
+        <SecondaryButton data-testid="submit-btn" className="w-fit" type="submit">
           Create
         </SecondaryButton>
       </form>

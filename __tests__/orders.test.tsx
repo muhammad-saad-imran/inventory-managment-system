@@ -1,5 +1,8 @@
+import { act } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/dom";
+import selectEvent from "react-select-event";
 import { renderWithProviders } from "@/utils/test-utils";
-import { Order } from "@/utils/database/types";
+import { Order, ORDER_STATUS } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import { OrderRepo } from "@/utils/database/OrderRepo";
 import { OrderItemRepo } from "@/utils/database/OrderItemRepo";
@@ -21,19 +24,21 @@ jest.mock("@/utils/supabase/client");
 jest.mock("@/utils/database/OrderRepo");
 jest.mock("@/utils/database/ClientRepo");
 jest.mock("@/utils/database/OrderItemRepo");
+jest.mock("@/utils/database/InventoryRepo");
 
 describe("Order feature", () => {
   // Order Repo mocks
   let getAllOrdersMock = jest.spyOn(OrderRepo.prototype, "getWithClientName");
   let getOrderMock = jest.spyOn(OrderRepo.prototype, "get");
   let createOrderMock = jest.spyOn(OrderRepo.prototype, "create");
-  let updateOrderMock = jest.spyOn(OrderRepo.prototype, "create");
+  let updateOrderMock = jest.spyOn(OrderRepo.prototype, "update");
 
   // OrderItems service mocks
   let getAllOrderItemsMock = jest.spyOn(OrderItemRepo.prototype, "getAll");
   let getItemMock = jest.spyOn(OrderItemRepo.prototype, "get");
   let createOrderItemMock = jest.spyOn(OrderItemRepo.prototype, "create");
   let updateOrderItemMock = jest.spyOn(OrderItemRepo.prototype, "update");
+  let deleteOrderItemMock = jest.spyOn(OrderItemRepo.prototype, "delete");
 
   // Cliets Repo mocks
   let getClientsMock = jest.spyOn(ClientRepo.prototype, "getWithName");
@@ -87,12 +92,65 @@ describe("Order feature", () => {
       const { container } = renderWithProviders(<OrderPage />);
       expect(container).toMatchSnapshot();
     });
+
+    it("should route on clicking order table row", async () => {
+      renderWithProviders(<OrderPage />);
+
+      const elems = await screen.findAllByTestId("order-row");
+      fireEvent.click(elems[0]);
+
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("OrderInfoPage", () => {
     it("should match snapshot", () => {
       const { container } = renderWithProviders(<OrderInfoPage />);
       expect(container).toMatchSnapshot();
+    });
+
+    it("should update order status", async () => {
+      await act(() => renderWithProviders(<OrderInfoPage />));
+
+      await act(async () => {
+        fireEvent.change(await screen.findByLabelText(/Order Status/i), {
+          target: { value: ORDER_STATUS.SHIPPED },
+        });
+
+        fireEvent.click(await screen.findByRole("button", { name: /update/i }));
+      });
+
+      expect(updateOrderMock).toHaveBeenCalled();
+    });
+
+    it("should increment orderItem", async () => {
+      await act(() => renderWithProviders(<OrderInfoPage />));
+
+      await act(async () => {
+        fireEvent.click(await screen.getByText(/\+/i));
+      });
+
+      expect(updateOrderItemMock).toHaveBeenCalled();
+    });
+
+    it("should increment orderItem", async () => {
+      await act(() => renderWithProviders(<OrderInfoPage />));
+
+      await act(async () => {
+        fireEvent.click(await screen.getByText(/\-/i));
+      });
+
+      expect(updateOrderItemMock).toHaveBeenCalled();
+    });
+
+    it("should delete orderItem", async () => {
+      await act(() => renderWithProviders(<OrderInfoPage />));
+
+      await act(async () => {
+        fireEvent.click((await screen.findAllByTestId("delete-btn"))[0]);
+      });
+
+      expect(deleteOrderItemMock).toHaveBeenCalled();
     });
   });
 });

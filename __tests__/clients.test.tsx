@@ -1,3 +1,5 @@
+import { act } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import { renderWithProviders } from "@/utils/test-utils";
 import { ClientRepo } from "@/utils/database/ClientRepo";
 import database from "@/../__mocks__/database.json";
@@ -23,6 +25,7 @@ describe("Client features", () => {
   let getClientMock = jest.spyOn(ClientRepo.prototype, "get");
   let createClientMock = jest.spyOn(ClientRepo.prototype, "create");
   let updateClientMock = jest.spyOn(ClientRepo.prototype, "update");
+  let deleteClientMock = jest.spyOn(ClientRepo.prototype, "delete");
 
   let useRouter = jest.spyOn(require("next/navigation"), "useRouter");
   let useParams = jest.spyOn(require("next/navigation"), "useParams");
@@ -59,6 +62,16 @@ describe("Client features", () => {
       const { container } = renderWithProviders(<ClientsPage />);
       expect(container).toMatchSnapshot();
     });
+
+    it("should route on clicking clients table row", async () => {
+      renderWithProviders(<ClientsPage />); // ARRANGE
+
+      // ACT
+      const elems = await screen.findAllByTestId("client-row");
+      fireEvent.click(elems[0]);
+
+      expect(routerPushMock).toHaveBeenCalledTimes(1); // ASSERT
+    });
   });
 
   describe("CreateClientPage", () => {
@@ -66,12 +79,64 @@ describe("Client features", () => {
       const { container } = renderWithProviders(<CreateClientPage />);
       expect(container).toMatchSnapshot();
     });
+
+    it("should create client", async () => {
+      await act(() => renderWithProviders(<CreateClientPage />)); // ARRANGE
+
+      await act(async () => {
+        // ACT
+        const nameInput = await screen.findByLabelText("Name");
+        fireEvent.change(nameInput, { target: { value: "test supplier" } });
+
+        const emailInput = await screen.findByLabelText("Email");
+        fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
+
+        const phoneInput = await screen.findByLabelText("Phone Number");
+        fireEvent.change(phoneInput, { target: { value: "10101010100101" } });
+
+        const submitBtn = await screen.findByTestId("submit-btn");
+        fireEvent.click(submitBtn);
+      });
+
+      // ASSERT
+      expect(createClientMock).toHaveBeenCalledTimes(1);
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("ClientInfoPage", () => {
     it("should match snapshot", () => {
       const { container } = renderWithProviders(<ClientInfoPage />);
       expect(container).toMatchSnapshot();
+    });
+
+    it("should delete client", async () => {
+      await act(() => renderWithProviders(<ClientInfoPage />)); // ARRANGE
+
+      await act(async () => {
+        // ACT
+        fireEvent.click(await screen.findByRole("button", { name: /delete/i }));
+      });
+
+      // ASSERT
+      expect(deleteClientMock).toHaveBeenCalledTimes(1);
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update client", async () => {
+      await act(() => renderWithProviders(<ClientInfoPage />)); // ARRANGE
+
+      // ACT
+      await act(async () => {
+      fireEvent.change(await screen.findByLabelText(/name/i), {
+        target: { value: "Changed Test Client" },
+      });
+
+      fireEvent.click(await screen.findByRole("button", { name: /update/i }));
+      });
+
+      // ASSERT
+        expect(updateClientMock).toHaveBeenCalledTimes(1);
     });
   });
 });

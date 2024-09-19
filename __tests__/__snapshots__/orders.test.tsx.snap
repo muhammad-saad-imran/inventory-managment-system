@@ -93,7 +93,9 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
         <div
           class="flex flex-col gap-1 w-full"
         >
-          <label>
+          <label
+            for="Inventory"
+          >
             Inventory
           </label>
           <div
@@ -101,7 +103,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
           >
             <span
               class="css-1f43avz-a11yText-A11yText"
-              id="react-select-3-live-region"
+              id="react-select-4-live-region"
             />
             <span
               aria-atomic="false"
@@ -118,7 +120,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
               >
                 <div
                   class=" css-1jqq78o-placeholder"
-                  id="react-select-3-placeholder"
+                  id="react-select-4-placeholder"
                 >
                   Select...
                 </div>
@@ -129,14 +131,14 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
                   <input
                     aria-activedescendant=""
                     aria-autocomplete="list"
-                    aria-describedby="react-select-3-placeholder"
+                    aria-describedby="react-select-4-placeholder"
                     aria-expanded="false"
                     aria-haspopup="true"
                     autocapitalize="none"
                     autocomplete="off"
                     autocorrect="off"
                     class=""
-                    id="react-select-3-input"
+                    id="Inventory"
                     role="combobox"
                     spellcheck="false"
                     style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -185,6 +187,11 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
                 </div>
               </div>
             </div>
+            <input
+              name="Inventory"
+              type="hidden"
+              value=""
+            />
           </div>
         </div>
         <div
@@ -225,6 +232,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
           </label>
           <input
             class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            data-testid="price"
             id="price"
             name="price"
             step="0.01"
@@ -246,6 +254,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
           </label>
           <input
             class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+            data-testid="quantity"
             id="quantity"
             name="quantity"
             type="number"
@@ -352,7 +361,9 @@ exports[`Order feature OrderPage should match snapshot 1`] = `
       <div
         class="flex flex-col gap-1 w-full"
       >
-        <label>
+        <label
+          for="Client"
+        >
           Client
         </label>
         <div
@@ -395,7 +406,7 @@ exports[`Order feature OrderPage should match snapshot 1`] = `
                   autocomplete="off"
                   autocorrect="off"
                   class=""
-                  id="react-select-2-input"
+                  id="Client"
                   role="combobox"
                   spellcheck="false"
                   style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
@@ -444,6 +455,11 @@ exports[`Order feature OrderPage should match snapshot 1`] = `
               </div>
             </div>
           </div>
+          <input
+            name="Client"
+            type="hidden"
+            value=""
+          />
         </div>
       </div>
       <div
@@ -456,6 +472,7 @@ exports[`Order feature OrderPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="order_date"
           id="order_date"
           name="order_date"
           type="date"

@@ -42,6 +42,7 @@ const ClientsPage = () => {
           {allClients.map((item) => (
             <tr
               key={item.id}
+              data-testid="client-row"
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => router.push(`/dashboard/clients/${item.id}`)}
             >

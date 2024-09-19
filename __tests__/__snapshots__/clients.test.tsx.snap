@@ -21,6 +21,7 @@ exports[`Client features ClientInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="name"
           id="name"
           name="name"
           value=""
@@ -36,6 +37,7 @@ exports[`Client features ClientInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="email"
           id="email"
           name="email"
           type="email"
@@ -52,6 +54,7 @@ exports[`Client features ClientInfoPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="phone_number"
           id="phone_number"
           name="phone_number"
           type="number"
@@ -162,6 +165,7 @@ exports[`Client features CreateClientPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="name"
           id="name"
           name="name"
           value=""
@@ -177,6 +181,7 @@ exports[`Client features CreateClientPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="email"
           id="email"
           name="email"
           type="email"
@@ -193,6 +198,7 @@ exports[`Client features CreateClientPage should match snapshot 1`] = `
         </label>
         <input
           class="sc-23ee340d-0 sc-23ee340d-1 cwYaeo jqzeAh"
+          data-testid="phone_number"
           id="phone_number"
           name="phone_number"
           type="number"
@@ -201,6 +207,7 @@ exports[`Client features CreateClientPage should match snapshot 1`] = `
       </div>
       <button
         class="sc-7d679c72-0 sc-7d679c72-1 zDViG iTQhfb w-fit"
+        data-testid="submit-btn"
       >
         Create
       </button>

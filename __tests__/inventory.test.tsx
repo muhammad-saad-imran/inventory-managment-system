@@ -1,3 +1,6 @@
+import { act, cleanup } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/dom";
+import selectEvent from "react-select-event";
 import { renderWithProviders } from "@/utils/test-utils";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 import { ProductRepo } from "@/utils/database/ProductRepo";
@@ -31,6 +34,7 @@ describe("Inventory features", () => {
   let getInventoryMock = jest.spyOn(InventoryRepo.prototype, "get");
   let createInventoryMock = jest.spyOn(InventoryRepo.prototype, "create");
   let updateInventoryMock = jest.spyOn(InventoryRepo.prototype, "update");
+  let deleteInventoryMock = jest.spyOn(InventoryRepo.prototype, "delete");
 
   // Product Repo spies
   let getProductWithNameMock = jest.spyOn(ProductRepo.prototype, "getWithName");
@@ -77,12 +81,28 @@ describe("Inventory features", () => {
     getSupplierWithNameMock.mockClear();
     useRouter.mockClear();
     useParams.mockClear();
+
+    cleanup();
   });
 
   describe("InventoryPage", () => {
-    it("should match snapshot", () => {
-      const { container } = renderWithProviders(<InventoryPage />);
+    it("should match snapshot", async () => {
+      let container;
+
+      await act(async () => {
+        ({ container } = await renderWithProviders(<InventoryPage />)); // ARRANGE
+      });
       expect(container).toMatchSnapshot();
+    });
+
+    it("should route on clicking inventory table row", async () => {
+      renderWithProviders(<InventoryPage />); // ARRANGE
+
+      // ACT
+      const elems = await screen.findAllByTestId("inventory-row");
+      fireEvent.click(elems[0]);
+
+      expect(routerPushMock).toHaveBeenCalledTimes(1); // ASSERT
     });
   });
 
@@ -97,6 +117,31 @@ describe("Inventory features", () => {
     it("should match snapshot", () => {
       const { container } = renderWithProviders(<InventoryInfoPage />);
       expect(container).toMatchSnapshot();
+    });
+
+    it("should delete inventory", async () => {
+      await act(() => renderWithProviders(<InventoryInfoPage />));
+
+      await act(async () => {
+        fireEvent.click(await screen.findByRole("button", { name: /delete/i }));
+      });
+
+      expect(deleteInventoryMock).toHaveBeenCalledTimes(1);
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update inventory", async () => {
+      await act(() => renderWithProviders(<InventoryInfoPage />));
+
+      await act(async () => {
+        fireEvent.change(await screen.findByLabelText(/stock/i), {
+          target: { value: 200 },
+        });
+
+        fireEvent.click(await screen.findByRole("button", { name: /update/i }));
+      });
+
+      expect(updateInventoryMock).toHaveBeenCalledTimes(1);
     });
   });
 });

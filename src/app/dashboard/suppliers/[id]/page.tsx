@@ -59,6 +59,7 @@ const SupplierInfoPage = () => {
         <div className="flex gap-4">
           <SecondaryButton
             className="w-fit"
+            data-testid="update-btn"
             type="submit"
             disabled={disableUpdate}
           >
@@ -66,6 +67,7 @@ const SupplierInfoPage = () => {
           </SecondaryButton>
           <SecondaryButton
             className="w-fit"
+            data-testid="delete-btn"
             type="button"
             onClick={handleDelete}
           >

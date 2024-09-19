@@ -1,3 +1,5 @@
+import { act } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/dom";
 import { renderWithProviders } from "@/utils/test-utils";
 import { SupplierRepo } from "@/utils/database/SupplierRepo";
 import database from "@/../__mocks__/database.json";
@@ -23,6 +25,7 @@ describe("Supplier features", () => {
   let getSupplierMock = jest.spyOn(SupplierRepo.prototype, "get");
   let createSupplierMock = jest.spyOn(SupplierRepo.prototype, "create");
   let updateSupplierMock = jest.spyOn(SupplierRepo.prototype, "update");
+  let deleteSupplierMock = jest.spyOn(SupplierRepo.prototype, "delete");
 
   let useRouter = jest.spyOn(require("next/navigation"), "useRouter");
   let useParams = jest.spyOn(require("next/navigation"), "useParams");
@@ -59,6 +62,16 @@ describe("Supplier features", () => {
       const { container } = renderWithProviders(<SupplierPage />);
       expect(container).toMatchSnapshot();
     });
+
+    it("should route on clicking supplier table row", async () => {
+      renderWithProviders(<SupplierPage />); // ARRANGE
+
+      // ACT
+      const elems = await screen.findAllByTestId("supplier-row");
+      fireEvent.click(elems[0]);
+
+      expect(routerPushMock).toHaveBeenCalledTimes(1); // ASSERT
+    });
   });
 
   describe("CreateSupplierPage", () => {
@@ -66,12 +79,67 @@ describe("Supplier features", () => {
       const { container } = renderWithProviders(<CreateSupplierPage />);
       expect(container).toMatchSnapshot();
     });
+
+    it("should create supplier", async () => {
+      await act(() => renderWithProviders(<CreateSupplierPage />)); // ARRANGE
+
+      await act(async () => {
+        // ACT
+        const nameInput = await screen.findByLabelText("Name");
+        fireEvent.change(nameInput, { target: { value: "test supplier" } });
+
+        const emailInput = await screen.findByLabelText("Email");
+        fireEvent.change(emailInput, { target: { value: "test@gmail.com" } });
+
+        const phoneInput = await screen.findByLabelText("Phone Number");
+        fireEvent.change(phoneInput, { target: { value: "10101010100101" } });
+
+        const submitBtn = await screen.findByTestId("submit-btn");
+        fireEvent.click(submitBtn);
+      });
+
+      // ASSERT
+      expect(createSupplierMock).toHaveBeenCalledTimes(1);
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("SupplierInfoPage", () => {
     it("should match snapshot", () => {
       const { container } = renderWithProviders(<SupplierInfoPage />);
       expect(container).toMatchSnapshot();
+    });
+
+    it("should delete supplier", async () => {
+      await act(() => renderWithProviders(<SupplierInfoPage />)); // ARRANGE
+
+      await act(async () => {
+        // ACT
+        const deleteBtn = await screen.findByTestId("delete-btn");
+        fireEvent.click(deleteBtn);
+      });
+
+      // ASSERT
+      expect(deleteSupplierMock).toHaveBeenCalledTimes(1);
+      expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update supplier", async () => {
+      await act(() => renderWithProviders(<SupplierInfoPage />)); // ARRANGE
+
+      await act(async () => {
+        // ACT
+        const nameInput = await screen.findByLabelText("Name");
+        fireEvent.change(nameInput, {
+          target: { value: "Changed Test supplier" },
+        });
+
+        const updateBtn = await screen.findByTestId("update-btn");
+        fireEvent.click(updateBtn);
+      });
+
+      // ASSERT
+      expect(updateSupplierMock).toHaveBeenCalledTimes(1);
     });
   });
 });

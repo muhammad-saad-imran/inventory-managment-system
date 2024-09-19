@@ -47,6 +47,7 @@ const OrderPage = () => {
           {allOrders.map((item) => (
             <tr
               key={item.id}
+              data-testid="order-row"
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => {
                 dispatch(startLoading());

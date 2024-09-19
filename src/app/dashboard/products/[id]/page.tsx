@@ -60,6 +60,7 @@ const ProductInfoPage = () => {
           <SecondaryButton
             className="w-fit"
             disabled={disableUpdate}
+            data-testid="update-btn"
             type="submit"
           >
             Update
@@ -67,6 +68,7 @@ const ProductInfoPage = () => {
           <SecondaryButton
             className="w-fit"
             onClick={handleDelete}
+            data-testid="delete-btn"
             type="button"
           >
             Delete
