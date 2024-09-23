@@ -103,7 +103,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
           >
             <span
               class="css-1f43avz-a11yText-A11yText"
-              id="react-select-4-live-region"
+              id="react-select-5-live-region"
             />
             <span
               aria-atomic="false"
@@ -120,7 +120,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
               >
                 <div
                   class=" css-1jqq78o-placeholder"
-                  id="react-select-4-placeholder"
+                  id="react-select-5-placeholder"
                 >
                   Select...
                 </div>
@@ -131,7 +131,7 @@ exports[`Order feature OrderInfoPage should match snapshot 1`] = `
                   <input
                     aria-activedescendant=""
                     aria-autocomplete="list"
-                    aria-describedby="react-select-4-placeholder"
+                    aria-describedby="react-select-5-placeholder"
                     aria-expanded="false"
                     aria-haspopup="true"
                     autocapitalize="none"

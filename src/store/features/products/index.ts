@@ -25,22 +25,7 @@ const initialState = {
 const ProductSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {
-    setProduct(state, action: PayloadAction<Product>) {
-      return {
-        ...state,
-        product: {
-          ...action.payload,
-        },
-      };
-    },
-    setAllProducts(state, action: PayloadAction<Product[]>) {
-      return {
-        ...state,
-        allProducts: [...action.payload],
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllProducts.fulfilled, (state, action) => {
@@ -61,7 +46,7 @@ const ProductSlice = createSlice({
   },
 });
 
-export const { setAllProducts, setProduct } = ProductSlice.actions;
+export const {} = ProductSlice.actions;
 export default ProductSlice.reducer;
 
 export const selectProduct = (state: RootState) => state.product.product;

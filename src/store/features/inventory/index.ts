@@ -73,20 +73,6 @@ const InventorySlice = createSlice({
   name: "inventory",
   initialState,
   reducers: {
-    setInventory(state, action: PayloadAction<Inventory>) {
-      return {
-        ...state,
-        inventory: {
-          ...action.payload,
-        },
-      };
-    },
-    setAllInventories(state, action: PayloadAction<Inventory[]>) {
-      return {
-        ...state,
-        allInventories: [...action.payload],
-      };
-    },
     setSelectedProduct(
       state,
       action: PayloadAction<Product & { label: string; value: string }>
@@ -141,13 +127,8 @@ const InventorySlice = createSlice({
   },
 });
 
-export const {
-  setAllInventories,
-  setInventory,
-  setSelectedProduct,
-  setSelectedSupplier,
-  resetSelectedValues,
-} = InventorySlice.actions;
+export const { setSelectedProduct, setSelectedSupplier, resetSelectedValues } =
+  InventorySlice.actions;
 export default InventorySlice.reducer;
 
 export const selectInventory = (state: RootState) => state.inventory.inventory;

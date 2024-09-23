@@ -1,5 +1,5 @@
-import { act, cleanup } from "@testing-library/react";
-import { fireEvent, screen } from "@testing-library/dom";
+import { act } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import selectEvent from "react-select-event";
 import { renderWithProviders } from "@/utils/test-utils";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
@@ -81,8 +81,6 @@ describe("Inventory features", () => {
     getSupplierWithNameMock.mockClear();
     useRouter.mockClear();
     useParams.mockClear();
-
-    cleanup();
   });
 
   describe("InventoryPage", () => {
@@ -110,6 +108,44 @@ describe("Inventory features", () => {
     it("should match snapshot", () => {
       const { container } = renderWithProviders(<CreateInventoryPage />);
       expect(container).toMatchSnapshot();
+    });
+
+    it("should create inventory", async () => {
+      // Render the component
+      renderWithProviders(<CreateInventoryPage />);
+
+      // Wait for the product input to be available, ensuring that async operations (like data fetching) have completed
+      await screen.findByLabelText(/product/i);
+      // Simulate selecting product and supplier asynchronously
+      await selectEvent.select(await screen.findByLabelText(/product/i), [
+        /product a/i,
+      ]);
+      await selectEvent.select(await screen.findByLabelText(/supplier/i), [
+        /supplier one/i,
+      ]);
+
+      // Simulate other user interactions
+      fireEvent.change(await screen.findByLabelText("Cost"), {
+        target: { value: 50.69 },
+      });
+      fireEvent.change(await screen.findByLabelText("Supply date"), {
+        target: { value: "2030-03-15" },
+      });
+      fireEvent.change(await screen.findByLabelText("Stock"), {
+        target: { value: 100 },
+      });
+      fireEvent.change(await screen.findByLabelText("Reorder limit"), {
+        target: { value: 10 },
+      });
+
+      // Click the create button
+      fireEvent.click(await screen.findByRole("button", { name: /Create/i }));
+
+      // Check that mocks were called as expected
+      await waitFor(() => {
+        expect(createInventoryMock).toHaveBeenCalledTimes(1);
+        expect(routerPushMock).toHaveBeenCalledTimes(1);
+      });
     });
   });
 

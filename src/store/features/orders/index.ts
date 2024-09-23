@@ -33,22 +33,7 @@ const initialState = {
 const OrderSlice = createSlice({
   name: "order",
   initialState,
-  reducers: {
-    setOrder(state, action: PayloadAction<Order>) {
-      return {
-        ...state,
-        order: {
-          ...action.payload,
-        },
-      };
-    },
-    setAllOrders(state, action: PayloadAction<Order[]>) {
-      return {
-        ...state,
-        allOrders: [...action.payload],
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addMatcher(
@@ -81,7 +66,7 @@ const OrderSlice = createSlice({
   },
 });
 
-export const { setAllOrders, setOrder } = OrderSlice.actions;
+export const {} = OrderSlice.actions;
 export default OrderSlice.reducer;
 
 export const selectOrder = (state: RootState) => state.order.order;

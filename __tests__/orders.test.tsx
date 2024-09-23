@@ -1,6 +1,5 @@
 import { act } from "@testing-library/react";
-import { fireEvent, screen } from "@testing-library/dom";
-import selectEvent from "react-select-event";
+import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import { renderWithProviders } from "@/utils/test-utils";
 import { Order, ORDER_STATUS } from "@/utils/database/types";
 import { ClientRepo } from "@/utils/database/ClientRepo";
@@ -9,6 +8,7 @@ import { OrderItemRepo } from "@/utils/database/OrderItemRepo";
 import database from "@/../__mocks__/database.json";
 import OrderPage from "@/app/dashboard/orders/page";
 import OrderInfoPage from "@/app/dashboard/orders/[id]/page";
+import selectEvent from "react-select-event";
 
 jest.mock("next/navigation", () => {
   const actualImport = jest.requireActual("next/navigation");
@@ -100,6 +100,27 @@ describe("Order feature", () => {
       fireEvent.click(elems[0]);
 
       expect(routerPushMock).toHaveBeenCalledTimes(1);
+    });
+
+    it("should create order with CreateOrderBar component", async () => {
+      renderWithProviders(<OrderPage />);
+
+      await screen.findByLabelText(/client/i);
+      
+      await selectEvent.select(
+        await screen.findByLabelText(/client/i),
+        /alice smith/i
+      );
+
+      await fireEvent.change(await screen.findByLabelText(/Order Date/i), {
+        target: { value: "2025-12-12" },
+      });
+
+      await fireEvent.click(
+        await screen.findByRole("button", { name: /create/i })
+      );
+
+      await waitFor(() => expect(createOrderMock).toHaveBeenCalled());
     });
   });
 
