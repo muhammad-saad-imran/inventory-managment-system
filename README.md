@@ -1,37 +1,80 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Name
 
-## Getting Started
+## Introduction
+This project is an inventory management system designed for wholesale stores to efficiently manage all aspects related to suppliers, products, and client interactions.
 
-First, run the development server:
+## Product Scope
+The system provides wholesale stores with a platform to manage inventory, suppliers, clients, and orders. It will track inventory levels, facilitate communication between the store, suppliers, and clients, and streamline the overall inventory management process.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Intended Audience
+This system is primarily designed for wholesale store owners and managers who need to keep track of products, suppliers, and clients.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Intended Use
+The system will be used to manage inventory efficiently, organize product categories, and handle interactions between the store, suppliers, and clients. It supports management for different types of products and categories.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Description
+This solution is tailored to meet the needs of wholesale stores by optimizing inventory management processes. It integrates key functions for managing suppliers, products, and clients. The system reduces manual effort, minimizes errors, and enhances operational efficiency by automating key tasks. Its intuitive interface provides real-time tracking of inventory and generates accurate reports for effective decision-making.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+## Functional Requirements
 
-To learn more about Next.js, take a look at the following resources:
+### Authentication
+- Users must authenticate using a username and password.
+- The system includes secure password recovery and account lockout mechanisms after repeated failed login attempts.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Inventory Management
+- Users can add, update, and delete product records.
+- Products can be categorized into various types and categories.
+- Real-time tracking of inventory levels, with alerts when stock reaches a predefined threshold.
+- Supports batch and lot tracking for products.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Supplier Management
+- Users can add, modify, and delete supplier records.
+- Maintains a history of interactions with suppliers, including orders and communications.
+- Supports automated order generation based on inventory levels.
 
-## Deploy on Vercel
+### Client Management
+- Users can add, modify, and delete client records.
+- Maintains a history of interactions with clients, including sales and communications.
+- Supports the creation and management of client orders and invoices.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Order Management
+- Enables the creation, modification, and deletion of purchase orders and invoices.
+- Automatically generates invoices based on client orders.
+- Supports multiple payment methods and tracks payment statuses.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# inventory-managment-system
+### Search and Filter
+- Provides advanced search and filtering options for products, suppliers, and clients.
+
+---
+
+## Interface Requirements
+
+### User Interface
+The system will feature a responsive website where users can:
+- Display clients with options to add new clients and perform advanced searches.
+- Display suppliers with options to add new suppliers and perform advanced searches.
+- Display products with options to add new products and perform advanced searches.
+
+### Software Interface
+
+#### Backend
+- **Database**: PostgreSQL
+- **Framework**: Supabase
+- **Authentication**: Supabase Authentication
+- **Validation**: Yup
+
+#### Frontend
+- **Frontend Framework**: Next.js
+- **Styling**: TailwindCSS
+- **State Management**: Redux Toolkit
+- **Forms**: Formik
+- **Routing**: Next.js built-in routing
+- **API Communication**: Supabase client SDK
+- **Component Library**: Material UI
+
+---
+
+## Conclusion
+This system aims to improve the operational efficiency of wholesale stores by providing an integrated solution for inventory, supplier, and client management. Its responsive design, automated processes, and real-time insights will help streamline store operations and minimize manual effort.
