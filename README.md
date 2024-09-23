@@ -3,25 +3,12 @@
 ## Introduction
 This project is an inventory management system designed for wholesale stores to efficiently manage all aspects related to suppliers, products, and client interactions.
 
-## Product Scope
-The system provides wholesale stores with a platform to manage inventory, suppliers, clients, and orders. It will track inventory levels, facilitate communication between the store, suppliers, and clients, and streamline the overall inventory management process.
-
-## Intended Audience
-This system is primarily designed for wholesale store owners and managers who need to keep track of products, suppliers, and clients.
-
-## Intended Use
-The system will be used to manage inventory efficiently, organize product categories, and handle interactions between the store, suppliers, and clients. It supports management for different types of products and categories.
-
-## Description
-This solution is tailored to meet the needs of wholesale stores by optimizing inventory management processes. It integrates key functions for managing suppliers, products, and clients. The system reduces manual effort, minimizes errors, and enhances operational efficiency by automating key tasks. Its intuitive interface provides real-time tracking of inventory and generates accurate reports for effective decision-making.
-
 ---
 
 ## Functional Requirements
 
 ### Authentication
 - Users must authenticate using a username and password.
-- The system includes secure password recovery and account lockout mechanisms after repeated failed login attempts.
 
 ### Inventory Management
 - Users can add, update, and delete product records.
