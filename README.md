@@ -84,8 +84,7 @@ This project is an inventory management system designed for wholesale stores to 
   npm build 
   npm start
   ```
-
-6. ### Head over to http://localhost:3000 to see the app live!
+  - Head over to http://localhost:3000 to see the app live!
 
 ## Features
 
