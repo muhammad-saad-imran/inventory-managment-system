@@ -5,6 +5,29 @@ This project is an inventory management system designed for wholesale stores to 
 
 ---
 
+## Packages used
+
+  - `@reduxjs/toolkit@^2.2.7`
+  - @supabase/ssr@^0.5.1
+  - @supabase/supabase-js": "^2.45.2"
+  - dayjs": "^1.11.13"
+  - formik": "^2.4.6"
+  - lodash": "^4.17.21"
+  - next": "^14.2.12"
+  - react": "^18"
+  - react-dom": "^18"
+  - react-redux": "^9.1.2
+  - react-select": "^5.8.0
+  - react-top-loading-bar": "^2.3.1
+  - styled-components": "^6.1.13
+  - yup": "^1.4.0
+  - @testing-library/react": "^16.0.1
+  - jest": "^29.7.0
+  - react-select-event": "^5.5.1
+  - tailwindcss": "^3.4.1
+
+---
+
 ## Functional Requirements
 
 ### Authentication
