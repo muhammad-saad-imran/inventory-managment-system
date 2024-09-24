@@ -65,20 +65,20 @@ This project is an inventory management system designed for wholesale stores to 
 3. ### Create a user
   - The user needs to be added from the supabase dashboard. Navigate to the `Authentication` tab and click on `add user` button. These credentials will be required to signin in while using app.
 
-3. ### Environment Variables
+4. ### Environment Variables
   - To link the project you will need to put the `anon key` and `supabase url` in a .env file, you can find these in `settings` page. Use the template below:
   ```
   NEXT_PUBLIC_SUPABASE_URL="your-project-url"
   NEXT_PUBLIC_SUPABASE_ANON_KEY="your-project-anon-key"
   ```
 
-4. ### Install dependencies
+5. ### Install dependencies
   - To install all the dependencies from `package.json` use the command.
   ```
   npm install
   ```
 
-5. ### Start app
+6. ### Start app
   - To run the app use the command
   ```
   npm build 
