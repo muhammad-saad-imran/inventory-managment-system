@@ -1,9 +1,20 @@
-# Project Name
+# Inventory management System
+
+## Table of Contents
+
+- [Inventory management System](#project-name)
+  - [Introduction](#introduction)
+  - [Packages Used](#packages-used)
+  - [Getting Started](#getting-started)
+  - [Features](#features)
+  - [Project Structure](#project-structure)
+  - [Testing](#testing)
+  - [Technologies](#technologies)
+  - [Conclusion](#conclusion)
+
 
 ## Introduction
 This project is an inventory management system designed for wholesale stores to efficiently manage all aspects related to suppliers, products, and client interactions.
-
----
 
 ## Packages Used
 
@@ -43,8 +54,6 @@ This project is an inventory management system designed for wholesale stores to 
 
 - **[`react-select-event@^5.5.1`](https://www.npmjs.com/package/react-select-event)**: A testing utility designed to simulate user interactions with `react-select` components, allowing for more comprehensive test coverage in your app.
 
----
-
 ## Getting Started
 
 1. ### Create Supabase project 
@@ -78,8 +87,6 @@ This project is an inventory management system designed for wholesale stores to 
 
 6. ### Head over to http://localhost:3000 to see the app live!
 
----
-
 ## Features
 
 ### Authentication
@@ -105,7 +112,46 @@ This project is an inventory management system designed for wholesale stores to 
 ### Search and Filter
 - Provides advanced search and filtering options for products, suppliers, and clients.
 
----
+
+## Project Structure
+
+- `/src`, contains all the frontend logic of the app
+  - `/src/app`, contains all the pages, this project uses app router **[(click for more information)](https://nextjs.org/docs/app)** 
+  - `/src/components`, contains all the reusable components used in pages.
+  - `/src/elements`, contains all the html components using styled-components 
+  - `/src/store`, contains all redux logic
+  - `/src/utils`, contains all utilities used in components or pages
+  - `/src/actions`, contains all server actions used
+  - `/src/supabase`, contains all the supabase related configurations and factory functions
+  - `/src/database`, contains all the repositories that have supabase queries
+  - `/src/services`, contains all the services that use repositories and contain data handling logic
+  - `/src/hooks`, contains all the custom hooks used
+  - `/src/validations`, contains all the `yup` validations used in `useFormik` hook
+
+- `/public`, used to store static assets
+
+- `/migration`, contains database related files
+
+- `/__tests__`, contains all the unit tests
+
+- `/__mocks__`, contains all the mocks used in unit tests
+
+- `/coverage`, contains `html` report after testing
+
+### /
+
+
+## Testing
+- To run the test use the command.
+```
+npm test
+```
+- This will generate a comprehensive report in an html file in, **[`coverage/index.html`](coverage/index.html)**
+
+## Technologies
+- React
+- Next.js
+- Supabase
 
 ## Conclusion
 This system aims to improve the operational efficiency of wholesale stores by providing an integrated solution for inventory, supplier, and client management. Its responsive design, automated processes, and real-time insights will help streamline store operations and minimize manual effort.
