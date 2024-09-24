@@ -120,12 +120,12 @@ This project is an inventory management system designed for wholesale stores to 
   - `/src/elements`, contains all the html components using styled-components 
   - `/src/store`, contains all redux logic
   - `/src/utils`, contains all utilities used in components or pages
-  - `/src/actions`, contains all server actions used
-  - `/src/supabase`, contains all the supabase related configurations and factory functions
-  - `/src/database`, contains all the repositories that have supabase queries
-  - `/src/services`, contains all the services that use repositories and contain data handling logic
-  - `/src/hooks`, contains all the custom hooks used
-  - `/src/validations`, contains all the `yup` validations used in `useFormik` hook
+    - `/src/utils/actions`, contains all server actions used
+    - `/src/utils/supabase`, contains all the supabase related configurations and factory functions
+    - `/src/utils/database`, contains all the repositories that have supabase queries
+    - `/src/utils/services`, contains all the services that use repositories and contain data handling logic
+    - `/src/utils/hooks`, contains all the custom hooks used
+    - `/src/utils/validations`, contains all the `yup` validations used in `useFormik` hook
 
 - `/public`, used to store static assets
 
