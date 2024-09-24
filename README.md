@@ -81,7 +81,7 @@ This project is an inventory management system designed for wholesale stores to 
 6. ### Start app
   - To run the app use the command
   ```
-  npm build 
+  npm run build 
   npm start
   ```
   - Head over to http://localhost:3000 to see the app live!
