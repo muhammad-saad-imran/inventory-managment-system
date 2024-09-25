@@ -45,6 +45,7 @@ const Sidebar = () => {
         <p className="text-[#8A99AF]">Menu</p>
         {tabs.map((item) => (
           <Link
+            key={item.name}
             className="w-full text-[#DEEEE4] hover:bg-white/15 rounded px-2 flex gap-2"
             href={item.route}
           >
