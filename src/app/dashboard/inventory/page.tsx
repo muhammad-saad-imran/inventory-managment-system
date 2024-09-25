@@ -30,7 +30,7 @@ const InventoryPage = () => {
   return (
     <div>
       <SearchBar label="Inventory" search={search} setSearch={setSearch} />
-      <table className="w-full bg-white mt-3 text-center">
+      <table className="w-full bg-white mt-3 text-center rounded shadow">
         <thead>
           <tr>
             <th className="py-5">Product</th>
@@ -48,9 +48,9 @@ const InventoryPage = () => {
               onClick={() => router.push(`/dashboard/inventory/${item.id}`)}
             >
               <td className="py-5">{item.products?.name}</td>
-              <td className="py-5">{item.suppliers?.name}</td>
-              <td className="py-5">{formatPrice(item.cost)}</td>
-              <td className="py-5">{item.stock_quantity}</td>
+              <td className="py-5 uppercase">{item.suppliers?.name}</td>
+              <td className="py-5 text-sm">{formatPrice(item.cost)}</td>
+              <td className="py-5 text-sm">{item.stock_quantity}</td>
             </tr>
           ))}
         </tbody>

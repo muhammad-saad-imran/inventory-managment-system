@@ -30,7 +30,7 @@ const SupplierPage = () => {
   return (
     <div>
       <SearchBar label="Suppliers" search={search} setSearch={setSearch} />
-      <table className="w-full mt-3 bg-white">
+      <table className="w-full mt-3 bg-white rounded shadow">
         <thead>
           <tr>
             <th className="py-5">Name</th>

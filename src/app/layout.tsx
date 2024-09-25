@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import StoreProvider from "@/store/StoreProvider";
 import "./globals.css";
 import Loader from "@/components/common/Loading";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} w-screen h-screen bg-[#F5F5F5]`}>
+      <body className={`${font.className} w-screen h-screen bg-[#64748B]/10`}>
         <StoreProvider>
           <Loader />
           <Suspense>{children}</Suspense>

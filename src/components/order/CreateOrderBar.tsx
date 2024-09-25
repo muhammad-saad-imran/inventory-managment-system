@@ -63,7 +63,7 @@ const CreateOrderBar = ({ search }: Props) => {
   };
 
   return (
-    <form className="flex gap-4 bg-white w-full p-5" onSubmit={handleSubmit}>
+    <form className="flex gap-4 bg-white w-full p-6 shadow rounded" onSubmit={handleSubmit}>
       <AsyncSelectInput {...selectOptions} />
       <InputField type="date" {...getFieldAttrs("Order Date", "order_date")} />
       <SecondaryButton className="h-9 self-end">Create</SecondaryButton>

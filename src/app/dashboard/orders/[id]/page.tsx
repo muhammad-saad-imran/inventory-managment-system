@@ -53,7 +53,7 @@ const OrderInfoPage = () => {
       <p className="text-3xl text-center">Order</p>
       <OrderInfo clientData={clientData} orderData={orderData} />
       <AddProductBar />
-      <table className="w-full bg-white mt-3 p-3 text-center">
+      <table className="w-full bg-white mt-3 p-3 text-center rounded shadow">
         <thead>
           <tr>
             <th className="py-5 w-1/3">Product</th>

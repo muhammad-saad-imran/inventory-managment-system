@@ -15,7 +15,7 @@ const SearchBar = ({ label, search, setSearch, ...inputAttrs }: Props) => {
   return (
     <div>
       <p className="text-3xl text-center">{label}</p>
-      <div className="flex gap-8 bg-white w-full p-5 mt-3">
+      <div className="flex gap-8 w-full p-5 mt-3 rounded bg-white shadow">
         <InputBase
           placeholder="Search"
           className="border-0 text-lg"

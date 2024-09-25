@@ -11,7 +11,7 @@ const OrderSearchBar = ({ label, search, setSearch }: Props) => {
   return (
     <div>
       <p className="text-3xl text-center">{label}</p>
-      <div className="flex gap-8 bg-white w-full p-5 mt-3">
+      <div className="flex gap-8 bg-white w-full p-6 mt-3 rounded shadow">
         <InputBase
           placeholder="Search"
           className="border-0 text-lg border-b"

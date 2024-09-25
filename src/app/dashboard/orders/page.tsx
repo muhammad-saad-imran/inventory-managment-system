@@ -34,7 +34,7 @@ const OrderPage = () => {
     <div className="flex flex-col gap-3">
       <OrderSearchBar label="Orders" search={search} setSearch={setSearch} />
       <CreateOrderBar search={search} />
-      <table className="w-full bg-white">
+      <table className="w-full bg-white rounded shadow">
         <thead>
           <tr>
             <th className="py-5 w-1/4">ID</th>

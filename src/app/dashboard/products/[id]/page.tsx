@@ -51,7 +51,7 @@ const ProductInfoPage = () => {
     <div>
       <p className="text-3xl text-center mb-8">Product</p>
       <form
-        className="flex flex-col gap-4 bg-white p-3"
+        className="flex flex-col gap-4 bg-white p-6 rounded shadow"
         onSubmit={handleSubmit}
       >
         <InputField {...getFieldAttrs("Name", "name")} />
