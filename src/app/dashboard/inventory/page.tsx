@@ -48,7 +48,7 @@ const InventoryPage = () => {
               onClick={() => router.push(`/dashboard/inventory/${item.id}`)}
             >
               <td className="py-5">{item.products?.name}</td>
-              <td className="py-5 uppercase">{item.suppliers?.name}</td>
+              <td className="py-5 uppercase text-sm">{item.suppliers?.name}</td>
               <td className="py-5 text-sm">{formatPrice(item.cost)}</td>
               <td className="py-5 text-sm">{item.stock_quantity}</td>
             </tr>

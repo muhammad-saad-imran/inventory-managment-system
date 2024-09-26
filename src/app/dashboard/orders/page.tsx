@@ -55,14 +55,14 @@ const OrderPage = () => {
               }}
             >
               <td className="py-5 w-1/4">{item.id}</td>
-              <td className="py-5 w-1/4">{item.clients?.name}</td>
+              <td className="py-5 w-1/4 uppercase text-sm">{item.clients?.name}</td>
               <td className="py-5 w-1/4">
                 {formatDate({
                   date: item.order_date,
                   outputDate: "MMM D, YYYY",
                 })}
               </td>
-              <td className="py-5 w-1/4">{item.status}</td>
+              <td className="py-5 w-1/4 text-sm">{item.status}</td>
             </tr>
           ))}
         </tbody>

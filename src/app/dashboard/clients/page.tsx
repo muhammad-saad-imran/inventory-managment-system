@@ -46,7 +46,7 @@ const ClientsPage = () => {
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => router.push(`/dashboard/clients/${item.id}`)}
             >
-              <td className="py-5">{item.name}</td>
+              <td className="py-5 uppercase text-sm">{item.name}</td>
               <td className="py-5">{item.email}</td>
               <td className="py-5">{item.phone_number}</td>
               <td className="py-5">
