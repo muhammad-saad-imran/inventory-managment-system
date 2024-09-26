@@ -87,10 +87,10 @@ This project is an inventory management system designed for wholesale stores to 
 6. ### Start app
   - To run the app use the command
   ```
-  npm run build 
-  npm start
+  npm run dev 
   ```
   - Head over to http://localhost:3000 to see the app live!
+  - View the deployed **[app](https://inventory-managment-system-bice.vercel.app/)** 
 
 ## Features
 
@@ -99,7 +99,6 @@ This project is an inventory management system designed for wholesale stores to 
 
 ### Inventory Management
 - Users can add, update, and delete product records.
-- Real-time tracking of inventory levels, with alerts when stock reaches a predefined threshold.
 
 ### Supplier Management
 - Users can add, modify, and delete supplier records.
