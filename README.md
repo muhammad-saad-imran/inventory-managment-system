@@ -149,6 +149,7 @@ This project is an inventory management system designed for wholesale stores to 
 npm test
 ```
 - This will generate a comprehensive report in an html file in, **[`coverage/index.html`](coverage/index.html)**
+- istanbul is integrated with jest to generate the report
 
 
 ## Technologies
