@@ -1,9 +1,9 @@
 # Inventory management System
 
-![Codecov](https://img.shields.io/badge/coverage-90%25-brightgreen?style=flat)
 ![React](https://img.shields.io/badge/react-%5E18.0.0-blue?style=flat&logo=react)
 ![Next.js](https://img.shields.io/badge/next.js-%5E14.2.12-black?style=flat&logo=next.js)
-
+![Supabase](https://img.shields.io/badge/Supabase-v2.45.2-green?style=flat&logo=supabase)
+![Codecov](https://img.shields.io/badge/coverage-90%25-brightgreen?style=flat)
 
 ## Table of Contents
 
