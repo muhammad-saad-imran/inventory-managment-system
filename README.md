@@ -1,5 +1,10 @@
 # Inventory management System
 
+![Codecov](https://img.shields.io/badge/coverage-90%25-brightgreen?style=flat)
+![React](https://img.shields.io/badge/react-%5E18.0.0-blue?style=flat&logo=react)
+![Next.js](https://img.shields.io/badge/next.js-%5E14.2.12-black?style=flat&logo=next.js)
+
+
 ## Table of Contents
 
 - [Inventory management System](#project-name)
@@ -137,8 +142,6 @@ This project is an inventory management system designed for wholesale stores to 
 
 - `/coverage`, contains `html` report after testing
 
-### /
-
 
 ## Testing
 - To run the test use the command.
@@ -147,10 +150,12 @@ npm test
 ```
 - This will generate a comprehensive report in an html file in, **[`coverage/index.html`](coverage/index.html)**
 
+
 ## Technologies
 - React
 - Next.js
 - Supabase
+
 
 ## Conclusion
 This system aims to improve the operational efficiency of wholesale stores by providing an integrated solution for inventory, supplier, and client management. Its responsive design, automated processes, and real-time insights will help streamline store operations and minimize manual effort.
