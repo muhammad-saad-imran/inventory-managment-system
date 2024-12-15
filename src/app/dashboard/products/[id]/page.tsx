@@ -51,7 +51,7 @@ const ProductInfoPage = () => {
     <div>
       <p className="text-3xl text-center mb-8">Product</p>
       <form
-        className="flex flex-col gap-4 bg-white p-3"
+        className="flex flex-col gap-4 bg-white p-6 rounded shadow"
         onSubmit={handleSubmit}
       >
         <InputField {...getFieldAttrs("Name", "name")} />
@@ -60,6 +60,7 @@ const ProductInfoPage = () => {
           <SecondaryButton
             className="w-fit"
             disabled={disableUpdate}
+            data-testid="update-btn"
             type="submit"
           >
             Update
@@ -67,6 +68,7 @@ const ProductInfoPage = () => {
           <SecondaryButton
             className="w-fit"
             onClick={handleDelete}
+            data-testid="delete-btn"
             type="button"
           >
             Delete

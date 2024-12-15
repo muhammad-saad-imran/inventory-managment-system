@@ -40,7 +40,7 @@ const OrderInfo = ({ orderData, clientData }: Props) => {
   }, [orderData]);
 
   return (
-    <div className="flex flex-col gap-3 bg-white w-full p-5 mt-3">
+    <div className="flex flex-col gap-3 bg-white w-full p-6 mt-3 rounded shadow">
       <div className="flex gap-3">
         <InputField label="Client" value={clientData?.name} disabled />
         <InputField label="Order date" value={orderDate} disabled />

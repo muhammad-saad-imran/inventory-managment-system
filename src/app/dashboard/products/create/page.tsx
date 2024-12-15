@@ -34,12 +34,12 @@ const CreateProductPage = () => {
     <div>
       <p className="text-3xl text-center mb-8">Create Product</p>
       <form
-        className="flex flex-col gap-4 bg-white p-3"
+        className="flex flex-col gap-4 bg-white p-6 rounded shadow"
         onSubmit={handleSubmit}
       >
         <InputField {...getFieldAttrs("Name", "name")} />
         <InputField {...getFieldAttrs("Description", "description")} />
-        <SecondaryButton className="w-fit" type="submit">
+        <SecondaryButton data-testid="submit-btn" className="w-fit" type="submit">
           Create
         </SecondaryButton>
       </form>

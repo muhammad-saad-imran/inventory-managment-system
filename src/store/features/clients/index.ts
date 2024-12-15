@@ -26,22 +26,7 @@ const initialState = {
 const ClientSlice = createSlice({
   name: "clients",
   initialState,
-  reducers: {
-    setClient(state, action: PayloadAction<Client>) {
-      return {
-        ...state,
-        supplier: {
-          ...action.payload,
-        },
-      };
-    },
-    setAllClients(state, action: PayloadAction<Client[]>) {
-      return {
-        ...state,
-        allSuppliers: [...action.payload],
-      };
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllClient.fulfilled, (state, action) => {
@@ -62,7 +47,7 @@ const ClientSlice = createSlice({
   },
 });
 
-export const { setAllClients, setClient } = ClientSlice.actions;
+export const {} = ClientSlice.actions;
 export default ClientSlice.reducer;
 
 export const selectClient = (state: RootState) => state.client.client;

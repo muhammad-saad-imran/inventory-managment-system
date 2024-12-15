@@ -49,7 +49,7 @@ const CreateInventoryPage = () => {
   return (
     <form onSubmit={handleSubmit}>
       <p className="text-3xl text-center">Create Inventory</p>
-      <div className="flex flex-col gap-3 w-full bg-white mt-3 p-3">
+      <div className="flex flex-col gap-3 w-full bg-white mt-3 p-6 shadow rounded">
         <div className="flex gap-4">
           <SelectInput {...selectProductAttrs} />
           <SelectInput {...selectSupplierAttrs} />

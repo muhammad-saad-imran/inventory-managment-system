@@ -49,7 +49,7 @@ const ClientInfoPage = () => {
   return (
     <div>
       <p className="text-3xl text-center mb-8">Create Client</p>
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-4 bg-white p-6 rounded shadow" onSubmit={handleSubmit}>
         <InputField {...getFieldAttrs("Name", "name")} />
         <InputField {...getFieldAttrs("Email", "email")} type="email" />
         <InputField

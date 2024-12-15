@@ -1,7 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { GenericService } from "@/utils/services/GenericService";
 import { OrderItem } from "@/utils/database/types";
-import { OrderItemRepo } from "@/utils/database/OrderItem";
+import { OrderItemRepo } from "@/utils/database/OrderItemRepo";
 import { InventoryRepo } from "@/utils/database/InventoryRepo";
 
 export class OrderItemService extends GenericService<OrderItem> {

@@ -34,7 +34,7 @@ const OrderPage = () => {
     <div className="flex flex-col gap-3">
       <OrderSearchBar label="Orders" search={search} setSearch={setSearch} />
       <CreateOrderBar search={search} />
-      <table className="w-full bg-white">
+      <table className="w-full bg-white rounded shadow">
         <thead>
           <tr>
             <th className="py-5 w-1/4">ID</th>
@@ -47,6 +47,7 @@ const OrderPage = () => {
           {allOrders.map((item) => (
             <tr
               key={item.id}
+              data-testid="order-row"
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => {
                 dispatch(startLoading());
@@ -54,14 +55,14 @@ const OrderPage = () => {
               }}
             >
               <td className="py-5 w-1/4">{item.id}</td>
-              <td className="py-5 w-1/4">{item.clients?.name}</td>
+              <td className="py-5 w-1/4 uppercase text-sm">{item.clients?.name}</td>
               <td className="py-5 w-1/4">
                 {formatDate({
                   date: item.order_date,
                   outputDate: "MMM D, YYYY",
                 })}
               </td>
-              <td className="py-5 w-1/4">{item.status}</td>
+              <td className="py-5 w-1/4 text-sm">{item.status}</td>
             </tr>
           ))}
         </tbody>

@@ -88,7 +88,7 @@ const AddProductBar = () => {
   };
 
   return (
-    <form className="bg-white w-full p-5 mt-3" onSubmit={handleSubmit}>
+    <form className="bg-white w-full p-6 mt-3 rounded shadow" onSubmit={handleSubmit}>
       <div className="flex gap-4 w-full">
         <AsyncSelectInput key={selectedInventory?.id} {...selectAttrs} />
         <InputField

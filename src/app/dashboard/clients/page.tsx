@@ -29,7 +29,7 @@ const ClientsPage = () => {
   return (
     <div>
       <SearchBar label="Clients" search={search} setSearch={setSearch} />
-      <table className="w-full mt-3 bg-white">
+      <table className="w-full mt-3 bg-white rounded shadow">
         <thead>
           <tr>
             <th className="py-5">Name</th>
@@ -42,10 +42,11 @@ const ClientsPage = () => {
           {allClients.map((item) => (
             <tr
               key={item.id}
+              data-testid="client-row"
               className="text-center hover:bg-black/[0.05] cursor-pointer"
               onClick={() => router.push(`/dashboard/clients/${item.id}`)}
             >
-              <td className="py-5">{item.name}</td>
+              <td className="py-5 uppercase text-sm">{item.name}</td>
               <td className="py-5">{item.email}</td>
               <td className="py-5">{item.phone_number}</td>
               <td className="py-5">
